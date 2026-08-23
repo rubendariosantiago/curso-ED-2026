@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 6: ED de Segundo Orden y Coeficientes Constantes</title>
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+        .content-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        h1, h2, h3 {
+            color: #2C3E50;
+        }
+        h4 {
+            color: #D35400;
+            margin-top: 30px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        .solucion {
+            color: #2980B9;
+            font-weight: bold;
+        }
+        .teoria-box {
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498DB;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .image-placeholder {
+            border: 2px dashed #bdc3c7;
+            background: #fdfdfd;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            color: #7f8c8d;
+            font-style: italic;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .quiz-container {
+            background-color: #f5f7fa ;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #C0392B;
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 6px;
+            border: 1px solid #f2d7d5;
+        }
+        .feedback {
+            display: none;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .feedback.correct {
+            background-color: #d5f5e3;
+            border-left: 5px solid #27ae60;
+            color: #145a32;
+        }
+        .feedback.incorrect {
+            background-color: #fadbd8;
+            border-left: 5px solid #c0392b;
+            color: #78281f;
+        }
+        .global-warning {
+            display: none;
+            background-color: #fcf8e3;
+            border: 1px solid #faebcc;
+            color: #8a6d3b;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .score-summary {
+            display: none;
+            background-color: #d9edf7;
+            border-left: 5px solid #31708f;
+            color: #245269;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        button.evaluate-btn {
+            background-color: #2C3E50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button.evaluate-btn:hover {
+            background-color: #1a252f;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        
+        <h2>1. Introducción a las ED Lineales de Segundo Orden</h2>
+        <p>En esta sesión pasaremos de las ecuaciones de primer orden a las <strong>Ecuaciones Diferenciales Lineales Homogéneas de Segundo Orden con Coeficientes Constantes</strong>. Estas ecuaciones constituyen la herramienta matemática fundamental para modelar y comprender el comportamiento de sistemas dinámicos, estructuras sujetas a vibraciones y circuitos eléctricos.</p>
+        
+        <div class="teoria-box">
+            <strong>Forma General:</strong>
+            \[ a y'' + b y' + c y = 0 \]
+            <p>Donde \(a, b, c\) son constantes reales con \(a \neq 0\).</p>
+            <p>Para resolverlas proponemos una solución exponencial de la forma \( y = e^{rx} \). Al derivar y sustituir en la ecuación diferencial, obtenemos la denominada <strong>Ecuación Característica</strong>:</p>
+            \[ a r^2 + b r + c = 0 \]
+            <p>Dependiendo de la naturaleza de las raíces (\(r_1, r_2\)) de esta ecuación cuadrática, se presentan tres casos posibles:</p>
+            <ul>
+                <li><strong>Caso 1: Raíces reales y distintas (\(b^2 - 4ac > 0\)):</strong> \[ y(x) = C_1 e^{r_1 x} + C_2 e^{r_2 x} \]</li>
+                <li><strong>Caso 2: Raíces reales repetidas (\(b^2 - 4ac = 0\)):</strong> \[ y(x) = C_1 e^{r x} + C_2 x e^{r x} \]</li>
+                <li><strong>Caso 3: Raíces complejas conjugadas (\(b^2 - 4ac < 0\), con \(r = \alpha \pm \beta i\)):</strong> \[ y(x) = e^{\alpha x} (C_1 \cos(\beta x) + C_2 \sin(\beta x)) \]</li>
+            </ul>
+        </div>
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>2. Ejercicios </h2>
+        
+        <!-- Ejercicio 1 -->
+        <h4>Ejercicio 1: Problema de Valor Inicial (Raíces reales distintas)</h4>
+        <p>Resuelve el problema de valor inicial dado por la ecuación diferencial \( 2y'' - 5y' - 3y = 0 \), sujeta a las condiciones iniciales \( y(0) = 1 \) y \( y'(0) = 4 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Para resolver este problema de valor inicial, comenzamos asociando a la ecuación diferencial lineal su correspondiente ecuación característica cuadrática, la cual se obtiene al reemplazar la función y sus derivadas por potencias de la variable polinomial \( r \), resultando en \( 2r^2 - 5r - 3 = 0 \).</p>
+        <p>Podemos encontrar las raíces de este polinomio mediante factorización directa expresándolo como el producto de dos binomios \( (2r + 1)(r - 3) = 0 \), o bien aplicando la fórmula general para ecuaciones de segundo orden. De este modo obtenemos dos raíces reales distintas: \( r_1 = -\frac{1}{2} \) y \( r_2 = 3 \). Al ser raíces reales y diferentes, la solución general de la ecuación diferencial se conforma mediante una combinación lineal de ambas funciones exponenciales independientes:</p>
+        \[ y(x) = C_1 e^{-x/2} + C_2 e^{3x} \]
+        <p>Con el fin de determinar las constantes arbitrarias \( C_1 \) y \( C_2 \), requerimos derivar la solución general respecto a \( x \), lo que nos da como resultado la función velocidad del sistema: $$ y'(x) = -\frac{1}{2} C_1 e^{-x/2} + 3 C_2 e^{3x} $$.</p>
+        <p>Evaluamos ahora las condiciones iniciales dadas en \( x = 0 \). Aplicando la primera condición de posición \( y(0) = 1 \), sustituimos \( x = 0 \) en la solución general obteniendo la ecuación lineal $$ C_1 + C_2 = 1.$$ Posteriormente, aplicando la condición de velocidad inicial \( y'(0) = 4 \), obtenemos la segunda ecuación lineal $$ -\frac{1}{2} C_1 + 3 C_2 = 4 . $$</p>
+        <p>Resolvemos el sistema simultáneo de dos ecuaciones con dos incógnitas. Multiplicando la primera ecuación por \( \frac{1}{2} \) y sumándola con la segunda, eliminamos la variable \( C_1 \), lo que nos conduce a 
+        $$ \frac{7}{2} C_2 = \frac{9}{2} \implie  C_2 = \frac{9}{7} .$$ Sustituyendo este valor en la primera relación se halla que $$ C_1 = 1 - \frac{9}{7} = -\frac{2}{7} .$$ Sustituyendo finalmente estos valores numéricos en la solución general, alcanzamos la solución particular única:</p>
+        \[ y(x) = -\frac{2}{7} e^{-x/2} + \frac{9}{7} e^{3x} \]
+
+        <!-- Ejercicio 2 -->
+        <h4>Ejercicio 2: Raíces Repetidas con Ajuste Fino</h4>
+        <p>Resuelve el problema de valor inicial \( 4y'' + 12y' + 9y = 0 \), con las condiciones iniciales \( y(0) = 2 \) y \( y'(0) = -1 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Iniciamos el proceso transformando la ecuación diferencial de segundo orden en su ecuación característica asociada, la cual toma la forma algebraica $$4r^2 + 12r + 9 = 0 $$</p>
+        <p>Al analizar la estructura del trinomio, observamos que corresponde exactamente a un trinomio cuadrado perfecto que se puede factorizar de manera directa como \( (2r + 3)^2 = 0 \). De aquí se deriva una única raíz real repetida de multiplicidad dos, dada por \( r = -\frac{3}{2} \). Dado que una sola exponencial no genera el espacio completo de soluciones para una ecuación de segundo orden, multiplicamos la segunda solución por la variable independiente \( x \) para garantizar la independencia lineal entre los términos (asegurando un Wronskiano no nulo). Por consiguiente, la solución general queda establecida como:</p>
+        \[ y(x) = C_1 e^{-3x/2} + C_2 x e^{-3x/2} \]
+        <p>Para hacer uso de la condición inicial sobre la derivada, calculamos la primera derivada de \( y(x) \) aplicando estrictamente la regla del producto en el término que contiene a la variable \( x \):</p>
+        \[ y'(x) = -\frac{3}{2} C_1 e^{-3x/2} + C_2 e^{-3x/2} - \frac{3}{2} C_2 x e^{-3x/2} = \left( -\frac{3}{2} C_1 + C_2 - \frac{3}{2} C_2 x \right) e^{-3x/2} \]
+        <p>Evaluamos a continuación las condiciones iniciales en el punto \( x = 0 \). De la primera condición \( y(0) = 2 \), la expresión se reduce de forma inmediata a \( C_1 = 2 \). Luego, sustituyendo la segunda condición inicial \( y'(0) = -1 \), obtenemos la relación lineal $$-\frac{3}{2} C_1 + C_2 = -1 $$ Reemplazando el valor ya conocido de \( C_1 = 2 \), nos queda la ecuación $$ -\frac{3}{2}(2) + C_2 = -1 \implies -3 + C_2 = -1.$$ de donde \( C_2 = 2 \). Al ingresar estas constantes en la solución general, concluimos:</p>
+        \[ y(x) = 2 e^{-3x/2} + 2 x e^{-3x/2} \]
+
+        <!-- Ejercicio 3 -->
+        <h4>Ejercicio 3: Raíces Complejas Conjugadas</h4>
+        <p>Encuentra la solución general de la ecuación diferencial homogénea $$ y'' - 4y' + 13y = 0 $$</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Comenzamos planteando la ecuación característica correspondiente a la ecuación diferencial dada, que toma la forma polinomial$$ r^2 - 4r + 13 = 0 $$ </p>
+        <p>Para determinar los valores de \( r \), recurrimos a la fórmula cuadrática considerando los coeficientes \( a = 1 \), \( b = -4 \) y \( c = 13 \):</p>
+        \[ r = \frac{-(-4) \pm \sqrt{(-4)^2 - 4(1)(13)}}{2(1)} = \frac{4 \pm \sqrt{16 - 52}}{2} = \frac{4 \pm \sqrt{-36}}{2} \]
+        <p>Dado que el discriminante es estrictamente negativo (\( b^2 - 4ac = -36 < 0 \)), hacemos uso de la unidad imaginaria \( i = \sqrt{-1} \), lo que transforma la raíz en \( \sqrt{-36} = 6i \). Así, obtenemos un par de raíces complejas conjugadas de la forma $$ r = \frac{4 \pm 6i}{2} = 2 \pm 3i $$ </p>
+        <p>Identificamos con claridad la parte real de la raíz como \( \alpha = 2 \) y la parte imaginaria como \( \beta = 3 \). Utilizando la identidad de Euler para convertir la combinación exponencial compleja en funciones armónicas reales,, se obtiene la solución general real:</p>
+        \[ y(x) = e^{2x} (C_1 \cos(3x) + C_2 \sin(3x)) \]
+
+        <!-- Ejercicio 4 -->
+        <h4>Ejercicio 4: Problema de Valor en la Frontera (BVP)</h4>
+        <p>A diferencia de los problemas de valor inicial donde las condiciones se dan en un mismo punto, en un Problema de Valor en la Frontera las condiciones se establecen en puntos distintos del dominio. Resuelve la ecuación \( y'' + 4y = 0 \), sujeta a las condiciones de frontera \( y(0) = 0 \) y \( y\left(\frac{\pi}{4}\right) = 2 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>El primer paso consiste en formular la ecuación característica reemplazando las derivadas por potencias de la variable auxiliar, obteniendo \( r^2 + 4 = 0 \). Al despejar directamente las raíces hallamos que \( r^2 = -4 \implies r = \pm 2i \). Se trata de un par de raíces imaginarias puras donde la parte real es nula (\( \alpha = 0 \)) y la parte imaginaria es \( \beta = 2 \).</p>
+        <p>Debido a que la parte real es cero, el término exponencial modulador satisface \( e^{0x} = 1 \), reduciendo la solución general a una combinación lineal puramente oscilatoria descrita por funciones trigonométricas senoidales:</p>
+        \[ y(x) = C_1 \cos(2x) + C_2 \sin(2x) \]
+        <p>Evaluamos ahora la primera condición de frontera en la posición inicial \( x = 0 \):</p>
+        \[ y(0) = C_1 \cos(0) + C_2 \sin(0) = C_1(1) + C_2(0) = C_1 = 0 \]
+        <p>Al anularse el coeficiente \( C_1 \), la solución general se simplifica considerablemente al modelo \( y(x) = C_2 \sin(2x) \).</p>
+        <p>Posteriormente, aplicamos la segunda condición de frontera en el extremo \( x = \frac{\pi}{4} \):</p>
+        \[ y\left(\frac{\pi}{4}\right) = C_2 \sin\left(2 \cdot \frac{\pi}{4}\right) = C_2 \sin\left(\frac{\pi}{2}\right) = C_2(1) = 2 \implies C_2 = 2 \]
+        <p>Sustituyendo el valor encontrado para la constante \( C_2 \), determinamos la solución particular única que satisface ambas condiciones de frontera fijadas:</p>
+        \[ y(x) = 2 \sin(2x) \]
+
+        <!-- Ejercicio 5 -->
+        <h4>Ejercicio 5: Comportamiento Asintótico</h4>
+        <p>Dada la ecuación diferencial \( y'' + 6y' + 25y = 0 \), encuentra la solución particular tal que \( y(0) = 3 \) y \( y'(0) = -9 \). Posteriormente, determina el comportamiento asintótico evaluando si \( \lim_{x \to \infty} y(x) = 0 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Iniciamos construyendo la ecuación característica asociada a la ecuación diferencial dada, obteniendo el polinomio cuadrático $$ r^2 + 6r + 25 = 0 . $$
+        Resolvemos mediante la fórmula general para ecuaciones cuadráticas:</p>
+        \[ r = \frac{-6 \pm \sqrt{36 - 100}}{2} = \frac{-6 \pm \sqrt{-64}}{2} = \frac{-6 \pm 8i}{2} = -3 \pm 4i \]
+        <p>Las raíces corresponden a un par de números complejos conjugados cuya parte real es \( \alpha = -3 \) y cuya parte imaginaria es \( \beta = 4 \). Por lo tanto, la solución general construida con funciones reales es:</p>
+        \[ y(x) = e^{-3x}(C_1 \cos(4x) + C_2 \sin(4x)) \]
+        <p>Para aplicar las condiciones iniciales, evaluamos en primer lugar la función de posición en \( x = 0 \), teniendo que $$y(0) = e^{0}(C_1 \cos(0) + C_2 \sin(0)) = C_1 = 3 $$</p>
+        <p>Para incorporar la segunda condición sobre la velocidad inicial, hallamos la derivada de la solución general utilizando la regla del producto para derivadas:</p>
+        \[ y'(x) = -3e^{-3x}(C_1 \cos(4x) + C_2 \sin(4x)) + e^{-3x}(-4C_1 \sin(4x) + 4C_2 \cos(4x)) \]
+        <p>Evaluamos dicha derivada en \( x = 0 \) e introducimos el valor conocido de \( C_1 = 3 \):</p>
+        \[ y'(0) = -3(1)(3(1) + 0) + 1(-4(3)(0) + 4C_2(1)) = -9 + 4C_2 = -9 \implies 4C_2 = 0 \implies C_2 = 0 \]
+        <p>Con las constantes definidas (\( C_1 = 3, C_2 = 0 \)), la solución particular del sistema toma la forma matemática:</p>
+        \[ y(x) = 3e^{-3x}\cos(4x) \]
+        <p>Para analizar el comportamiento asintótico cuando el tiempo o la variable independiente tiende a infinito (\( x \to \infty \)), calculamos el límite de la función particular. Observamos que la función armónica \( \cos(4x) \) se encuentra acotada entre los valores \( -1 \) y \( 1 \) para cualquier valor de \( x \). Por su parte, la envolvente exponencial \( 3e^{-3x} \) tiende a cero aceleradamente debido al exponente negativo. Aplicando el Teorema del Sándwich o del Encaje se cumple que:</p>
+        \[ \lim_{x \to \infty} \left( -3e^{-3x} \right) \le \lim_{x \to \infty} 3e^{-3x}\cos(4x) \le \lim_{x \to \infty} \left( 3e^{-3x} \right) \implies 0 \le \lim_{x \to \infty} y(x) \le 0 \]
+        <p>Por consiguiente, confirmamos que efectivamente <strong>el límite cuando \( x \to \infty \) es igual a 0</strong>. Físicamente esto representa una oscilación subamortiguada en la cual la energía del sistema se disipa por completo con el transcurso del tiempo.</p>
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>3. Aplicaciones Prácticas: Sistemas Oscilatorios</h2>
+        <p>Las Ecuaciones Diferenciales Lineales de Segundo Orden describen con precisión el movimiento de masas acopladas a resortes según la Segunda Ley de Newton y la Ley de Hooke.</p>
+
+        <h4>A. El Oscilador Armónico Simple (Sin Amortiguamiento)</h4>
+        <p>Si una masa \(m\) se conecta a un resorte con constante de restitución \(k\) en ausencia total de fricción, la ecuación de movimiento resultante es:</p>
+        \[ m \frac{d^2x}{dt^2} = -kx \implies mx'' + kx = 0 \]
+        <p>Su ecuación característica \( mr^2 + k = 0 \) posee raíces imaginarias puras \( r = \pm i\sqrt{k/m} \). Definimos la <em>frecuencia angular natural</em> como \( \omega_0 = \sqrt{k/m} \). El sistema oscilará perpetuamente sin disipación de energía (movimiento armónico simple).</p>
+
+        <h4>B. El Oscilador Amortiguado (Con Fricción)</h4>
+        <p>En aplicaciones reales existe una fuerza resistiva proporcional a la velocidad del sistema definida por un coeficiente de amortiguamiento \(c\). La ecuación diferencial del movimiento se convierte en:</p>
+        \[ mx'' + cx' + kx = 0 \]
+        <p>Dependiendo del signo del discriminante característico \(c^2 - 4mk\), clasificamos el comportamiento físico en tres regímenes:</p>
+        <ul>
+            <li><strong>Sobreamortiguado (\(c^2 - 4mk > 0\)):</strong> Amortiguamiento elevado. El sistema regresa lentamente a su posición de equilibrio sin efectuar ninguna oscilación (Raíces reales distintas negativas).</li>
+            <li><strong>Amortiguamiento Crítico (\(c^2 - 4mk = 0\)):</strong> Transición óptima. El sistema regresa a la posición de equilibrio en el menor tiempo posible sin llegar a oscilar (Raíces reales repetidas negativas).</li>
+            <li><strong>Subamortiguado (\(c^2 - 4mk < 0\)):</strong> Amortiguamiento débil. La masa oscila alrededor de la posición de equilibrio con una amplitud decreciente que se extingue exponencialmente (Raíces complejas con parte real negativa).</li>
+        </ul>
+
+               <p>En la figura siguiente se muestra el comportamiento en los tres tipos de amortiguamiento. </p>
+          <div style="text-align: center;">
+             <img src="img/s6fig1.png" alt="ejemplo" width="450" height="300">
+      </div>
+      
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>4. Práctica con Inteligencia Artificial</h2>
+        <p>Para experimentar cómo la masa, la fricción y la rigidez alteran la respuesta de una ecuación de segundo orden, copia y pega el siguiente prompt en tu modelo de IA preferido:</p>
+        <pre>
+Actúa como un profesor experto en física y ecuaciones diferenciales. 
+Tengo el sistema mx'' + cx' + kx = 0. 
+Genera 3 ejemplos numéricos distintos asignando valores específicos a m, c y k 
+de modo que correspondan a los tres casos (sobreamortiguado, críticamente amortiguado 
+y subamortiguado). Para cada caso, escribe la ecuación característica, encuentra sus 
+raíces de forma detallada y muestra la solución general paso a paso.
+        </pre>
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>5. Autoevaluación Interactiva</h2>
+        <p>Responde a continuación todas las preguntas del cuestionario conceptual y operativo. <strong>Nota:</strong> Es indispensable responder las 5 preguntas de forma completa para poder evaluar la actividad y visualizar la retroalimentación detallada.</p>
+
+        <div class="quiz-container">
+            <div id="global-warning" class="global-warning">
+                ⚠️ Por favor, responde a todas las preguntas del cuestionario antes de solicitar la evaluación.
+            </div>
+
+            <form id="session6Quiz">
+                <!-- Pregunta 1 -->
+                <div class="question">
+                    <p><strong>1. CONCEPTUAL: En la ecuación diferencial \( ay'' + by' + cy = 0 \), si el discriminante característico es \( b^2 - 4ac = 0 \), ¿cuál es la estructura de la solución general?</strong></p>
+                    <input type="radio" name="q1" value="a"> A) \( \displaystyle{ y = e^{\alpha x} (C_1 \cos(\beta x) + C_2 \sin(\beta x)) }\)<br>
+                    <input type="radio" name="q1" value="b"> B) \( \displaystyle{ y = C_1 e^{rx} + C_2 x e^{rx} }\)<br>
+                    <input type="radio" name="q1" value="c"> C) \( \displaystyle{ y = C_1 e^{r_1x} + C_2 e^{r_2x} } \) con \( r_1 \neq r_2 \)<br>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="question">
+                    <p><strong>2. CONCEPTUAL: Físicamente, en un sistema masa-resorte \( mx'' + cx' + kx = 0 \), ¿qué comportamiento representa la presencia de raíces imaginarias puras (\( r = \pm \beta i \))?</strong></p>
+                    <input type="radio" name="q2" value="a"> A) El sistema regresará a su posición de equilibrio lentamente sin oscilar.<br>
+                    <input type="radio" name="q2" value="b"> B) El sistema experimenta una fuerza de fricción severa que frena el movimiento.<br>
+                    <input type="radio" name="q2" value="c"> C) El sistema oscilará perpetuamente con amplitud constante sin disipación de energía.<br>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="question">
+                    <p><strong>3. OPERATIVA: ¿Cuáles son las raíces de la ecuación característica asociada a \( y'' - 16y = 0 \)?</strong></p>
+                    <input type="radio" name="q3" value="a"> A) \( \displaystyle{ r_1 = 4, \quad r_2 = -4 }\)<br>
+                    <input type="radio" name="q3" value="b"> B) \( \displaystyle{ r = \pm 4i }\)<br>
+                    <input type="radio" name="q3" value="c"> C) \( \displaystyle{ r_1 = 16, \quad r_2 = 0 }\)<br>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="question">
+                    <p><strong>4. OPERATIVA: ¿Cuál es la solución general correcta para la ecuación diferencial \( y'' + 4y' + 5y = 0 \)?</strong></p>
+                    <input type="radio" name="q4" value="a"> A) \( \displaystyle{ y = e^{2x}(C_1 \cos(x) + C_2 \sin(x)) }\)<br>
+                    <input type="radio" name="q4" value="b"> B) \( \displaystyle{ y = e^{-2x}(C_1 \cos(x) + C_2 \sin(x)) }\)<br>
+                    <input type="radio" name="q4" value="c"> C) \( \displaystyle{ y = C_1 e^{-2x} + C_2 e^{-5x} }\)<br>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="question">
+                    <p><strong>5. APLICACIÓN: Un sistema dinámico se modela mediante la ecuación \( x'' + 6x' + 9x = 0 \). ¿A qué régimen de amortiguamiento corresponde?</strong></p>
+                    <input type="radio" name="q5" value="a"> A) Amortiguamiento crítico<br>
+                    <input type="radio" name="q5" value="b"> B) Subamortiguado<br>
+                    <input type="radio" name="q5" value="c"> C) Sobreamortiguado<br>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <button type="button" class="evaluate-btn" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+
+            <div id="score-summary" class="score-summary"></div>
+        </div>
+
+    </div>
+
+    <!-- Script de Evaluación Interactiva Completa -->
+    <script>
+        function evaluateQuiz() {
+            const warningDiv = document.getElementById('global-warning');
+            const summaryDiv = document.getElementById('score-summary');
+            
+            // Ocultar advertencia previa
+            warningDiv.style.display = 'none';
+
+            // Definición de respuestas y retroalimentaciones explicativas detalladas
+            const answers = {
+                q1: { 
+                    correct: 'b', 
+                    explanation: ' Al ser \\( \\displaystyle{ b^2 - 4ac = 0 }\\), la ecuación característica presenta una raíz real repetida de multiplicidad dos. Para asegurar la independencia lineal de ambas soluciones (evitando un Wronskiano nulo), se multiplica la segunda función por la variable independiente \\(x\\), resultando en \\( \\displaystyle{ y = C_1 e^{rx} + C_2 x e^{rx} }\\).'
+                },
+                q2: { 
+                    correct: 'c', 
+                    explanation: ' Las raíces imaginarias puras provienen de \\( \\displaystyle{ \alpha = 0 }\\) y \\( \\displaystyle{ \\beta = \\sqrt{k/m} }\\). Al ser la parte real nula, la envolvente exponencial es \\( \\displaystyle{ e^{0t} = 1 }\\), lo que implica que el sistema oscila indefinidamente sin disipación ni pérdida de amplitud (Oscilador Armónico Simple).'
+                },
+                q3: { 
+                    correct: 'a', 
+                    explanation: ' La ecuación característica asociada es \\( \\displaystyle{ r^2 - 16 = 0 }\\). Al despejar directamente la variable obtenemos \\( \\displaystyle{ r^2 = 16 }\\), lo que da como resultado dos raíces reales distintas: \\( \\displaystyle{ r_1 = 4 }  \\) y \\( \\displaystyle{ r_2 = -4 }\\).'
+                },
+                q4: { 
+                    correct: 'b', 
+                    explanation: ' Planteando \\( \\displaystyle{ r^2 + 4r + 5 = 0 }\\) y aplicando la fórmula general, hallamos las raíces complejas \\( \\displaystyle{ r = \\frac{-4 \\pm \\sqrt{16-20}}{2} = -2 \\pm i }\\). La parte real \\( \\displaystyle{ \\alpha = -2 }\\) determina el factor exponencial \\( \\displaystyle{ e^{-2x} }\\) y la parte imaginaria \\( \\displaystyle{ \\beta = 1 }\\) determina los argumentos senoidales.'
+                },
+                q5: { 
+                    correct: 'a', 
+                    explanation: ' Evaluamos el discriminante con \\( \\displaystyle{ m = 1, c = 6, k = 9 }\\): \\( \\displaystyle{ c^2 - 4mk = 6^2 - 4(1)(9) = 36 - 36 = 0 }\\). Un discriminante nulo indica exactamente un régimen de amortiguamiento crítico.'
+                }
+            };
+
+            // Verificar si todas las preguntas han sido respondidas
+            let allAnswered = true;
+            for (let i = 1; i <= 5; i++) {
+                let qName = 'q' + i;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                if (!selected) {
+                    allAnswered = false;
+                    break;
+                }
+            }
+
+            // Si falta alguna respuesta, mostramos la alerta global y cortamos la ejecución
+            if (!allAnswered) {
+                warningDiv.style.display = 'block';
+                summaryDiv.style.display = 'none';
+                return;
+            }
+
+            // Si todo está respondido, procedemos con el cálculo y desglose
+            let correctCount = 0;
+
+            for (let i = 1; i <= 5; i++) {
+                let qName = 'q' + i;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${qName}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected.value === answers[qName].correct) {
+                    correctCount++;
+                    feedbackDiv.className = 'feedback correct';
+                    feedbackDiv.innerHTML = '<strong>¡Correcto!</strong> ' + answers[qName].explanation;
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = '<strong>Incorrecto.</strong> ' + answers[qName].explanation;
+                }
+            }
+
+            // Mostrar resumen global del puntaje obtenido
+            let percentage = (correctCount / 5) * 100;
+            summaryDiv.style.display = 'block';
+            summaryDiv.innerHTML = `Resultado final: ${correctCount} de 5 preguntas correctas (${percentage}%).`;
+
+            // Re-renderizar las fórmulas matemáticas dinámicas en el feedback
+            if (window.MathJax) {
+                MathJax.typesetPromise().then(() => {
+                    console.log("MathJax re-renderizado exitosamente.");
+                }).catch((err) => console.log('MathJax error: ', err.message));
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión de Matemáticas: Ecuaciones Diferenciales de Bernoulli</title>
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+        .content-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #1A237E;
+        }
+        h4 {
+            color: #00695C;
+            margin-top: 30px;
+        }
+        .solucion {
+            color: #D84315;
+            font-weight: bold;
+        }
+        .image-placeholder {
+            border: 2px dashed #999;
+            background: #f9f9f9;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            color: #555;
+            font-style: italic;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .quiz-container {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .feedback {
+            display: none;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .feedback.correct {
+            background-color: #c8e6c9;
+            border-left: 5px solid #2e7d32;
+            color: #1b5e20;
+        }
+        .feedback.incorrect {
+            background-color: #ffcdd2;
+            border-left: 5px solid #c62828;
+            color: #b71c1c;
+        }
+        button.evaluate-btn {
+            background-color: #1A237E;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button.evaluate-btn:hover {
+            background-color: #283593;
+        }
+        .alert-info {
+            background-color: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        
+        <h2>1. Introducción y Objetivos</h2>
+        <p>¡Bienvenidos a esta sesión de Ecuaciones Diferenciales! Hoy abordaremos una familia especial de ecuaciones no lineales que, gracias a un ingenioso cambio de variable, pueden transformarse en ecuaciones lineales de primer orden. Hablamos de la <strong>Ecuación Diferencial de Bernoulli</strong>.</p>
+        
+        <p>Una ecuación de Bernoulli tiene la forma estándar:</p>
+        $$ \frac{dy}{dx} + P(x)y = Q(x)y^n $$
+        
+        <p>Donde \(n\) es cualquier número real. Si \(n = 0\) o \(n = 1\), la ecuación ya es lineal y sabemos cómo resolverla (usando un factor integrante). Sin embargo, cuando \(n \neq 0\) y \(n \neq 1\), la ecuación es no lineal. El método de resolución consiste en realizar la siguiente sustitución universal para este caso:</p>
+        $$ u = y^{1-n} $$
+        
+        <p>Al derivar esta expresión respecto a \(x\) mediante la regla de la cadena (\( \frac{du}{dx} = (1-n)y^{-n}\frac{dy}{dx} \)), y manipular la ecuación original, esta se reduce mágicamente a una ecuación diferencial lineal de primer orden en términos de \(u(x)\). ¡Comencemos nuestra exploración!</p>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>2. Desarrollo y Ejercicios Operativos</h2>
+        <p>A continuación, resolveremos 5 ejercicios de nivel intermedio y avanzado. Observa cuidadosamente cómo se identifica \(n\), cómo se construye el factor integrante y cómo se revierte el cambio de variable al final.</p>
+
+        <!-- Ejercicio 1 -->
+        <h4>Ejercicio 1 (Nivel Intermedio)</h4>
+        <p>Resuelve la ecuación diferencial: \( y' + \frac{1}{x}y = xy^2 \)</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>1. Identificamos que es una ecuación de Bernoulli con \(P(x) = \frac{1}{x}\), \(Q(x) = x\) y \(n = 2\).</p>
+        <p>2. Aplicamos la sustitución \( u = y^{1-n} = y^{1-2} = y^{-1} \). Derivando: \( u' = -y^{-2}y' \).</p>
+        <p>3. Para que aparezca este término, multiplicamos toda la ecuación original por \(-y^{-2}\):</p>
+        $$ -y^{-2}y' - \frac{1}{x}y^{-1} = -x $$
+        <p>4. Sustituimos \(u\) y \(u'\):</p>
+        $$ u' - \frac{1}{x}u = -x $$
+        <p>5. Esta es una ecuación lineal estándar. Buscamos el factor integrante \( \mu(x) \):</p>
+        $$ \mu(x) = e^{\int -\frac{1}{x} dx} = e^{-\ln(x)} = x^{-1} = \frac{1}{x} $$
+        <p>6. Multiplicamos la ecuación lineal por \( \frac{1}{x} \):</p>
+        $$ \frac{1}{x}u' - \frac{1}{x^2}u = -1 \implies \frac{d}{dx}\left( u \cdot \frac{1}{x} \right) = -1 $$
+        <p>7. Integramos ambos lados:</p>
+        $$ u \cdot \frac{1}{x} = -x + C \implies u = -x^2 + Cx $$
+        <p>8. Finalmente, regresamos a la variable original \( y = u^{-1} = \frac{1}{u} \):</p>
+        $$ y(x) = \frac{1}{Cx - x^2} $$
+
+        <!-- Ejercicio 2 -->
+        <h4>Ejercicio 2 (Con Graficación en Python)</h4>
+        <p>Resuelve el problema de valor inicial: \( y' - y = e^x y^2 \) con \(y(0) = 1\).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>1. Ecuación de Bernoulli con \(n = 2\). Sustitución: \(u = y^{-1}\), con \(u' = -y^{-2}y'\).</p>
+        <p>2. Multiplicamos por \(-y^{-2}\):</p>
+        $$ -y^{-2}y' + y^{-1} = -e^x \implies u' + u = -e^x $$
+        <p>3. Factor integrante: \( \mu(x) = e^{\int 1 dx} = e^x \).</p>
+        <p>4. Multiplicando la lineal por \(e^x\):</p>
+        $$ e^x u' + e^x u = -e^{2x} \implies \frac{d}{dx}(u e^x) = -e^{2x} $$
+        <p>5. Integrando:</p>
+        $$ u e^x = -\frac{1}{2}e^{2x} + C \implies u(x) = -\frac{1}{2}e^x + C e^{-x} $$
+        <p>6. Regresando a \(y\):</p>
+        $$ y(x) = \frac{1}{Ce^{-x} - \frac{1}{2}e^x} $$
+        <p>7. Aplicamos la condición inicial \(y(0) = 1\):</p>
+        $$ 1 = \frac{1}{C(1) - \frac{1}{2}(1)} \implies C - 0.5 = 1 \implies C = 1.5 = \frac{3}{2} $$
+        <p>Por lo tanto, la solución particular es:</p>
+        $$ y(x) = \frac{2}{3e^{-x} - e^x} $$
+        
+        <p><strong>Código en Python (Matplotlib + NumPy):</strong></p>
+<pre>
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Definir el dominio (evitando la asíntota donde 3e^{-x} = e^x => x = ln(sqrt(3)) ≈ 0.549)
+x = np.linspace(-1, 0.5, 400)
+# Solución particular
+y = 2 / (3 * np.exp(-x) - np.exp(x))
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, color='blue', linewidth=2, label=r'$y(x) = \frac{2}{3e^{-x} - e^x}$')
+plt.axhline(0, color='black', linewidth=1)
+plt.axvline(0, color='black', linewidth=1)
+plt.scatter([0], [1], color='red', zorder=5, label='Condición Inicial y(0)=1')
+plt.title('Solución a la Ecuación de Bernoulli')
+plt.xlabel('x')
+plt.ylabel('y(x)')
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.legend()
+plt.show()
+</pre>
+        <div class="image-placeholder">
+            Espacio para insertar imagen de gráfica generada con Python (Ejercicio 2)
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <h4>Ejercicio 3 (Nivel Avanzado)</h4>
+        <p>Resuelve la ecuación: \( x^2 y' + 2xy = y^3 \)</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>1. Primero, llevamos a la forma estándar dividiendo entre \(x^2\):</p>
+        $$ y' + \frac{2}{x}y = \frac{1}{x^2}y^3 $$
+        <p>2. Identificamos \(n = 3\). Sustituimos \(u = y^{1-3} = y^{-2}\). Derivada: \(u' = -2y^{-3}y'\).</p>
+        <p>3. Multiplicamos la ecuación por \(-2y^{-3}\):</p>
+        $$ -2y^{-3}y' - \frac{4}{x}y^{-2} = -\frac{2}{x^2} \implies u' - \frac{4}{x}u = -\frac{2}{x^2} $$
+        <p>4. Factor integrante: \( \mu(x) = e^{\int -\frac{4}{x} dx} = e^{-4\ln(x)} = x^{-4} \).</p>
+        <p>5. Multiplicamos por \(x^{-4}\):</p>
+        $$ x^{-4}u' - 4x^{-5}u = -2x^{-6} \implies \frac{d}{dx}(u x^{-4}) = -2x^{-6} $$
+        <p>6. Integramos:</p>
+        $$ u x^{-4} = \frac{-2}{-5}x^{-5} + C = \frac{2}{5}x^{-5} + C \implies u(x) = \frac{2}{5}x^{-1} + C x^4 $$
+        <p>7. Volviendo a \(y\), recordamos que \(u = \frac{1}{y^2} \implies y^2 = \frac{1}{u}\):</p>
+        $$ y^2 = \frac{1}{\frac{2}{5x} + Cx^4} = \frac{5x}{2 + 5Cx^5} \implies y = \pm \sqrt{\frac{5x}{2 + 5Cx^5}} $$
+
+        <!-- Ejercicio 4 -->
+        <h4>Ejercicio 4 (Con Graficación en Python)</h4>
+        <p>Resuelve \( y' + y = x y^3 \) con \( y(0) = 1 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>1. Es de Bernoulli con \(n = 3\). Cambio \(u = y^{-2}\), por tanto \(u' = -2y^{-3}y'\).</p>
+        <p>2. Multiplicando por \(-2y^{-3}\):</p>
+        $$ -2y^{-3}y' - 2y^{-2} = -2x \implies u' - 2u = -2x $$
+        <p>3. Factor integrante: \( \mu(x) = e^{-2x} \).</p>
+        <p>4. Reescritura: \( \frac{d}{dx}(u e^{-2x}) = -2x e^{-2x} \).</p>
+        <p>5. Integramos el lado derecho por partes (tomando \(w=x, dv=-2e^{-2x}dx\)):</p>
+        $$ \int -2x e^{-2x} dx = x e^{-2x} - \int e^{-2x} dx = x e^{-2x} + \frac{1}{2}e^{-2x} + C $$
+        <p>6. Sustituyendo:</p>
+        $$ u e^{-2x} = e^{-2x}\left(x + \frac{1}{2}\right) + C \implies u(x) = x + \frac{1}{2} + C e^{2x} $$
+        <p>7. Condición inicial: \(y(0)=1 \implies u(0)=1^{-2}=1\).</p>
+        $$ 1 = 0 + \frac{1}{2} + C e^{0} \implies C = \frac{1}{2} $$
+        <p>8. Solución final (\(y = 1/\sqrt{u}\)):</p>
+        $$ y(x) = \frac{1}{\sqrt{x + \frac{1}{2} + \frac{1}{2}e^{2x}}} = \sqrt{\frac{2}{2x + 1 + e^{2x}}} $$
+
+        <p><strong>Código en Python:</strong></p>
+<pre>
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 3, 500)
+# Solución analítica evaluada
+y = np.sqrt(2 / (2*x + 1 + np.exp(2*x)))
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, color='green', linewidth=2.5, label='Curva de decaimiento')
+plt.fill_between(x, y, alpha=0.1, color='green')
+plt.title('Solución: Decaimiento No Lineal')
+plt.xlabel('x')
+plt.ylabel('y(x)')
+plt.grid(True)
+plt.legend()
+plt.show()
+</pre>
+        <div class="image-placeholder">
+            Espacio para insertar imagen de gráfica generada con Python (Ejercicio 4)
+        </div>
+
+        <!-- Ejercicio 5 -->
+        <h4>Ejercicio 5 (Nivel Avanzado - Funciones Trigonométricas)</h4>
+        <p>Resuelve \( y' + y \cot(x) = y^4 \csc(x) \)</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>1. Aquí \(n = 4\). \(u = y^{-3} \implies u' = -3y^{-4}y'\).</p>
+        <p>2. Multiplicando la ED por \(-3y^{-4}\):</p>
+        $$ -3y^{-4}y' - 3\cot(x)y^{-3} = -3\csc(x) \implies u' - 3\cot(x)u = -3\csc(x) $$
+        <p>3. Factor integrante (\(\int -3\cot(x)dx = -3\ln|\sin(x)|\)):</p>
+        $$ \mu(x) = e^{-3\ln(\sin x)} = \sin^{-3}(x) = \csc^3(x) $$
+        <p>4. Multiplicamos la ecuación lineal:</p>
+        $$ \csc^3(x)u' - 3\csc^3(x)\cot(x)u = -3\csc^4(x) \implies \frac{d}{dx}(u \csc^3(x)) = -3\csc^4(x) $$
+        <p>5. Para integrar \(-3\csc^4(x)\), separamos \(\csc^2(x)\csc^2(x)\) y usamos \(\csc^2(x) = 1 + \cot^2(x)\):</p>
+        $$ \int -3(1+\cot^2(x))\csc^2(x) dx $$
+        <p>Haciendo \(w = \cot(x), dw = -\csc^2(x)dx\):</p>
+        $$ 3 \int (1+w^2) dw = 3\left(w + \frac{w^3}{3}\right) = 3\cot(x) + \cot^3(x) + C $$
+        <p>6. Despejando \(u\):</p>
+        $$ u \csc^3(x) = 3\cot(x) + \cot^3(x) + C \implies u(x) = 3\sin^2(x)\cos(x) + \cos^3(x) + C\sin^3(x) $$
+        <p>7. La solución para \(y\) es:</p>
+        $$ y(x) = \frac{1}{\sqrt[3]{3\sin^2(x)\cos(x) + \cos^3(x) + C\sin^3(x)}} $$
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>3. Aplicaciones Prácticas</h2>
+        <p>Como aplicación principal, trabajaremos con <strong>Modelos de Dinámica de Poblaciones y Propagación Epidémica</strong>. Muchos sistemas dinámicos donde el crecimiento está limitado por los recursos (o la población total) se rigen por variaciones de la ecuación logística, la cual es intrínsecamente una Ecuación de Bernoulli.</p>
+
+        <h4>Ejemplo Aplicado 1: El Modelo Logístico de Crecimiento</h4>
+        <p>La ecuación logística describe una población \(P(t)\) que crece en un entorno con capacidad de carga \(K\):</p>
+        $$ \frac{dP}{dt} = rP \left( 1 - \frac{P}{K} \right) = rP - \frac{r}{K}P^2 $$
+        <p><strong>Planteamiento:</strong> Demuestra que esta es una ED de Bernoulli y encuentra la solución general.</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Reescribimos la ecuación: \( P' - rP = -\frac{r}{K}P^2 \). Es Bernoulli con \(n = 2\).</p>
+        <p>Sustituimos \(u = P^{-1} \implies u' = -P^{-2}P'\).</p>
+        <p>Multiplicando por \(-P^{-2}\): \( u' + ru = \frac{r}{K} \).</p>
+        <p>Factor integrante: \(\mu(t) = e^{rt}\). Obtenemos: \( \frac{d}{dt}(u e^{rt}) = \frac{r}{K}e^{rt} \).</p>
+        <p>Integrando: \( u e^{rt} = \frac{1}{K}e^{rt} + C \implies u(t) = \frac{1}{K} + C e^{-rt} \).</p>
+        <p>Como \(P = 1/u\), la solución es: $$ P(t) = \frac{1}{\frac{1}{K} + C e^{-rt}} = \frac{K}{1 + (KC)e^{-rt}} $$</p>
+
+        <h4>Ejemplo Aplicado 2: Modelo Epidémico SIS</h4>
+        <p>En una enfermedad donde los individuos infectados \(I(t)\) se recuperan sin inmunidad, la tasa de cambio de infectados en una población constante \(N\) es: \( I' = \beta I (N - I) - \gamma I \).</p>
+        <p><strong>Planteamiento:</strong> Resuelve para \(I(t)\).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Reagrupando: \( I' - (\beta N - \gamma)I = -\beta I^2 \). Es Bernoulli con \(n = 2\).</p>
+        <p>Haciendo \(\alpha = \beta N - \gamma\), tenemos \( I' - \alpha I = -\beta I^2 \). El cambio \(u = I^{-1}\) produce:</p>
+        $$ u' + \alpha u = \beta $$
+        <p>Resolviendo la lineal con \(\mu = e^{\alpha t}\): \( u e^{\alpha t} = \frac{\beta}{\alpha}e^{\alpha t} + C \implies u(t) = \frac{\beta}{\alpha} + C e^{-\alpha t} \).</p>
+        <p>Solución: $$ I(t) = \frac{1}{\frac{\beta}{\beta N - \gamma} + C e^{-(\beta N - \gamma)t}} $$</p>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>4. Exploración Interactiva (Formativa)</h2>
+        <div class="alert-info">
+            <strong>Actividad Formativa:</strong> Copia el siguiente código en un entorno de <a href="https://colab.research.google.com/" target="_blank">Google Colab</a> para explorar cómo los campos de direcciones de una ecuación de Bernoulli reaccionan ante cambios de parámetros. <em>(Esta actividad no es calificable).</em>
+        </div>
+<pre>
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+# Modelo Logístico (Bernoulli n=2): dP/dt = r*P - (r/K)*P^2
+def modelo(P, t, r, K):
+    return r * P - (r/K) * P**2
+
+t = np.linspace(0, 10, 100)
+# Parámetros ajustables
+r = 1.2
+K = 50
+
+# Graficar varias condiciones iniciales
+plt.figure(figsize=(10,6))
+for P0 in [5, 10, 25, 75, 100]:
+    sol = odeint(modelo, P0, t, args=(r, K))
+    plt.plot(t, sol, label=f'P(0) = {P0}')
+
+plt.axhline(K, color='r', linestyle='--', label='Capacidad de Carga K')
+plt.title('Dinámica del Modelo de Bernoulli (Logístico)')
+plt.xlabel('Tiempo')
+plt.ylabel('Población')
+plt.legend()
+plt.grid()
+plt.show()
+</pre>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>5. Práctica con Inteligencia Artificial</h2>
+        <p>Interactúa con una IA (como ChatGPT, Gemini o Claude) copiando el siguiente prompt. Analiza paso a paso si la IA aplica la sustitución correcta y si logra integrar el factor integrante sin errores. Evalúa críticamente su respuesta matemática.</p>
+        <pre>
+Actúa como mi tutor avanzado de Ecuaciones Diferenciales.
+Tengo problemas para resolver esta ecuación de Bernoulli:
+dy/dx + y/x = y^3 * ln(x)
+
+No me des la respuesta de inmediato. Primero, dime qué valor
+toma "n" y pregúntame cuál debería ser mi sustitución "u".
+Guíame paso a paso, corrigiéndome si me equivoco, hasta llegar
+a la solución general. Usa formato LaTeX para las ecuaciones.
+        </pre>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>6. Autoevaluación Interactiva</h2>
+        <p>Demuestra tu dominio sobre las ecuaciones de Bernoulli respondiendo el siguiente cuestionario. Selecciona tu respuesta y haz clic en "Evaluar".</p>
+
+        <div class="quiz-container">
+            <form id="bernoulliQuiz">
+                <!-- Pregunta 1 -->
+                <div class="question">
+                    <strong>1. ¿Cuál es el cambio de variable adecuado para transformar una ecuación de Bernoulli \(y' + P(x)y = Q(x)y^n\) en una ecuación lineal?</strong><br>
+                    <input type="radio" name="q1" value="a"> A) \( u = y^n \)<br>
+                    <input type="radio" name="q1" value="b"> B) \( u = y^{1-n} \)<br>
+                    <input type="radio" name="q1" value="c"> C) \( u = y^{n-1} \)<br>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="question">
+                    <strong>2. En la ecuación \(y' - 2xy = e^{x^2}y^5\), ¿qué valor toma \(n\)?</strong><br>
+                    <input type="radio" name="q2" value="a"> A) 1<br>
+                    <input type="radio" name="q2" value="b"> B) 5<br>
+                    <input type="radio" name="q2" value="c"> C) 4<br>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3 (Operativa) -->
+                <div class="question">
+                    <strong>3. Al aplicar la sustitución adecuada a la ecuación \( y' + \frac{1}{x}y = x y^2 \), la ecuación lineal resultante en términos de \(u\) es:</strong><br>
+                    <input type="radio" name="q3" value="a"> A) \( u' - \frac{1}{x}u = -x \)<br>
+                    <input type="radio" name="q3" value="b"> B) \( u' + \frac{1}{x}u = x \)<br>
+                    <input type="radio" name="q3" value="c"> C) \( u' - u = x^2 \)<br>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4 (Operativa) -->
+                <div class="question">
+                    <strong>4. La solución general de la ecuación de Bernoulli \(y' + y = xy^2\) es:</strong><br>
+                    <input type="radio" name="q4" value="a"> A) \( y = \frac{1}{x + 1 + Ce^x} \)<br>
+                    <input type="radio" name="q4" value="b"> B) \( y = \frac{1}{x + 1 + Ce^{-x}} \)<br>
+                    <input type="radio" name="q4" value="c"> C) \( y = \frac{1}{x - 1 + Ce^x} \)<br>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5 (Aplicación/Operativa) -->
+                <div class="question">
+                    <strong>5. En el modelo logístico de crecimiento \( \frac{dP}{dt} = rP - \frac{r}{K}P^2 \), si lo resolvemos como Bernoulli, el cambio de variable y el factor integrante son:</strong><br>
+                    <input type="radio" name="q5" value="a"> A) \(u = P^{-1}\) y \(\mu(t) = e^{rt}\)<br>
+                    <input type="radio" name="q5" value="b"> B) \(u = P^{-2}\) y \(\mu(t) = e^{-rt}\)<br>
+                    <input type="radio" name="q5" value="c"> C) \(u = P^2\) y \(\mu(t) = e^{r/K}\)<br>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <button type="button" class="evaluate-btn" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Script de Evaluación -->
+    <script>
+        function evaluateQuiz() {
+            // Respuestas correctas y retroalimentación
+            const answers = {
+                q1: { 
+                    correct: 'b', 
+                    explanation: '¡Correcto! El exponente del cambio es siempre \(1-n\). Esto cancela la no-linealidad al derivar.'
+                },
+                q2: { 
+                    correct: 'b', 
+                    explanation: '¡Correcto! El término a la derecha es \(y^5\), por lo tanto \(n = 5\).'
+                },
+                q3: { 
+                    correct: 'a', 
+                    explanation: '¡Exacto! Como \(n=2\), \(u=y^{-1}\) y \(u' = -y^{-2}y'\). Multiplicando la ED original por \(-y^{-2}\) obtenemos directamente \(u' - \frac{1}{x}u = -x\).'
+                },
+                q4: { 
+                    correct: 'a', 
+                    explanation: '¡Muy bien! Con \(n=2\), obtenemos \(u' - u = -x\). El factor integrante es \(e^{-x}\). Integrando por partes \(-x e^{-x}\) da \(u = x + 1 + Ce^x\). Regresando a \(y = 1/u\) llegas a la opción A.'
+                },
+                q5: { 
+                    correct: 'a', 
+                    explanation: '¡Correcto! Es Bernoulli con \(n=2\). El cambio es \(u=P^{-1}\). Esto lleva a \(u' + ru = r/K\), donde el factor integrante para la lineal es \(e^{\int r dt} = e^{rt}\).'
+                }
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                let qName = 'q' + i;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${qName}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected) {
+                    if (selected.value === answers[qName].correct) {
+                        feedbackDiv.className = 'feedback correct';
+                        feedbackDiv.innerHTML = answers[qName].explanation;
+                    } else {
+                        feedbackDiv.className = 'feedback incorrect';
+                        feedbackDiv.innerHTML = '<strong>Incorrecto.</strong> ' + answers[qName].explanation;
+                    }
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = 'Por favor, selecciona una respuesta.';
+                }
+            }
+
+            // Reprocesar MathJax para que se muestre correctamente en las explicaciones
+            MathJax.typesetPromise().then(() => {
+                console.log("MathJax re-renderizado en la retroalimentación.");
+            }).catch((err) => console.log('MathJax error: ', err.message));
+        }
+    </script>
+</body>
+</html>

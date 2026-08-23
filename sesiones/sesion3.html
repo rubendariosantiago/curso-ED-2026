@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión: Ecuaciones Diferenciales Homogéneas</title>
+    <!-- Configuración de MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .canvas-module {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos obligatorios */
+        h2, h3 {
+            color: #1A237E;
+        }
+        h2 {
+            border-bottom: 3px solid #1A237E;
+            padding-bottom: 10px;
+        }
+        h3 {
+            margin-top: 35px;
+        }
+
+        h4 {
+            color: #00695C; 
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .solucion {
+            color: #D84315;
+            font-weight: bold;
+        }
+
+        hr.separador {
+            border: 0;
+            border-top: 2px solid #1976D2;
+            margin: 40px 0;
+            opacity: 0.6;
+        }
+
+        .image-placeholder {
+            border: 2px dashed #9e9e9e;
+            background-color: #f5f5f5;
+            color: #757575;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        blockquote.prompt-ia {
+            border-left: 5px solid #0056b3;
+            background-color: #e9f2fb;
+            padding: 15px;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Estilos de Quiz */
+        .quiz-question {
+            background-color: #f5f7fa;
+            border: 1px solid #e1e4e8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-options li { margin: 10px 0; }
+        .quiz-options label { cursor: pointer; display: flex; align-items: flex-start; }
+        .quiz-options input[type="radio"] { margin-right: 10px; margin-top: 5px; transform: scale(1.2); }
+
+        .btn-verificar {
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn-verificar:hover { background-color: #115293; }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .feedback-correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="canvas-module">
+    <h2>Ecuaciones Diferenciales Homogéneas de Primer Orden</h2>
+
+    <h3>1. Introducción y Objetivos</h3>
+    <p>Existen ecuaciones diferenciales que a simple vista no son separables, pero que exhiben una simetría algebraica particular. Decimos que una función \( f(x,y) \) es <strong>homogénea de grado \( n \)</strong> si al escalar sus variables por un factor \( t \), la función se escala por \( t^n \). Es decir: \( f(tx, ty) = t^n f(x,y) \).</p>
+    <p>Una ecuación diferencial de la forma \( M(x,y)dx + N(x,y)dy = 0 \) es homogénea si \( M \) y \( N \) son funciones homogéneas del <em>mismo grado</em>. La magia de estas ecuaciones radica en que siempre podemos transformarlas en ecuaciones separables mediante una simple sustitución algebraica: \( y = ux \) (o \( x = vy \)).</p>
+    
+    <p><strong>Objetivos de la sesión:</strong></p>
+    <ul>
+        <li>Identificar funciones y ecuaciones diferenciales homogéneas.</li>
+        <li>Aplicar la sustitución \( y = ux \) (y su diferencial \( dy = u dx + x du \)) para reducir la ecuación a una separable.</li>
+        <li>Resolver problemas geométricos y físicos que se modelan con este tipo de ecuaciones.</li>
+    </ul>
+
+    <hr class="separador">
+
+    <h3>2. Desarrollo y Ejercicios Operativos</h3>
+    <p>El método general consiste en hacer \( y = ux \) (donde \( u \) es una función dependiente de \( x \)). Al diferenciar obtenemos \( dy = u dx + x du \). Al sustituir esto en la ecuación original, la variable original \( y \) desaparece, y el resultado es invariablemente una ecuación separable en las variables \( u \) y \( x \).</p>
+
+    <h4>Ejercicio 1</h4>
+    <p>Resuelve la ecuación diferencial: $$ (x^2 + y^2)dx - xy dy = 0 $$</p>
+    <p><span class="solucion">Solución:</span> Verificamos homogeneidad: los coeficientes son de grado 2. Sea \( y = ux \), entonces \( dy = u dx + x du \). Sustituimos:</p>
+    <p>$$ (x^2 + u^2 x^2)dx - x(ux)(u dx + x du) = 0 $$</p>
+    <p>Factorizamos \( x^2 \) (asumiendo \( x \neq 0 \)) y simplificamos:</p>
+    <p>$$ x^2(1 + u^2)dx - x^2 u (u dx + x du) = 0 \implies (1 + u^2)dx - u^2 dx - ux du = 0 $$</p>
+    <p>$$ dx - ux du = 0 \implies \frac{dx}{x} = u du $$</p>
+    <p>Integrando obtenemos: \( \ln|x| = \frac{u^2}{2} + C \). Regresando a la variable original \( u = y/x \):</p>
+    <p>$$ \ln|x| = \frac{y^2}{2x^2} + C \implies y^2 = 2x^2(\ln|x| - C) $$</p>
+
+    <h4>Ejercicio 2 </h4>
+    <p>Resuelve: $$ x \frac{dy}{dx} = y + \sqrt{x^2 - y^2} $$</p>
+    <p><span class="solucion">Solución:</span> Dividimos entre \( x \) para verla en la forma \( \frac{dy}{dx} = f(y/x) \):</p>
+    <p>$$ \frac{dy}{dx} = \frac{y}{x} + \sqrt{1 - \left(\frac{y}{x}\right)^2} $$</p>
+    <p>Usamos \( y = ux \), donde \( \frac{dy}{dx} = u + x\frac{du}{dx} \):</p>
+    <p>$$ u + x\frac{du}{dx} = u + \sqrt{1 - u^2} \implies x\frac{du}{dx} = \sqrt{1 - u^2} $$</p>
+    <p>Separando variables:</p>
+    <p>$$ \frac{du}{\sqrt{1 - u^2}} = \frac{dx}{x} \implies \arcsin(u) = \ln|x| + C $$</p>
+    <p>Por lo cual, la solución general es:  $$ \arcsin\left(\frac{y}{x}\right) = \ln|x| + C \implies y = x \sin(\ln|x| + C) $$</p>
+
+    <h4>Ejercicio 3</h4>
+    <p>Resuelve: $$ (x e^{y/x} + y)dx - x dy = 0 $$</p>
+    <p><span class="solucion">Solución:</span> Esta es homogénea. Sustituimos \( y = ux \), \( dy = u dx + x du \):</p>
+    <p>$$ (x e^u + ux)dx - x(u dx + x du) = 0 $$</p>
+    <p>Dividiendo por \( x \):</p>
+    <p>$$ (e^u + u)dx - u dx - x du = 0 \implies e^u dx - x du = 0 $$</p>
+    <p>Separando variables: \( \frac{dx}{x} = e^{-u} du \).</p>
+    <p>Integrando: \( \ln|x| = -e^{-u} + C \). Regresando a las variables originales  \( y, x \):</p>
+    <p>$$ \ln|x| = -e^{-y/x} + C $$</p>
+
+    <h4>Ejercicio 4 </h4>
+    <p>Resuelve la ecuación y grafica la curva de solución particular que pasa por \( (1, \pi/4) \): $$ x \frac{dy}{dx} = y + x \cos^2\left(\frac{y}{x}\right) $$</p>
+    <p><span class="solucion">Solución Analítica:</span> Reescribimos como \( \frac{dy}{dx} = \frac{y}{x} + \cos^2\left(\frac{y}{x}\right) \). Con \( y = ux \):</p>
+    <p>$$ u + x\frac{du}{dx} = u + \cos^2(u) \implies x\frac{du}{dx} = \cos^2(u) $$</p>
+    <p>Separando e integrando:</p>
+    <p>$$ \int \sec^2(u) du = \int \frac{dx}{x} \implies \tan(u) = \ln|x| + C $$</p>
+    <p>Para hallar \( C \), usamos \( x=1, y=\pi/4 \implies u = \pi/4 \):</p>
+    <p>$$ \tan(\pi/4) = \ln(1) + C \implies 1 = 0 + C \implies C = 1 $$</p>
+    <p>La curva solución es: $$ \tan(y/x) = \ln|x| + 1 \implies y = x \arctan(\ln|x| + 1) $$
+        En la figura siguiente se muestra la gráfica de la curva solución</p>
+          <div style="text-align: center;">
+             <img src="img/s3fig1.png" alt="ejemplo" width="450" height="300">
+      </div>
+ 
+    <h4>Ejercicio 5</h4>
+    <p>Resuelve: \( \frac{dy}{dx} = \frac{x+y}{y-x} \)</p>
+    <p><span class="solucion">Solución:</span> Esta es homogénea de grado 1. Sea \( y = ux \):</p>
+    <p>$$ u + x\frac{du}{dx} = \frac{x + ux}{ux - x} = \frac{1 + u}{u - 1} $$</p>
+    <p>Restamos \( u \) en ambos lados:</p>
+    <p>$$ x\frac{du}{dx} = \frac{1 + u}{u - 1} - u = \frac{1 + u - u^2 + u}{u - 1} = \frac{1 + 2u - u^2}{u - 1} $$</p>
+    <p>Separando variables:</p>
+    <p>$$ \frac{u - 1}{1 + 2u - u^2} du = \frac{dx}{x} $$</p>
+    <p>La integral de la izquierda se resuelve por cambio de variable \( w = 1 + 2u - u^2 \implies dw = (2 - 2u)du = -2(u - 1)du \):</p>
+    <p>$$ -\frac{1}{2} \int \frac{dw}{w} = \int \frac{dx}{x} \implies -\frac{1}{2} \ln|1 + 2u - u^2| = \ln|x| + C $$</p>
+    <p>Simplificando y volviendo a \( y/x \), se obtiene: \( x^2 + 2xy - y^2 = C_1 \).</p>
+
+
+    <hr class="separador">
+
+    <h3>3. Aplicaciones Prácticas Geométricas y Físicas</h3>
+    
+    <h4>A. Trayectorias Ortogonales</h4>
+    <p>Encuentra las trayectorias ortogonales de la familia de circunferencias tangentes al eje \( y \) en el origen: \( x^2 + y^2 = 2cx \).</p>
+    <p><span class="solucion">Solución paso a paso:</span></p>
+    <p>1. Primero, obtenemos la EDO de la familia original derivando implícitamente:</p>
+    <p>$$ 2x + 2y y' = 2c \implies y' = \frac{2c - 2x}{2y} = \frac{c - x}{y} $$</p>
+    <p>2. Debemos eliminar el parámetro \( c \). De la ecuación original, \( c = \frac{x^2 + y^2}{2x} \). Sustituyendo en la derivada:</p>
+    <p>$$ y' = \frac{\frac{x^2 + y^2}{2x} - x}{y} = \frac{y^2 - x^2}{2xy} $$</p>
+    <p>3. Para las <strong>trayectorias ortogonales</strong>, el campo direccional es perpendicular. Hacemos el cambio \( y' \to -\frac{1}{y'} \):</p>
+    <p>$$ y'_{ortogonal} = \frac{2xy}{x^2 - y^2} $$</p>
+        <p>Ambos polinomios en el numerador y denominador son homogéneos de grado 2. Dividimos el numerador y el denominador entre \(x^2\):</p>
+        <p> $$  \frac{dy}{dx} = \frac{\frac{2xy}{x^2}}{\frac{x^2 - y^2}{x^2}} = \frac{2\left(\frac{y}{x}\right)}{1 - \left(\frac{y}{x}\right)^2}  $$ </p>
+        <p>Hacemos la sustitución \(y = vx\), por lo que su derivada es \(\frac{dy}{dx} = v + x\frac{dv}{dx}\). Sustituimos en la ecuación:</p>
+        <p> $$  v + x\frac{dv}{dx} = \frac{2v}{1 - v^2}  $$ </p>
+        <p>Agrupamos los términos con \(v\) en un lado:</p>
+        <p> $$  x\frac{dv}{dx} = \frac{2v}{1 - v^2} - v = \frac{2v - v(1 - v^2)}{1 - v^2} = \frac{2v - v + v^3}{1 - v^2} = \frac{v^3 + v}{1 - v^2} = \frac{v(v^2 + 1)}{1 - v^2}  $$ </p>
+        <p>Reorganizamos mediante separación de variables:</p>
+        <p> $$  \frac{1 - v^2}{v(v^2 + 1)} dv = \frac{dx}{x}  $$ </p>
+        <p>Descomponemos en fracciones parciales el lado izquierdo:</p>
+        <p> $$  \left( \frac{1}{v} - \frac{2v}{v^2 + 1} \right) dv = \frac{dx}{x}  $$ </p>
+        <p>Integramos término a término:</p>
+        <p> $$  \ln|v| - \ln(v^2 + 1) = \ln|x| + \ln|C_1|  $$ </p>
+        <p>Aplicamos propiedades de los logaritmos:</p>
+        <p> $$  \ln\left|\frac{v}{v^2 + 1}\right| = \ln|C_1 x| \implies \frac{v}{v^2 + 1} = C_1 x  $$ </p>
+        <p>Sustituimos \(v = \frac{y}{x}\):</p>
+        <p> $$  \frac{\frac{y}{x}}{\left(\frac{y}{x}\right)^2 + 1} = C_1 x \implies \frac{\frac{y}{x}}{\frac{y^2 + x^2}{x^2}} = C_1 x \implies \frac{xy}{y^2 + x^2} = C_1 x  $$ </p>
+        <p>Simplificamos \(x\) de ambos lados y reordenamos:</p>
+        <p> $$  \frac{y}{x^2 + y^2} = C_1 \implies y = C_1(x^2 + y^2) \quad \text{o bien} \quad x^2+y^2= 2ky  $$
+        (donde hemos usado que \(2k=1/C_1\)),  esta ecuación representa una familia de circunferencias tangentes al eje \( x \).
+               En la figura siguiente se muestra la gráfica de la curva solución</p>
+          <div style="text-align: center;">
+             <img src="img/s3fig2.png" alt="ejemplo" width="400" height="400">
+      </div>
+
+    <h4>B. El Diseño del Espejo Reflector (Física de Óptica)</h4>
+    <p>Se desea diseñar un espejo reflector de manera que todos los rayos de luz provenientes de una fuente puntual en el origen se reflejen en un haz paralelo al eje \( x \). Usando las leyes de reflexión óptica, la pendiente de la curva del espejo \( y' \) satisface la ecuación homogénea: \( x + y y' = \sqrt{x^2 + y^2} \).</p>
+    <p><span class="solucion">Solución paso a paso:</span></p>
+    <p>1. Despejamos \( y' \): \( \frac{dy}{dx} = \frac{-x + \sqrt{x^2+y^2}}{y} \)</p>
+    <p>2. Sustituimos \( y = ux \), \( dy/dx = u + x u' \):</p>
+    <p>$$ u + x u' = \frac{-x + x\sqrt{1+u^2}}{ux} = \frac{-1 + \sqrt{1+u^2}}{u} $$</p>
+    <p>3. Despejamos \( x u' \): y se obtiene la ecuación diferencial</p>
+
+    <p>$$x \frac{du}{dx} = \frac{-1 + \sqrt{1+u^2} - u^2}{u}$$</p>
+    <p>Agrupamos todos los términos que dependen de \(u\) en el lado izquierdo y los que dependen de \(x\) en el lado derecho:</p>
+    <p>$$\frac{u \, du}{-1 + \sqrt{1+u^2} - u^2} = \frac{dx}{x}$$</p>
+
+    <p>Simplificamos del denominador izquierdo. Notemos que el denominador se puede agrupar como:</p>
+    <p>$$\sqrt{1+u^2} - (1 + u^2)$$</p>
+    <p>Si hacemos un cambio algebraico o sustitución auxiliar \(w = \sqrt{1+u^2}\), entonces \(w^2 = 1+u^2\), por lo que \(u \, du = w \, dw\). El denominador es \(w - w^2 = w(1-w)\).</p>
+    <p>Sustituyendo en la integral:</p>
+    <p>$$\int \frac{w \, dw}{w(1-w)} = \int \frac{dw}{1-w} = -\ln|1-w| = -\ln|1 - \sqrt{1+u^2}|$$</p>
+
+    <p>Integrando el lado derecho tenemos \(\int \frac{dx}{x} = \ln|x| + C \).</p>
+    <p>Igualando ambas integrales y aplicando propiedades de los logaritmos se tiene</p>
+    <p>$$-\ln|-\sqrt{1+u^2} + 1| = \ln|x| + C \implies \ln(x (1 - \sqrt{1+u^2})=-C$$</p>
+
+    <p> exponenciando ambos lados, obtenemos la solución general:</p>
+    <p>$$x(1-\sqrt{1+u^2} ) =  -K  $$</p>
+    <p>donde \(K = -e^{-C}\) es una constante arbitraria. Si usamoa \(u=y/x\) se obtiene</p>
+      <p>$$x- \sqrt{x^2+y^2} =- K  $$ o bien
+            $$\sqrt{x^2+y^2}  =x+K \implies x^2+y^2=x^2+2Kx+K^2$$
+            Finalmente, se tiene el famoso resultado de que la curva es una parábola de la forma
+            $$  y^2= 2Kx+K^2  $$
+      </p>  
+   
+
+    <hr class="separador">
+
+    <h3>4. Exploración Interactiva (Formativa)</h3>
+    <p>Veamos el comportamiento global de las soluciones. Copia y ejecuta este bloque en tu <strong>Google Colab</strong> para generar el campo de direcciones (Slope Field) de la ecuación del Ejercicio 1: \( y' = \frac{x^2+y^2}{xy} \). ¡Observa la simetría radial típica de las ecuaciones homogéneas!</p>
+    <pre>
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Crear una malla de puntos (Grid)
+x = np.linspace(-5, 5, 20)
+y = np.linspace(-5, 5, 20)
+X, Y = np.meshgrid(x, y)
+
+# Evitar división por cero
+Y = np.where(Y == 0, 0.001, Y)
+X = np.where(X == 0, 0.001, X)
+
+# Definir la ecuación diferencial (Pendiente y')
+U = 1
+V = (X**2 + Y**2) / (X * Y)
+
+# Normalizar los vectores para que todas las flechas tengan el mismo tamaño
+N = np.sqrt(U**2 + V**2)
+U2, V2 = U/N, V/N
+
+plt.figure(figsize=(8, 8))
+plt.quiver(X, Y, U2, V2, color='#1A237E', alpha=0.7)
+plt.title("Campo de Direcciones: $y' = (x^2+y^2)/xy$")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.grid(True, linestyle=':')
+plt.axhline(0, color='black')
+plt.axvline(0, color='black')
+plt.show()
+    </pre>
+
+    <hr class="separador">
+
+    <h3>5. Práctica con Inteligencia Artificial</h3>
+    <p>Vamos a usar la Inteligencia Artificial para entender la teoría de funciones homogéneas de Euler. Copia y pega el siguiente prompt en tu IA de preferencia (ChatGPT/Gemini):</p>
+    <blockquote class="prompt-ia">
+        "Actúa como un matemático riguroso pero didáctico. Explícame el Teorema de Euler sobre funciones homogéneas, que establece que si f(x,y) es homogénea de grado n, entonces x(∂f/∂x) + y(∂f/∂y) = n f(x,y). Demuéstralo para la función f(x,y) = x^3 + x y^2. Termina la respuesta explicándome brevemente cómo se relaciona esto geométricamente con la ecuación diferencial homogénea M(x,y)dx + N(x,y)dy = 0."
+    </blockquote>
+    <p><strong>Tarea de análisis:</strong> Lee atentamente la demostración que te da la IA con derivadas parciales. Verifica a mano si las derivadas que calculó son correctas. ¿Pudiste comprender el concepto geométrico de "conos" o "escalas" que la IA propuso al final?</p>
+
+    <hr class="separador">
+
+    <h3>6. Autoevaluación Interactiva</h3>
+    <p>Comprueba tus conocimientos conceptuales de esta sesión seleccionando la respuesta correcta:</p>
+
+    <!-- Pregunta 1 -->
+    <div class="quiz-question">
+        <p><strong>1. ¿Cuál de las siguientes funciones es homogénea de grado 3?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q1" value="A"> A) \( f(x,y) = x^3 + y^3 + 1 \)</label></li>
+            <li><label><input type="radio" name="q1" value="B"> B) \( f(x,y) = x^3 \sin(y/x) \)</label></li>
+            <li><label><input type="radio" name="q1" value="C"> C) \( f(x,y) = x^2 y + y^2 \)</label></li>
+            <li><label><input type="radio" name="q1" value="D"> D) \( f(x,y) = e^{x^3 + y^3} \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q1', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q1"></div>
+    </div>
+
+    <!-- Pregunta 2 -->
+    <div class="quiz-question">
+        <p><strong>2. Para transformar una ecuación diferencial homogénea de la forma \( \frac{dy}{dx} = f(y/x) \) en una separable, la sustitución estándar es:</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q2" value="A"> A) \( y = e^x \)</label></li>
+            <li><label><input type="radio" name="q2" value="B"> B) \( y = u + x \)</label></li>
+            <li><label><input type="radio" name="q2" value="C"> C) \( y = ux \) (donde \( u \) depende de \( x \))</label></li>
+            <li><label><input type="radio" name="q2" value="D"> D) \( y = \frac{u}{x} \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q2', 'C')">Verificar</button>
+        <div class="feedback-box" id="feedback-q2"></div>
+    </div>
+
+    <!-- Pregunta 3 -->
+    <div class="quiz-question">
+        <p><strong>3. Al aplicar la sustitución \( y = ux \) respecto a la variable independiente \( x \), la derivada \( \frac{dy}{dx} \) se transforma en:</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q3" value="A"> A) \( \frac{du}{dx} \)</label></li>
+            <li><label><input type="radio" name="q3" value="B"> B) \( u + \frac{du}{dx} \)</label></li>
+            <li><label><input type="radio" name="q3" value="C"> C) \( x \frac{du}{dx} \)</label></li>
+            <li><label><input type="radio" name="q3" value="D"> D) \( u + x \frac{du}{dx} \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q3', 'D')">Verificar</button>
+        <div class="feedback-box" id="feedback-q3"></div>
+    </div>
+
+    <!-- Pregunta 4 -->
+    <div class="quiz-question">
+        <p><strong>4. Determina si la ecuación \( (x - y \ln y + y \ln x)dx + x(\ln y - \ln x)dy = 0 \) es homogénea.</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q4" value="A"> A) Sí, es homogénea porque se puede reescribir con el argumento \( y/x \).</label></li>
+            <li><label><input type="radio" name="q4" value="B"> B) No, los logaritmos impiden que sea homogénea.</label></li>
+            <li><label><input type="radio" name="q4" value="C"> C) Sí, porque es una ecuación exacta.</label></li>
+            <li><label><input type="radio" name="q4" value="D"> D) No, porque los grados de los polinomios x e y son diferentes.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q4', 'A')">Verificar</button>
+        <div class="feedback-box" id="feedback-q4"></div>
+    </div>
+
+    <!-- Pregunta 5 -->
+    <div class="quiz-question">
+        <p><strong>5. Geométricamente, si se tiene una familia de curvas que se modela con una ecuación diferencial homogénea, las isoclinas (curvas de igual pendiente) siempre son:</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q5" value="A"> A) Circunferencias concéntricas.</label></li>
+            <li><label><input type="radio" name="q5" value="B"> B) Líneas rectas que pasan por el origen.</label></li>
+            <li><label><input type="radio" name="q5" value="C"> C) Parábolas.</label></li>
+            <li><label><input type="radio" name="q5" value="D"> D) Hipérbolas.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q5', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q5"></div>
+    </div>
+
+</div>
+
+<script>
+    const feedbacks = {
+        'q1': "La correcta es B. Si multiplicamos por t: \\( f(tx,ty) = (tx)^3 \\sin(ty/tx) = t^3 x^3 \\sin(y/x) = t^3 f(x,y) \\). La opción A tiene un 1 que no escala. La C mezcla términos de grado 3 y 2. En la D el exponente destruye la homogeneidad.",
+        'q2': "La correcta es C. La sustitución \\( y = ux \\) nos permite factorizar y cancelar las 'x' remanentes gracias a las propiedades de homogeneidad, transformando el sistema a uno donde las variables \\( u \\) y \\( x \\) son separables.",
+        'q3': "La correcta es D. Usando la regla del producto del cálculo diferencial: \\( \\frac{d}{dx}[u \\cdot x] = \\frac{du}{dx}x + u\\frac{dx}{dx} = x\\frac{du}{dx} + u \\).",
+        'q4': "La correcta es A. Por las propiedades de los logaritmos, \\( \\ln y - \\ln x = \\ln(y/x) \\). La ecuación se puede reescribir dependiente totalmente del cociente \\( y/x \\), lo cual garantiza su homogeneidad.",
+        'q5': "La correcta es B. Al ser homogénea, la pendiente es \\( y' = F(y/x) \\). Si igualamos la pendiente a una constante \\( k \\) (una isoclina), tenemos \\( F(y/x) = k \\implies y/x = C \\implies y = Cx \\), que es una recta por el origen."
+    };
+
+    function checkAnswer(questionId, correctOption) {
+        const options = document.getElementsByName(questionId);
+        let selectedValue = null;
+        
+        for (const option of options) {
+            if (option.checked) {
+                selectedValue = option.value;
+                break;
+            }
+        }
+
+        const feedbackBox = document.getElementById('feedback-' + questionId);
+
+        if (!selectedValue) {
+            alert("Por favor, selecciona una respuesta.");
+            return;
+        }
+
+        feedbackBox.style.display = "block";
+        feedbackBox.classList.remove('feedback-correct', 'feedback-incorrect');
+
+        if (selectedValue === correctOption) {
+            feedbackBox.classList.add('feedback-correct');
+            feedbackBox.innerHTML = `<strong>¡Correcto!</strong> <br> ${feedbacks[questionId]}`;
+        } else {
+            feedbackBox.classList.add('feedback-incorrect');
+            feedbackBox.innerHTML = `<strong>Incorrecto (Opción ${selectedValue}).</strong> <br> <em>Explicación:</em> ${feedbacks[questionId]}`;
+        }
+        
+        if(window.MathJax) {
+            MathJax.typesetPromise([feedbackBox]).catch(function (err) {
+                console.log('Error MathJax: ' + err.message);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

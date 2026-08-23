@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión: Ecuaciones Diferenciales Lineales y Mezclas</title>
+    <!-- Configuración de MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .canvas-module {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos obligatorios según el prompt maestro */
+        h2 {
+            color: #1A237E;
+            border-bottom: 3px solid #1A237E;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #1A237E;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #00695C; 
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .solucion {
+            color: #D84315;
+            font-weight: bold;
+        }
+
+        hr.separador {
+            border: 0;
+            border-top: 2px solid #1976D2;
+            margin: 40px 0;
+            opacity: 0.6;
+        }
+
+        .image-placeholder {
+            border: 2px dashed #9e9e9e;
+            background-color: #f5f5f5;
+            color: #757575;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        blockquote.prompt-ia {
+            border-left: 5px solid #0056b3;
+            background-color: #e9f2fb;
+            padding: 15px;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Estilos de Quiz */
+        .quiz-question {
+            background-color: #f5f7fa;
+            border: 1px solid #e1e4e8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-options li { margin: 10px 0; }
+        .quiz-options label { cursor: pointer; display: flex; align-items: flex-start; }
+        .quiz-options input[type="radio"] { margin-right: 10px; margin-top: 5px; transform: scale(1.2); }
+
+        .btn-verificar {
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn-verificar:hover { background-color: #115293; }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .feedback-correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="canvas-module">
+    <h2>Ecuaciones Diferenciales Lineales y Problemas de Mezclas</h2>
+
+    <h3>1. Introducción y Objetivos</h3>
+    <p>Una ecuación diferencial de primer orden se dice que es <strong>lineal</strong> si se puede escribir en la forma estándar:</p>
+    <p>$$ \frac{dy}{dx} + P(x)y = Q(x) $$</p>
+    <p>A diferencia de las ecuaciones separables u homogéneas, la estrategia para resolver estas ecuaciones es  elegante: multiplicamos toda la ecuación por una función especial llamada <strong>Factor Integrante</strong>, denotado como \( \mu(x) \). Al hacer esto, el lado izquierdo de la ecuación se comprime  en la derivada de un producto. La fórmula para el factor integrante es siempre:</p>
+    <p>$$ \mu(x) = e^{\int P(x) dx} $$</p>
+    
+    <p><strong>Objetivos de la sesión:</strong></p>
+    <ul>
+        <li>Llevar cualquier ecuación lineal de primer orden a su forma estándar.</li>
+        <li>Calcular el factor integrante \( \mu(x) \) y utilizarlo para resolver la ecuación.</li>
+        <li>Modelar y resolver problemas físicos de <strong>mezclas y soluciones</strong> utilizando ecuaciones lineales.</li>
+    </ul>
+
+    <hr class="separador">
+
+    <h3>2. Desarrollo y Ejercicios Operativos</h3>
+    <p>El método de resolución sigue los cuatro pasos siguientes:</p>
+    <ul>
+    <li>  Escribir en forma estándar, 
+    <li>  Calcular el factor integrante  $$  \mu(x) = e^{\int P(x) dx}  $$
+     <li>   Calcular el tpermino \(I\):   $$  I = \int \mu Q(x) dx  $$
+      <li>   Usar la fórmula  $$ y=\frac{I+C}{\mu}  $$
+    </ul> 
+
+    <h4>Ejercicio 1 </h4>
+    <p>Resuelve la ecuación diferencial: $$ \frac{dy}{dx} + \frac{2}{x}y = 3 $$</p>
+    <p><span class="solucion">Solución:</span> Ya está en forma estándar. Identificamos $$ P(x) = \frac{2}{x}  \hbox{  y  }  Q(x) = 3 $$
+    Calculamos el factor integrante:</p>
+    <p>$$ \mu(x)  = e^{\int P(x) dx} = e^{\int \frac{2}{x} dx} = e^{2\ln|x|} = e^{\ln(x^2)} = x^2 $$</p>
+    <p>Calculamos \(I\) :</p>
+    <p>$$ I= \int \mu Q(x) dx= \int 3x^2dx = x^3$$</p>
+    <p>Finalmente, la solución es::</p>
+    <p>$$ y =\frac{I+C}{\mu} =\frac{x^3+C}{x^2}  =    x + \frac{C}{x^2} $$</p>
+
+    <h4>Ejercicio 2 </h4>
+    <p>Resuelve: $$ x \frac{dy}{dx} - 4y = x^6 e^x $$</p>
+    <p><span class="solucion">Solución:</span> Dividimos entre \( x \) para llevarla a la forma estándar:</p>
+    <p>$$ \frac{dy}{dx} - \frac{4}{x}y = x^5 e^x $$</p>
+    <p>Aquí $$ P(x) = -\frac{4}{x}, \quad \hbox{ y } \quad   Q(x) = x^5 e^x   $$. El factor integrante es:</p>
+    <p>$$ \mu(x) = e^{\int P(x) dx}= e^{\int -\frac{4}{x} dx} = e^{-4\ln(x)} = x^{-4} $$
+     De donde $$ I= \int \mu Q(x) dx=\int \mu(x) Q(x)dx= \int  x^{-4}x^5 e^x  dx  = \int  x e^x  dx$$
+    Integramos (usando integración por partes: 
+    $$ I = x e^x - e^x $$ Por lo cual 
+    $$ y = \frac{I+C}{\mu} =\frac{ x e^x - e^x+C}{x^{-4} } =x^5 e^x - x^4 e^x + C x^4 $$</p>
+
+    <h4>Ejercicio 3</h4>
+    <p>Encuentra la solución general de: $$ \cos(x)\frac{dy}{dx} + \sin(x)y = 1  \hbox{ para  }  x \in (-\pi/2, \pi/2) $$.</p>
+    <p><span class="solucion">Solución:</span> Dividimos por \( \cos(x) \):</p>
+    <p>$$ \frac{dy}{dx} + \tan(x)y = \sec(x) $$</p>
+    <p>Identificamos $$ P(x) = \tan(x) , \quad \hbox{ y } \quad   Q(x) = \sec(x) $$ Calculamos el factor integrante:
+    $$ \mu(x)= e^{\int P(x) dx} = e^{\int \tan(x) dx} = e^{\ln|\sec(x)|} = \sec(x) $$
+      De donde $$ I=\int \mu Q(x)dx= \int  \sec(x)\sec(x) dx  =\int  \sec^2(x)dx=\tan(x)$$
+    Entonces
+    $$ y = \frac{I+C}{\mu} =\frac{ \tan(x)+C}{ \sec(x)} = \sin(x) + C\cos(x)  $$</p>
+
+
+    <h4>Ejercicio 4 </h4>
+    <p>Resuelve el Problema de Valor Inicial (PVI) y genera su gráfica: 
+    $$ y' + y = \sin(x) , \hbox{ con }  y(0) = 1 $$</p>
+    <p><span class="solucion">Solución:</span> 
+    La forma estándar nos da 
+    $$ P(x) = 1, \quad \hbox{ y } \quad   Q(x) =\sin(x)    $$
+    Luego $$ \mu= e^{\int P(x) dx} = e^{\int 1 dx} = e^x $$
+    También  $$ I=\int \mu Q(x)dx=  \sin(x) e^x = \frac{1}{2}e^x (\sin(x) - \cos(x))  $$
+    Recuerde que la integral \( \int e^x \sin(x) dx \) es cíclica (se hace por partes dos veces):
+    Finalmente, la solución es:
+    $$ y = \frac{I+C}{\mu} =\frac{ \frac{1}{2}e^x (\sin(x) - \cos(x)) +C }{ e^x } = \frac{1}{2}( \sin(x) - \cos(x) )+Ce^{-x}  $$
+     Aplicamos la condición inicial \( y(0) = 1 \):
+    $$ 1 = \frac{1}{2}(0 - 1) + C e^0 \implies 1 = -\frac{1}{2} + C \implies C = \frac{3}{2} $$
+    La solución particular es entonces: $$ y = \frac{1}{2}(\sin(x) - \cos(x)) + \frac{3}{2}e^{-x} .$$
+     En la figura siguiente se muestra la gráfica de la curva solución. Nota que al aumentar \(x\) desaparece el término exponencial (esa es nuestra solución estable) </p>
+          <div style="text-align: center;">
+             <img src="img/s4fig1.png" alt="ejemplo" width="450" height="300">
+      </div>
+    
+
+    <h4>Ejercicio 5 </h4>
+    <p>Resuelve: $$ (x^2+1)\frac{dy}{dx} + 3xy = 6x $$</p>
+    <p><span class="solucion">Solución:</span> Dividimos entre \( (x^2+1) \):</p>
+    <p>$$ \frac{dy}{dx} + \frac{3x}{x^2+1}y = \frac{6x}{x^2+1} $$</p>
+    <p>El factor integrante requiere sustitución \( u = x^2+1, du = 2x dx \):
+    $$ \mu = e^{\int P(x) dx}= \exp\left(\int \frac{3x}{x^2+1} dx\right) = \exp\left(\frac{3}{2}\ln(x^2+1)\right) = (x^2+1)^{3/2} $$
+    Calculamos ahora \(I\), tenemos
+              $$ I=\int \mu Q(x)dx= \ int  \frac{6x}{x^2+1} (x^2+1)^{3/2} dx = \int 6x  (x^2+1)^{1/2} dx  $$
+     Integramos usando otra vez \(  u = x^2+1; \quad\quad du=2xdx \)  
+                  $$ I= \frac{I+C}{\mu} =\int \mu  Q(x)dx= 3 \int u^{1/2}  du=  2u^{3/2}  = 2 (x^2+1)^{3/2}$$
+                  Finalmente 
+    $$    y = \frac{I+C}{\mu} =\frac{ 2 (x^2+1)^{3/2}+C }{(x^2+1)^{3/2}  }= 
+        2 + C(x^2+1)^{-3/2}  $$
+    </p>
+
+    <hr class="separador">
+
+    <h3>3. Aplicaciones Prácticas: Problemas de Mezclas</h3>
+    <p>Uno de los usos más clásicos de las ecuaciones lineales es el modelado de tanques de mezcla. Sea \( A(t) \) la cantidad de soluto (ej. sal) en un tanque en el instante \( t \). La rapidez con la que cambia el soluto es la diferencia entre la razón de entrada y la razón de salida:</p>
+    <p>$$ \frac{dA}{dt} = R_{entrada} - R_{salida} $$</p>
+    <p>Donde: <br>
+    \( R_{entrada} = \text{(Concentración entra)} \times \text{(Flujo entra)} \)<br>
+    \( R_{salida} = \text{(Concentración en el tanque)} \times \text{(Flujo sale)} = \left(\frac{A(t)}{V(t)}\right) \times \text{(Flujo sale)} \)</p>
+
+    <h4>Problema A: Volumen Constante</h4>
+    <p>Un tanque contiene inicialmente 100 Litros de agua pura. Se bombea una salmuera que contiene 0.2 kg de sal por litro a razón de 5 L/min. La mezcla se mantiene uniforme mediante agitación y sale del tanque a la misma razón (5 L/min). Encuentra la cantidad de sal \( A(t) \) en cualquier tiempo.</p>
+    <p><span class="solucion">Solución </span></p>
+    <p>Planteamos las razones. $$ R_{entrada} = (0.2 \text{ kg/L})(5 \text{ L/min}) = 1 \text{ kg/min} $$
+    Como el flujo que entra es igual al que sale, el volumen es constante \( V(t) = 100 \). Entonces 
+    $$ R_{salida} = \left(\frac{A}{100}\right) \times 5 = \frac{A}{20}. $$
+    La ecuación diferencial es: $$ \frac{dA}{dt} = R_{entrada} - R_{salida} \implies \frac{dA}{dt} = 1 - \frac{A}{20} \implies \frac{dA}{dt} + \frac{1}{20}A = 1 $$
+    El factor integrante es:$$ \mu(t) = e^{\int \frac{1}{20} dt} = e^{t/20} $$.
+       Además, $$ I=\int \mu(t) Q(t)dt= \int  e^{t/20}  dx =20 e^{t/20} $$
+   por lo cual 
+    $$  A(t) = \frac{I+C}{\mu} = \frac{20 e^{t/20}+C}{e^{t/20} } = 20 + C e^{-t/20} .$$
+    Usando la condición inicial: \( A(0) = 0 \) (agua pura) se tiene: $$0 = 20 + C \implies C = -20 $$
+    Finalmente, la solución es: $$ A(t) = 20(1  - e^{-t/20}  ) \hbox{ kg } $$.</p>
+
+    <h4>Problema B: Volumen Variable </h4>
+    <p>Un tanque contiene inicialmente 200 Litros de agua con 10 kg de sal. Entra salmuera a 1 kg/L a una velocidad de 3 L/min. La mezcla sale a 2 L/min. Encuentra \( A(t) \).</p>
+    <p><span class="solucion">Solución:</span></p>
+    <p> En este caso \( R_{entrada} = (1)(3) = 3 \).
+    El volumen cambia, ya que entran 3 y salen 2. $$V(t) = 200 + (3 - 2)t = 200 + t $$
+    <p>La razón de salida es  $$ R_{salida} = \frac{A}{200+t} \times 2 = \frac{2A}{200+t} $$
+     Tenemos entonces la ecuación diferencial:  $$ \frac{dA}{dt} + \frac{2}{200+t}A = 3 $$
+    Calculamos el factor integrante: $$ \mu(t) = e^{\int \frac{2}{200+t} dt} = e^{2\ln(200+t)} = (200+t)^2 $$
+   Además,  $$ I=\int \mu(t) Q(t)dt= \int 3 (200+t)^2 dt = (200+t)^3 + C$$
+   Finalmente, $$ A(t) = \frac{I+C}{\mu}  =\frac{  (200+t)^3 + C C}{(200+t)^2}   = (200+t) + \frac{C}{(200+t)^2} $$
+    Usando la condición inicial \( A(0) = 10 \) se tiene $$ 10 = 200 + \frac{C}{200^2} \implies -190 = \frac{C}{40000} \implies C = -7,600,000 $$
+    Por lo cual, la solución es: $$ A(t) = (200+t) - \frac{7,600,000}{(200+t)^2} $$
+       En la figura siguiente se muestra la gráfica de la curva solución. </p>
+          <div style="text-align: center;">
+             <img src="img/s4fig2.png" alt="ejemplo" width="450" height="300">
+      </div>
+
+
+    <hr class="separador">
+    
+
+    <h3>4. Exploración Interactiva </h3>
+    <p>  Entra a la liga siguiente, allí podrás explorar la solución del problema de mezclas 
+    mediante un archivo de Python en Google-Colab
+      <a href=" https://colab.research.google.com/drive/1Tf16RnnBu3Wuof5UQa-hI8vt_yQJ_kln?usp=sharing" target="_blank">Mezclas</a> 
+ 
+    </p>
+
+    <hr class="separador">
+
+    <h3>5. Práctica con Inteligencia Artificial</h3>
+    <p>El uso del Factor Integrante es una herramienta matemática que asombra la primera vez que se ve. Para desmitificarlo, copia y pega el siguiente prompt en tu IA (ChatGPT o Gemini):</p>
+    <blockquote class="prompt-ia">
+        "Actúa como un profesor universitario de ecuaciones diferenciales. Explícame matemáticamente y paso a paso por qué al multiplicar la ecuación y' + P(x)y = Q(x) por el factor integrante e^(∫P(x)dx), el lado izquierdo de la ecuación se convierte mágicamente en la derivada perfecta de un producto. Usa la regla del producto del cálculo diferencial en tu explicación y hazlo muy claro."
+    </blockquote>
+    <p><strong>Tarea de análisis:</strong> Presta mucha atención al paso donde la IA deriva la función exponencial \( e^{\int P(x)dx} \) usando la regla de la cadena y el Teorema Fundamental del Cálculo. Ésta es la clave de todo el método.</p>
+
+    <hr class="separador">
+
+    <h3>6. Autoevaluación Interactiva</h3>
+    <p>Comprueba tus conocimientos conceptuales y de modelado de esta sesión seleccionando la respuesta correcta:</p>
+
+    <!-- Pregunta 1 -->
+    <div class="quiz-question">
+        <p><strong>1. ¿Cuál de las siguientes ecuaciones es LINEAL de primer orden?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q1" value="A"> A) \( \quad \frac{dy}{dx} + xy^2 = x \)</label></li>
+            <li><label><input type="radio" name="q1" value="B"> B) \(  \quad y \frac{dy}{dx} + 3x = 0 \)</label></li>
+            <li><label><input type="radio" name="q1" value="C"> C) \(  \quad  x^2 \frac{dy}{dx} - e^x y = \sin(x) \)</label></li>
+            <li><label><input type="radio" name="q1" value="D"> D) \(  \quad \frac{dy}{dx} = \sin(y) + x \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q1', 'C')">Verificar</button>
+        <div class="feedback-box" id="feedback-q1"></div>
+    </div>
+
+    <!-- Pregunta 2 -->
+    <div class="quiz-question">
+        <p><strong>2. ¿Cuál es el factor integrante \( \mu(x) \) para la ecuación \( x \frac{dy}{dx} - 3y = x^4 \)?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q2" value="A"> A) \(  \quad e^{-3x} \)</label></li>
+            <li><label><input type="radio" name="q2" value="B"> B) \( \quad  x^{-3} \)</label></li>
+            <li><label><input type="radio" name="q2" value="C"> C) \( \quad  x^3 \)</label></li>
+            <li><label><input type="radio" name="q2" value="D"> D) \( \quad  e^{x^4} \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q2', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q2"></div>
+    </div>
+
+    <!-- Pregunta 3 -->
+    <div class="quiz-question">
+        <p><strong>3. En un problema de mezclas, si la tasa de entrada de líquido es mayor que la tasa de salida (ej. entra a 5 L/min, sale a 3 L/min), ¿qué ocurre con el término del volumen \( V(t) \) en el denominador de \( R_{salida} \)?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q3" value="A"> A) Se mantiene constante y se calcula un promedio.</label></li>
+            <li><label><input type="radio" name="q3" value="B"> B) Decrece exponencialmente.</label></li>
+            <li><label><input type="radio" name="q3" value="C"> C) Es una función lineal dependiente del tiempo: \( V(t) = V_0 + 2t \).</label></li>
+            <li><label><input type="radio" name="q3" value="D"> D) No afecta a la ecuación diferencial porque el líquido está bien mezclado.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q3', 'C')">Verificar</button>
+        <div class="feedback-box" id="feedback-q3"></div>
+    </div>
+
+    <!-- Pregunta 4 -->
+    <div class="quiz-question">
+        <p><strong>4. En el Problema A (Volumen constante), ¿qué sucede con la cantidad de sal en el tanque cuando el tiempo tiende a infinito (\( t \to \infty \))?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q4" value="A"> A) El tanque se vacía de sal por completo (0 kg).</label></li>
+            <li><label><input type="radio" name="q4" value="B"> B) Tiende a una cantidad estable de 20 kg (estado estacionario).</label></li>
+            <li><label><input type="radio" name="q4" value="C"> C) Crece infinitamente hasta que el tanque explota.</label></li>
+            <li><label><input type="radio" name="q4" value="D"> D) Oscila debido a que la entrada y salida son iguales.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q4', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q4"></div>
+    </div>
+
+    <!-- Pregunta 5 -->
+    <div class="quiz-question">
+        <p><strong>5. Al aplicar el factor integrante a la ecuación \( y' + P(x)y = Q(x) \), el lado izquierdo siempre se transforma rigurosamente en:</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q5" value="A"> A) \(  \quad \frac{d}{dx}[P(x) y] \)</label></li>
+            <li><label><input type="radio" name="q5" value="B"> B) \(  \quad \mu(x) Q(x) y \)</label></li>
+            <li><label><input type="radio" name="q5" value="C"> C) \(  \quad \frac{d}{dx}[\mu(x)] \cdot y \)</label></li>
+            <li><label><input type="radio" name="q5" value="D"> D) \( \quad  \frac{d}{dx}[\mu(x) y] \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q5', 'D')">Verificar</button>
+        <div class="feedback-box" id="feedback-q5"></div>
+    </div>
+
+</div>
+
+<script>
+    const feedbacks = {
+        'q1': "La correcta es C. Para ser lineal de primer orden en la variable y, tanto y como su derivada y' deben tener potencia 1 y no ser argumento de funciones no lineales. La opción A tiene un y^2. La B multiplica y por y'. La D tiene a y dentro del seno.",
+        'q2': "La correcta es B. Primero hay que escribirla en forma estándar dividiendo todo entre x, obteniendo P(x) = -3/x. El factor es e^{∫(-3/x)dx} = e^{-3ln|x|} = x^{-3}.",
+        'q3': "La correcta es C. Si entran 5L cada minuto y salen 3L cada minuto, el volumen neto aumenta en 2L por minuto. Esto genera que el volumen sea variable de la forma V(t) = Volumen_Inicial + 2t.",
+        'q4': "La correcta es B. Matemáticamente, el término C*e^{-t/20} tiende a cero. Físicamente, el tanque se llena de una mezcla con concentración igual a la de entrada: 0.2 kg/L * 100 L = 20 kg. A esto se le conoce como el estado estable de un sistema en mezcla perfecta.",
+        'q5': "La correcta es D. Toda la ingeniería matemática detrás del factor integrante tiene como único fin forzar que el lado izquierdo de la ecuación se convierta en la derivada del producto de la función incógnita (y) por el factor integrante (μ(x))."
+    };
+
+    function checkAnswer(questionId, correctOption) {
+        const options = document.getElementsByName(questionId);
+        let selectedValue = null;
+        
+        for (const option of options) {
+            if (option.checked) {
+                selectedValue = option.value;
+                break;
+            }
+        }
+
+        const feedbackBox = document.getElementById('feedback-' + questionId);
+
+        if (!selectedValue) {
+            alert("Por favor, selecciona una respuesta.");
+            return;
+        }
+
+        feedbackBox.style.display = "block";
+        feedbackBox.classList.remove('feedback-correct', 'feedback-incorrect');
+
+        if (selectedValue === correctOption) {
+            feedbackBox.classList.add('feedback-correct');
+            feedbackBox.innerHTML = `<strong>¡Correcto!</strong> <br> ${feedbacks[questionId]}`;
+        } else {
+            feedbackBox.classList.add('feedback-incorrect');
+            feedbackBox.innerHTML = `<strong>Incorrecto (Opción ${selectedValue}).</strong> <br> <em>Explicación:</em> ${feedbacks[questionId]}`;
+        }
+        
+        if(window.MathJax) {
+            MathJax.typesetPromise([feedbackBox]).catch(function (err) {
+                console.log('Error MathJax: ' + err.message);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 5: Ecuaciones Diferenciales de Bernoulli</title>
+    <!-- Configuración de MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .canvas-module {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos obligatorios según el estándar del curso */
+        h2 {
+            color: #1A237E;
+            border-bottom: 3px solid #1A237E;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #1A237E;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #00695C; 
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .solucion {
+            color: #D84315;
+            font-weight: bold;
+        }
+
+        hr.separador {
+            border: 0;
+            border-top: 2px solid #1976D2;
+            margin: 40px 0;
+            opacity: 0.6;
+        }
+
+        .image-placeholder {
+            border: 2px dashed #9e9e9e;
+            background-color: #f5f5f5;
+            color: #757575;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-style: italic;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        blockquote.prompt-ia {
+            border-left: 5px solid #0056b3;
+            background-color: #e9f2fb;
+            padding: 15px;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Estilos de Quiz */
+        .quiz-question {
+            background-color: #f5f7fa;
+            border: 1px solid #e1e4e8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-options li { margin: 10px 0; }
+        .quiz-options label { cursor: pointer; display: flex; align-items: flex-start; }
+        .quiz-options input[type="radio"] { margin-right: 10px; margin-top: 5px; transform: scale(1.2); }
+
+        .btn-verificar {
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn-verificar:hover { background-color: #115293; }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .feedback-correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="canvas-module">
+    <h2>Ecuaciones Diferenciales de Bernoulli</h2>
+
+    <h3>1. Introducción y Objetivos</h3>
+    <p>Una ecuación diferencial ordinaria de primer orden se conoce como <strong>Ecuación de Bernoulli</strong> si puede escribirse en la forma:</p>
+    <p>$$ y' + p(x)y = q(x)y^n $$</p>
+    <p>donde $n \in \mathbb{R}$ es un número real cualquiera.</p>
+    <p>Notemos inmediatamente dos casos triviales:</p>
+    <ul>
+        <li>Si $n = 0$, la ecuación se convierte en $y' + p(x)y = q(x)$, la cual es una <strong>Ecuación Lineal</strong> ordinaria (vistas en la Sesión 4).</li>
+        <li>Si $n = 1$, la ecuación se convierte en $y' + [p(x) - q(x)]y = 0$, la cual es de <strong>Variables Separables</strong> (vista en la Sesión 2).</li>
+    </ul>
+    <p>Para cualquier otro valor $n \neq 0, 1$, la ecuación es <strong>no lineal</strong> debido a la presencia del término $y^n$. La estrategia para resolverla consiste en dividir la ecuación entre $y^n$ y considerar el cambio de variable no lineal $z = y^{1-n}$. Al derivar $z$, se transforma la expresión en una E.D. lineal estándar $z' + P(x)z = Q(x)$, identificando la relación entre $P(x)$ y $p(x)$, así como entre $Q(x)$ y $q(x)$.</p>
+    
+    <p><strong>Objetivos de la sesión:</strong></p>
+    <ul>
+        <li>Reconocer la estructura de una Ecuación Diferencial de Bernoulli e identificar el exponente $n$, $p(x)$ y $q(x)$.</li>
+        <li>Al dividir entre $y^n$ y aplicar la sustitución $z = y^{1-n}$, derivar $z$ para transformar la EDO no lineal en una EDO lineal equivalente de la forma $z' + P(x)z = Q(x)$.</li>
+        <li>Identificar explícitamente $P(x) = (1-n)p(x)$ y $Q(x) = (1-n)q(x)$.</li>
+        <li>Resolver la EDO lineal mediante el cálculo del factor integrante $\mu = \exp\left(\int P(x)dx\right)$, integrar $I = \int \mu \cdot Q(x)dx$, obtener $z = \frac{I+C}{\mu}$ y regresar a la variable original $y$.</li>
+        <li>Modelar e interpretar aplicaciones no lineales en dinámica de poblaciones y circuitos no lineales.</li>
+    </ul>
+
+    <hr class="separador">
+
+    <h3>2. Desarrollo y Ejercicios Operativos</h3>
+    <p><strong>Deducción General del Método según la Estrategia:</strong></p>
+    <p>Dada la ecuación diferencial $y' + p(x)y = q(x)y^n$, al dividir entre $y^n$ se tiene:</p>
+    <p>$$ y^{-n}y' + p(x)y^{1-n} = q(x) $$</p>
+    <p>Si consideramos el cambio de variable:</p>
+    <p>$$ z = y^{1-n} $$</p>
+    <p>Al derivar $z$ con respecto a $x$ mediante la regla de la cadena, resulta:</p>
+    <p>$$ z' = (1-n)y^{-n}y' \implies y^{-n}y' = \frac{1}{1-n}z' $$</p>
+    <p>Al sustituir estos términos, transformamos la ecuación diferencial en:</p>
+    <p>$$ \frac{1}{1-n}z' + p(x)z = q(x) \implies z' + (1-n)p(x)z = (1-n)q(x) $$</p>
+    <p>Reescribiendo esta E.D. lineal en su forma estándar $z' + P(x)z = Q(x)$, identificamos la relación entre los coeficientes:</p>
+    <p>$$ P(x) = (1-n)p(x) \quad \text{y} \quad Q(x) = (1-n)q(x) $$</p>
+    <p>Aplicando el método para resolver ED lineales de primer orden, se calcula el factor integrante $\mu$:</p>
+    <p>$$ \mu = \exp\left(\int P(x) dx\right) $$</p>
+    <p>Posteriormente, evaluamos la integral $I$:</p>
+    <p>$$ I = \int \mu \cdot Q(x) dx $$</p>
+    <p>De este modo, obtenemos la solución en términos de $z$:</p>
+    <p>$$ z = \frac{I + C}{\mu} $$</p>
+    <p>Finalmente, al regresar a la variable original $y$, despejamos de $z = y^{1-n}$.</p>
+
+    <h4>Ejercicio 1 (Nivel Intermedio)</h4>
+    <p>Resuelve la ecuación diferencial: $ y' + \frac{1}{x}y = x y^2 $</p>
+    <p><span class="solucion">Solución:</span></p>
+    <p>Identificamos que es de Bernoulli con $n = 2$, $p(x) = \frac{1}{x}$ y $q(x) = x$.</p>
+    <p>Al dividir entre $y^2$, se tiene:</p>
+    <p>$$ y^{-2}y' + \frac{1}{x}y^{-1} = x $$</p>
+    <p>Si usamos el cambio de variable $z = y^{1-2} = y^{-1}$ y derivamos respecto a $x$, resulta:</p>
+    <p>$$ z' = -y^{-2}y' \implies y^{-2}y' = -z' $$</p>
+    <p>Al sustituir estos términos, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
+    <p>$$ -z' + \frac{1}{x}z = x \implies z' - \frac{1}{x}z = -x $$</p>
+    <p>Observamos la relación entre coeficientes:</p>
+    <p>$$ P(x) = (1-n)p(x) = (1-2)\left(\frac{1}{x}\right) = -\frac{1}{x} $$</p>
+    <p>$$ Q(x) = (1-n)q(x) = (1-2)(x) = -x $$</p>
+    <p>Al calcular el factor integrante $\mu$, resulta:</p>
+    <p>$$ \mu = \exp\left(\int P(x)dx\right) = \exp\left(\int -\frac{1}{x}dx\right) = e^{-\ln|x|} = \frac{1}{x} $$</p>
+    <p>Al evaluar la integral $I = \int \mu \cdot Q(x) dx$, obtenemos:</p>
+    <p>$$ I = \int \frac{1}{x}(-x) dx = \int (-1) dx = -x $$</p>
+    <p>Así, la solución en la variable $z$ es:</p>
+    <p>$$ z = \frac{I + C}{\mu} = \frac{-x + C}{\frac{1}{x}} = x(C - x) = Cx - x^2 $$</p>
+    <p>Finalmente, al regresar a la variable original $y$, como $z = y^{-1} = \frac{1}{y}$, resulta:</p>
+    <p>$$ y(x) = \frac{1}{Cx - x^2} $$</p>
+
+    <h4>Ejercicio 2 (Nivel Intermedio con Graficación)</h4>
+    <p>Resuelve el Problema de Valor Inicial (PVI): $ x y' + y = x^2 y^2 $, con condición inicial $y(1) = 1$. Grafica la solución particular e identifica sus asíntotas.</p>
+    <p><span class="solucion">Solución:</span></p>
+    <p>Al dividir entre $x$, obtenemos la forma estándar de Bernoulli: $y' + \frac{1}{x}y = x y^2$. Identificamos $n = 2$, $p(x) = \frac{1}{x}$ y $q(x) = x$.</p>
+    <p>Al dividir entre $y^2$, se tiene: $y^{-2}y' + \frac{1}{x}y^{-1} = x$.</p>
+    <p>Si consideramos el cambio $z = y^{-1}$ y derivamos respecto a $x$, resulta $z' = -y^{-2}y'$, por lo que $y^{-2}y' = -z'$.</p>
+    <p>Al sustituir en la ecuación, la transformamos en la E.D. lineal $z' - \frac{1}{x}z = -x$.</p>
+    <p>Las relaciones entre coeficientes son $P(x) = (1-2)p(x) = -\frac{1}{x}$ y $Q(x) = (1-2)q(x) = -x$.</p>
+    <p>Al calcular el factor integrante $\mu$, resulta: $\mu = \exp\left(\int -\frac{1}{x}dx\right) = \frac{1}{x}$.</p>
+    <p>Al evaluar la integral $I$, obtenemos: $I = \int \frac{1}{x}(-x)dx = -x$.</p>
+    <p>De este modo, la solución para $z$ es: $z = \frac{I + C}{\mu} = \frac{-x + C}{1/x} = Cx - x^2$.</p>
+    <p>Al regresar a la variable original $y$, se tiene: $y(x) = \frac{1}{z} = \frac{1}{Cx - x^2}$.</p>
+    <p>Al aplicar la condición inicial $y(1) = 1$, resulta:</p>
+    <p>$$ 1 = \frac{1}{C(1) - 1^2} \implies C - 1 = 1 \implies C = 2 $$</p>
+    <p>Por lo tanto, la solución particular es: $$ y(x) = \frac{1}{2x - x^2} = \frac{1}{x(2 - x)} $$</p>
+    <p>Observa que la solución se desconecta o explota hacia infinito (singularidad) en $x = 0$ y $x = 2$. Por lo tanto, el dominio del PVI es el intervalo abierto $(0, 2)$.</p>
+
+    <p><strong>Generación de la Gráfica en Python:</strong></p>
+    <pre>
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Dominio continuo dentro del intervalo de validez del PVI (0, 2)
+x = np.linspace(0.01, 1.99, 500)
+y = 1 / (x * (2 - x))
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label=r'Solución $y(x) = \frac{1}{x(2-x)}$', color='#D84315', linewidth=2.5)
+plt.scatter([1], [1], color='#1A237E', zorder=5, s=60, label='Condición Inicial (1, 1)')
+
+# Líneas de asíntotas verticales
+plt.axvline(0, color='gray', linestyle='--', alpha=0.7, label='Asíntotas $x=0, x=2$')
+plt.axvline(2, color='gray', linestyle='--', alpha=0.7)
+
+plt.title('Solución Particular del PVI y Explosión en Tiempo Finito')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.ylim(0, 10)
+plt.grid(True, linestyle=':')
+plt.legend()
+plt.show()
+    </pre>
+    <div class="image-placeholder">
+        [Espacio para insertar imagen de gráfica generada con Python del Ejercicio 2]
+    </div>
+
+    <h4>Ejercicio 3 (Nivel Avanzado - Funciones Trigonométricas)</h4>
+    <p>Encuentra la solución general de la ecuación: $ y' + y\tan(x) = y^3 \sec(x) $</p>
+    <p><span class="solucion">Solución:</span></p>
+    <p>Identificamos $n = 3$, $p(x) = \tan(x)$ y $q(x) = \sec(x)$.</p>
+    <p>Al dividir entre $y^3$, se tiene:</p>
+    <p>$$ y^{-3}y' + y^{-2}\tan(x) = \sec(x) $$</p>
+    <p>Si usamos el cambio de variable $z = y^{1-3} = y^{-2}$ y derivamos respecto a $x$, resulta:</p>
+    <p>$$ z' = -2y^{-3}y' \implies y^{-3}y' = -\frac{1}{2}z' $$</p>
+    <p>Al sustituir los términos, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
+    <p>$$ -\frac{1}{2}z' + z\tan(x) = \sec(x) \implies z' - 2\tan(x)z = -2\sec(x) $$</p>
+    <p>Se observan las relaciones entre coeficientes:</p>
+    <p>$$ P(x) = (1-n)p(x) = (1-3)\tan(x) = -2\tan(x) $$</p>
+    <p>$$ Q(x) = (1-n)q(x) = (1-3)\sec(x) = -2\sec(x) $$</p>
+    <p>Al calcular el factor integrante $\mu$, se tiene:</p>
+    <p>$$ \mu = \exp\left(\int P(x)dx\right) = \exp\left(\int -2\tan(x)dx\right) = \exp(2\ln|\cos(x)|) = \cos^2(x) $$</p>
+    <p>Al evaluar la integral $I = \int \mu \cdot Q(x)dx$, resulta:</p>
+    <p>$$ I = \int \cos^2(x) \cdot (-2\sec(x)) dx = \int -2\cos(x) dx = -2\sin(x) $$</p>
+    <p>De este modo, la solución en la variable $z$ es:</p>
+    <p>$$ z = \frac{I + C}{\mu} = \frac{-2\sin(x) + C}{\cos^2(x)} $$</p>
+    <p>Finalmente, al regresar a la variable original $y$, como $z = y^{-2} \implies y = z^{-1/2} = \frac{1}{\sqrt{z}}$, obtenemos:</p>
+    <p>$$ y(x) = \frac{1}{\sqrt{\frac{-2\sin(x) + C}{\cos^2(x)}}} = \frac{\cos(x)}{\sqrt{C - 2\sin(x)}} $$</p>
+
+    <h4>Ejercicio 4 (Nivel Avanzado con Graficación)</h4>
+    <p>Resuelve el PVI: $ y' - \frac{y}{2x} = \frac{x}{2y} $, con $y(1) = 2$. Genera la gráfica de la solución.</p>
+    <p><span class="solucion">Solución:</span></p>
+    <p>Reorganizamos la ecuación: $y' - \frac{1}{2x}y = \frac{x}{2} y^{-1}$. Es de Bernoulli con $n = -1$, $p(x) = -\frac{1}{2x}$ y $q(x) = \frac{x}{2}$.</p>
+    <p>Al dividir entre $y^{-1}$ (multiplicar por $y$), se tiene:</p>
+    <p>$$ y y' - \frac{1}{2x}y^2 = \frac{x}{2} $$</p>
+    <p>Si consideramos el cambio $z = y^{1 - (-1)} = y^2$ y derivamos respecto a $x$, resulta:</p>
+    <p>$$ z' = 2y y' \implies y y' = \frac{1}{2}z' $$</p>
+    <p>Al sustituir, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
+    <p>$$ \frac{1}{2}z' - \frac{1}{2x}z = \frac{x}{2} \implies z' - \frac{1}{x}z = x $$</p>
+    <p>Las relaciones entre coeficientes son:</p>
+    <p>$$ P(x) = (1 - (-1))p(x) = 2\left(-\frac{1}{2x}\right) = -\frac{1}{x} $$</p>
+    <p>$$ Q(x) = (1 - (-1))q(x) = 2\left(\frac{x}{2}\right) = x $$</p>
+    <p>Al calcular el factor integrante $\mu$, resulta:</p>
+    <p>$$ \mu = \exp\left(\int -\frac{1}{x} dx\right) = e^{-\ln|x|} = \frac{1}{x} $$</p>
+    <p>Al evaluar la integral $I$, obtenemos:</p>
+    <p>$$ I = \int \mu \cdot Q(x) dx = \int \frac{1}{x}(x) dx = \int 1 dx = x $$</p>
+    <p>Así, la solución en la variable $z$ es:</p>
+    <p>$$ z = \frac{I + C}{\mu} = \frac{x + C}{\frac{1}{x}} = x(x + C) = x^2 + Cx $$</p>
+    <p>Al regresar a la variable original $y$, sustituimos $z = y^2 \implies y^2 = x^2 + Cx \implies y(x) = \sqrt{x^2 + Cx}$.</p>
+    <p>Al aplicar la condición inicial $y(1) = 2$, resulta:</p>
+    <p>$$ 2 = \sqrt{1^2 + C(1)} \implies 4 = 1 + C \implies C = 3 $$</p>
+    <p>Por ende, la solución particular es: $$ y(x) = \sqrt{x^2 + 3x} $$</p>
+
+    <p><strong>Generación de la Gráfica en Python:</strong></p>
+    <pre>
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0.1, 5, 400)
+y = np.sqrt(x**2 + 3*x)
+
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, label=r'Solución $y(x) = \sqrt{x^2 + 3x}$', color='#00695C', linewidth=2.5)
+plt.scatter([1], [2], color='#D84315', zorder=5, s=60, label='Condición Inicial (1, 2)')
+plt.title('Trayectoria de la Solución Particular de Bernoulli ($n=-1$)')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.grid(True, linestyle='--')
+plt.legend()
+plt.show()
+    </pre>
+    <div class="image-placeholder">
+        [Espacio para insertar imagen de gráfica generada con Python del Ejercicio 4]
+    </div>
+
+    <h4>Ejercicio 5 (Nivel Avanzado - Exponentes Negativos/Fraccionarios)</h4>
+    <p>Resuelve la ecuación diferencial: $ y' + y = e^x y^4 $</p>
+    <p><span class="solucion">Solución:</span></p>
+    <p>Identificamos $n = 4$, $p(x) = 1$, $q(x) = e^x$.</p>
+    <p>Al dividir entre $y^4$, se tiene:</p>
+    <p>$$ y^{-4}y' + y^{-3} = e^x $$</p>
+    <p>Si consideramos el cambio $z = y^{1-4} = y^{-3}$ y derivamos respecto a $x$, resulta:</p>
+    <p>$$ z' = -3y^{-4}y' \implies y^{-4}y' = -\frac{1}{3}z' $$</p>
+    <p>Al sustituir, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
+    <p>$$ -\frac{1}{3}z' + z = e^x \implies z' - 3z = -3e^x $$</p>
+    <p>donde las relaciones de coeficientes son $P(x) = (1-4)p(x) = -3(1) = -3$ y $Q(x) = (1-4)q(x) = -3e^x$.</p>
+    <p>Al calcular el factor integrante $\mu$, resulta:</p>
+    <p>$$ \mu = \exp\left(\int -3 dx\right) = e^{-3x} $$</p>
+    <p>Al evaluar la integral $I$, obtenemos:</p>
+    <p>$$ I = \int \mu \cdot Q(x) dx = \int e^{-3x} (-3e^x) dx = \int -3e^{-2x} dx = \frac{3}{2}e^{-2x} $$</p>
+    <p>De este modo, la solución para $z$ es:</p>
+    <p>$$ z = \frac{I + C}{\mu} = \frac{\frac{3}{2}e^{-2x} + C}{e^{-3x}} = \frac{3}{2}e^x + C e^{3x} $$</p>
+    <p>Finalmente, al regresar a la variable original $y$, como $z = y^{-3} \implies y = z^{-1/3}$, la solución general es:</p>
+    <p>$$ y(x) = \left( \frac{3}{2}e^x + C e^{3x} \right)^{-1/3} = \frac{1}{\sqrt[3]{\frac{3}{2}e^x + C e^{3x}}} $$</p>
+
+    <hr class="separador">
+
+    <h3>3. Aplicaciones Prácticas</h3>
+
+    <h4>Aplicación A: La Ecuación Logística Revisitada como Bernoulli</h4>
+    <p>En la Sesión 2 estudiamos el modelo poblacional logístico mediante separación de variables y fracciones parciales. Demostraremos cómo la técnica de Bernoulli resuelve el mismo problema siguiendo la misma estrategia.</p>
+    <p>La EDO logística es: $ \frac{dP}{dt} = r P \left(1 - \frac{P}{K}\right) \implies \frac{dP}{dt} - rP = -\frac{r}{K}P^2 $</p>
+    <p><span class="solucion">Solución mediante Bernoulli:</span></p>
+    <p>Identificamos $n = 2$, $p(t) = -r$, y $q(t) = -\frac{r}{K}$. Al dividir entre $P^2$, se tiene:</p>
+    <p>$$ P^{-2}\frac{dP}{dt} - rP^{-1} = -\frac{r}{K} $$</p>
+    <p>Si consideramos la sustitución de Bernoulli $z = P^{1-2} = P^{-1} = \frac{1}{P}$ y derivamos respecto a $t$, resulta $z' = -P^{-2}\frac{dP}{dt}$, de donde $P^{-2}\frac{dP}{dt} = -z'$.</p>
+    <p>Al sustituir estos términos, se tiene $-z' - rz = -\frac{r}{K} \implies z' + rz = \frac{r}{K}$.</p>
+    <p>Al expresar en forma estándar $z' + P(t)z = Q(t)$, observamos la relación entre coeficientes:</p>
+    <p>$$ P(t) = (1-2)p(t) = r \quad \text{y} \quad Q(t) = (1-2)q(t) = \frac{r}{K} $$</p>
+    <p>Al calcular el factor integrante, resulta $\mu = \exp\left(\int r dt\right) = e^{rt}$.</p>
+    <p>Al evaluar la integral $I = \int \mu \cdot Q(t) dt$, se obtiene $I = \int e^{rt}\left(\frac{r}{K}\right) dt = \frac{1}{K}e^{rt}$.</p>
+    <p>De este modo, la solución en la variable $z$ es $z = \frac{I + C}{\mu} = \frac{\frac{1}{K}e^{rt} + C}{e^{rt}} = \frac{1}{K} + Ce^{-rt}$.</p>
+    <p>Finalmente, al regresar a la variable original $P(t) = \frac{1}{z(t)}$, obtenemos la solución sigmoidea:</p>
+    <p>$$ P(t) = \frac{1}{\frac{1}{K} + Ce^{-rt}} = \frac{K}{1 + C K e^{-rt}} $$</p>
+
+    <h4>Aplicación B: Circuito Eléctrico no Lineal (Varistor / Resistencia no Lineal)</h4>
+    <p>En un circuito RL, la resistencia del elemento varía linealmente con la corriente acumulada, $R(i) = R_0 + k \cdot i$. Según la ley de Kirchhoff de voltajes:</p>
+    <p>$$ L \frac{di}{dt} + (R_0 + k i)i = E_0 \implies \frac{di}{dt} + \frac{R_0}{L}i = \frac{E_0}{L} - \frac{k}{L}i^2 $$</p>
+    <p>Cuando la fuente es nula ($E_0 = 0$), la ecuación se reduce a la EDO de Bernoulli: $\frac{di}{dt} + \frac{R_0}{L}i = -\frac{k}{L}i^2$ con $n = 2$, $p(t) = \frac{R_0}{L}$ y $q(t) = -\frac{k}{L}$.</p>
+    <p><span class="solucion">Solución aplicando el método:</span></p>
+    <p>Al dividir entre $i^2$, se tiene: $i^{-2}\frac{di}{dt} + \frac{R_0}{L}i^{-1} = -\frac{k}{L}$.</p>
+    <p>Si consideramos el cambio $z = i^{1-2} = i^{-1}$ y derivamos respecto a $t$, resulta $z' = -i^{-2}\frac{di}{dt}$, por lo que $i^{-2}\frac{di}{dt} = -z'$.</p>
+    <p>Al sustituir y reescribir la ecuación en la forma lineal $z' + P(t)z = Q(t)$, obtenemos:</p>
+    <p>$$ -z' + \frac{R_0}{L}z = -\frac{k}{L} \implies z' - \frac{R_0}{L}z = \frac{k}{L} $$</p>
+    <p>donde las relaciones de coeficientes son $P(t) = (1-2)p(t) = -\frac{R_0}{L}$ y $Q(t) = (1-2)q(t) = \frac{k}{L}$.</p>
+    <p>Al calcular el factor integrante, se tiene $\mu = \exp\left(\int -\frac{R_0}{L} dt\right) = e^{-\frac{R_0}{L}t}$.</p>
+    <p>Al evaluar la integral $I$, resulta $I = \int e^{-\frac{R_0}{L}t}\left(\frac{k}{L}\right)dt = -\frac{k}{R_0}e^{-\frac{R_0}{L}t}$.</p>
+    <p>De este modo, la solución en la variable $z$ es $z = \frac{I + C}{\mu} = \frac{-\frac{k}{R_0}e^{-\frac{R_0}{L}t} + C}{e^{-\frac{R_0}{L}t}} = -\frac{k}{R_0} + Ce^{\frac{R_0}{L}t}$.</p>
+    <p>Finalmente, al regresar a la corriente original $i(t) = \frac{1}{z(t)}$, se obtiene:</p>
+    <p>$$ i(t) = \frac{1}{-\frac{k}{R_0} + Ce^{\frac{R_0}{L}t}} $$</p>
+
+    <hr class="separador">
+
+    <h3>4. Exploración Interactiva (Formativa)</h3>
+    <p>El comportamiento de las ecuaciones de Bernoulli varía drásticamente dependiendo del exponente $n$. Copia y ejecuta este script en <strong>Google Colab</strong> para visualizar cómo el campo de direcciones y las curvas solución cambian de forma según el parámetro $n$ en la ecuación $y' - y = -x y^n$.</p>
+    <pre>
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Definición de la malla (Grid)
+x, y = np.meshgrid(np.linspace(-2, 2, 20), np.linspace(0.1, 3, 20))
+
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+
+# Caso 1: n = 2 (Bernoulli)
+U = np.ones_like(x)
+V1 = x + y**2
+N1 = np.sqrt(U**2 + V1**2)
+axes[0].quiver(x, y, U/N1, V1/N1, color='#1A237E', alpha=0.7)
+axes[0].set_title(r"Campo de Direcciones para $n=2$ ($y' - y = x y^2$)")
+axes[0].set_xlabel("x")
+axes[0].set_ylabel("y")
+axes[0].grid(True)
+
+# Caso 2: n = -1 (Bernoulli)
+V2 = x + y**(-1)
+N2 = np.sqrt(U**2 + V2**2)
+axes[1].quiver(x, y, U/N2, V2/N2, color='#00695C', alpha=0.7)
+axes[1].set_title(r"Campo de Direcciones para $n=-1$ ($y' - y = x y^{-1}$)")
+axes[1].set_xlabel("x")
+axes[1].set_ylabel("y")
+axes[1].grid(True)
+
+plt.tight_layout()
+plt.show()
+    </pre>
+
+    <hr class="separador">
+
+    <h3>5. Práctica con Inteligencia Artificial</h3>
+    <p>Para profundizar en las sutilezas algebraicas de la transformación de Bernoulli, copia y pega el siguiente prompt en tu tutor de IA (ChatGPT / Gemini):</p>
+    <blockquote class="prompt-ia">
+        "Actúa como un profesor universitario experto en ecuaciones diferenciales. Explícame paso a paso por qué al dividir entre y^n y considerar el cambio de variable z = y^(1-n) en la ecuación de Bernoulli y' + p(x)y = q(x)y^n convertimos la ecuación en una lineal z' + P(x)z = Q(x). Muestra la relación entre P(x) y p(x), así como entre Q(x) y q(x). Muestra detalladamente cómo calcular mu = exp(int P(x)dx), I = int mu*Q(x)dx, obtener la solución z = (I+C)/mu y finalmente regresar a la variable original y. Explica también qué ocurre en los casos n=0 y n=1."
+    </blockquote>
+    <p><strong>Tarea de análisis:</strong> Examina cómo la IA manipula el término $y^{-n}y'$ mediante la regla de la cadena. Verifica que identifique correctamente las relaciones entre los coeficientes y las expresiones para $\mu$, $I$ y $z$.</p>
+
+    <hr class="separador">
+
+    <h3>6. Autoevaluación Interactiva</h3>
+    <p>Pon a prueba tus conocimientos sobre la lección de hoy seleccionando las respuestas correctas:</p>
+
+    <!-- Pregunta 1 -->
+    <div class="quiz-question">
+        <p><strong>1. Para la ecuación diferencial de Bernoulli $ y' - \frac{3}{x}y = x^2 y^{4} $, ¿cuál es el cambio de variable $z(y)$ adecuado para linealizarla?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q1" value="A"> A) $ z = y^4 $</label></li>
+            <li><label><input type="radio" name="q1" value="B"> B) $ z = y^{-3} $</label></li>
+            <li><label><input type="radio" name="q1" value="C"> C) $ z = y^3 $</label></li>
+            <li><label><input type="radio" name="q1" value="D"> D) $ z = y^{-4} $</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q1', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q1"></div>
+    </div>
+
+    <!-- Pregunta 2 -->
+    <div class="quiz-question">
+        <p><strong>2. ¿Por qué el valor $n = 1$ no requiere la sustitución no lineal $z = y^{1-n}$ en la EDO de Bernoulli?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q2" value="A"> A) Porque la ecuación no tiene solución en los números reales.</label></li>
+            <li><label><input type="radio" name="q2" value="B"> B) Porque para $n=1$, $y^{1-1} = y^0 = 1$, destruyendo la variable $y$.</label></li>
+            <li><label><input type="radio" name="q2" value="C"> C) Porque cuando $n=1$, los términos en $y$ se pueden agrupar y la ecuación ya es separable y lineal directa.</label></li>
+            <li><label><input type="radio" name="q2" value="D"> D) Porque se convierte en una ecuación de segundo orden.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q2', 'C')">Verificar</button>
+        <div class="feedback-box" id="feedback-q2"></div>
+    </div>
+
+    <!-- Pregunta 3 -->
+    <div class="quiz-question">
+        <p><strong>3. Tras sustituir $z = y^{1-n}$ en la EDO $ y' + p(x)y = q(x)y^n $, la nueva ecuación lineal en $z$ expresada como $z' + P(x)z = Q(x)$ adquiere el coeficiente $P(x)$ igual a:</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q3" value="A"> A) $ (1-n) p(x) $</label></li>
+            <li><label><input type="radio" name="q3" value="B"> B) $ n p(x) $</label></li>
+            <li><label><input type="radio" name="q3" value="C"> C) $ \frac{p(x)}{1-n} $</label></li>
+            <li><label><input type="radio" name="q3" value="D"> D) $ -n p(x) $</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q3', 'A')">Verificar</button>
+        <div class="feedback-box" id="feedback-q3"></div>
+    </div>
+
+    <!-- Pregunta 4 -->
+    <div class="quiz-question">
+        <p><strong>4. Al resolver la EDO de Bernoulli $ y' + \frac{1}{x}y = x y^2 $ (Ejercicio 1), obtuvimos $ y(x) = \frac{1}{Cx - x^2} $. Si fijamos la condición inicial $y(1) = 1$, la solución presenta una singularidad o asíntota en $x = 2$. Este fenómeno se denomina en EDOs:</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q4" value="A"> A) Oscilación armónica.</label></li>
+            <li><label><input type="radio" name="q4" value="B"> B) Explosión o escape en tiempo finito (Blow-up).</label></li>
+            <li><label><input type="radio" name="q4" value="C"> C) Decaimiento exponencial estable.</label></li>
+            <li><label><input type="radio" name="q4" value="D"> D) Resonancia lineal.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q4', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q4"></div>
+    </div>
+
+    <!-- Pregunta 5 -->
+    <div class="quiz-question">
+        <p><strong>5. Al resolver el modelo logístico $ P' - rP = -\frac{r}{K}P^2 $ mediante Bernoulli, ¿cuál es el significado físico/biológico de la sustitución $ z = \frac{1}{P} $?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q5" value="A"> A) Representa la tasa de mortalidad instantánea.</label></li>
+            <li><label><input type="radio" name="q5" value="B"> B) Representa el espacio o recurso disponible per cápita por individuo en la población.</label></li>
+            <li><label><input type="radio" name="q5" value="C"> C) Es el número total de especies competidoras.</label></li>
+            <li><label><input type="radio" name="q5" value="D"> D) No tiene ningún significado físico, es solo un truco matemático.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q5', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q5"></div>
+    </div>
+
+</div>
+
+<script>
+    const feedbacks = {
+        'q1': "La correcta es B. Aquí $n = 4$. La fórmula establece $z = y^{1-n} = y^{1-4} = y^{-3}$.",
+        'q2': "La correcta es C. Si $n=1$, la ecuación es $y' + p(x)y = q(x)y \\implies y' = [q(x) - p(x)]y$, la cual se separa directamente como $\\frac{dy}{y} = [q(x) - p(x)]dx$ sin requerir cambios de variable no lineales.",
+        'q3': "La correcta es A. Como demostramos en la teoría, al multiplicar por $(1-n)$ para despejar $z'$, la ecuación lineal equivalente es $z' + P(x)z = Q(x)$ con $P(x) = (1-n)p(x)$ y $Q(x) = (1-n)q(x)$.",
+        'q4': "La correcta es B. En ecuaciones no lineales (como las de Bernoulli), las soluciones pueden escapar hacia infinito en un valor finito de la variable independiente $x$. Esto se conoce como 'Blow-up' o explosión en tiempo finito, limitando el intervalo de validez de la solución.",
+        'q5': "La correcta es B. Como $P$ es la densidad de población, su recíproco $z = 1/P$ mide el 'espacio o recurso promedio' reservado para cada individuo. A medida que la población crece hacia la capacidad de carga $K$, el espacio per cápita $z$ disminuye linealmente hasta estabilizarse en $1/K$."
+    };
+
+    function checkAnswer(questionId, correctOption) {
+        const options = document.getElementsByName(questionId);
+        let selectedValue = null;
+        
+        for (const option of options) {
+            if (option.checked) {
+                selectedValue = option.value;
+                break;
+            }
+        }
+
+        const feedbackBox = document.getElementById('feedback-' + questionId);
+
+        if (!selectedValue) {
+            alert("Por favor, selecciona una respuesta.");
+            return;
+        }
+
+        feedbackBox.style.display = "block";
+        feedbackBox.classList.remove('feedback-correct', 'feedback-incorrect');
+
+        if (selectedValue === correctOption) {
+            feedbackBox.classList.add('feedback-correct');
+            feedbackBox.innerHTML = `<strong>¡Correcto!</strong> <br> ${feedbacks[questionId]}`;
+        } else {
+            feedbackBox.classList.add('feedback-incorrect');
+            feedbackBox.innerHTML = `<strong>Incorrecto (Opción ${selectedValue}).</strong> <br> <em>Explicación:</em> ${feedbacks[questionId]}`;
+        }
+        
+        if(window.MathJax) {
+            MathJax.typesetPromise([feedbackBox]).catch(function (err) {
+                console.log('Error MathJax: ' + err.message);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión: Ecuaciones Diferenciales Separables</title>
+    <!-- Configuración de MathJax -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .canvas-module {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Estilos obligatorios */
+        h2 {
+            color: #1A237E;
+            border-bottom: 3px solid #1A237E;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #1A237E;
+            margin-top: 30px;
+        }
+
+        h4 {
+            color: #00695C; 
+            font-size: 1.2em;
+            margin-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .solucion {
+            color: #D84315;
+            font-weight: bold;
+        }
+
+        hr.separador {
+            border: 0;
+            border-top: 2px solid #1976D2;
+            margin: 40px 0;
+            opacity: 0.6;
+        }
+
+        pre {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        blockquote.prompt-ia {
+            border-left: 5px solid #0056b3;
+            background-color: #e9f2fb;
+            padding: 15px;
+            font-style: italic;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quiz-question {
+            background-color: #f5f7fa;
+            border: 1px solid #e1e4e8;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .quiz-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .quiz-options li { margin: 10px 0; }
+        .quiz-options label { cursor: pointer; display: flex; align-items: center; }
+        .quiz-options input[type="radio"] { margin-right: 10px; transform: scale(1.2); }
+
+        .btn-verificar {
+            background-color: #1976D2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+        .btn-verificar:hover { background-color: #115293; }
+
+        .feedback-box {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .feedback-correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .feedback-incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+
+<div class="canvas-module">
+    <h2>Ecuaciones Diferenciales Separables y Dinámica Poblacional</h2>
+
+    <h3>1. Introducción y Objetivos</h3>
+    <p>Una ecuación diferencial ordinaria de primer orden de la forma \( \frac{dy}{dx} = f(x,y) \) se dice que es <strong>separable</strong> o que tiene variables separables si es posible factorizar la función \( f(x,y) \) como el producto de una función exclusiva de \( x \) por una función exclusiva de \( y \). Es decir: $$ \frac{dy}{dx} = g(x)h(y) $$</p>
+    <p>Este es uno de los métodos más fundamentales en el estudio de las ecuaciones diferenciales. Su importancia radica en que nos permite modelar una infinidad de fenómenos naturales, desde el enfriamiento de un objeto hasta la propagación de un virus y el crecimiento de poblaciones.</p>
+    
+    <p><strong>Objetivos de la sesión:</strong></p>
+    <ul>
+        <li>Identificar ecuaciones diferenciales que son de variables separables.</li>
+        <li>Aplicar técnicas de integración avanzadas para resolver analíticamente ecuaciones separables.</li>
+        <li>Modelar e interpretar sistemas de crecimiento poblacional (Malthus, Logístico y con Efecto Allee).</li>
+    </ul>
+
+    <hr class="separador">
+
+    <h3>2. Desarrollo y Ejercicios Operativos</h3>
+    <p>Para resolver estas ecuaciones, el procedimiento consiste en separar algebraicamente las variables (las \( y \) con \( dy \) y las \( x \) con \( dx \)) y luego integrar ambos miembros de la ecuación: $$ \int \frac{1}{h(y)} dy = \int g(x) dx + C $$</p>
+
+    <h4>Ejercicio 1</h4>
+    <p>Resuelve la ecuación diferencial: $$ x \frac{dy}{dx} = \frac{1}{y^3} $$ </p>
+    <p><span class="solucion">Solución:</span> Separando las variables, multiplicamos por \( y^3 \) y por \( \frac{dx}{x} \): se tiene
+    $$ y^3 dy = \frac{1}{x} dx $$
+    Integrando ambos lados:
+    $$ \int y^3 dy = \int \frac{1}{x} dx \implies \frac{y^4}{4} = \ln|x| + C $$
+    Despejando \( y \), obtenemos la solución general implícita o explícita: $$ y = \pm \sqrt[4]{4\ln|x| + C_1} $$ (donde \( C_1 = 4C \)).</p>
+
+    <h4>Ejercicio 2</h4>
+    <p>Resuelve la ecuación: $$ \frac{dy}{dx} = y^2 e^{-x} $$ </p>
+    <p><span class="solucion">Solución:</span> Separamos variables pasando \( y^2 \) dividiendo y \( dx \) multiplicando:
+    $$ y^{-2} dy = e^{-x} dx $$
+    ntegrando ambos miembros:
+    $$ \int y^{-2} dy = \int e^{-x} dx \implies -y^{-1} = -e^{-x} + C $$
+    Multiplicando por -1 y despejando \( y \): $$ \frac{1}{y} = e^{-x} - C \implies y = \frac{1}{e^{-x} - C} $$)</p>
+
+    <h4>Ejercicio 3</h4>
+    <p>Encuentra la solución de: $$ e^x y \frac{dy}{dx} = e^{-y} + e^{-2x-y} $$</p>
+    <p><span class="solucion">Solución:</span> Primero, usamos propiedades de los exponentes para factorizar el lado derecho:
+    $$ e^x y \frac{dy}{dx} = e^{-y}(1 + e^{-2x}) $$
+    Separamos las variables:
+    $$ y e^y dy = \frac{1 + e^{-2x}}{e^x} dx = (e^{-x} + e^{-3x}) dx $$
+    Integramos. Para el lado izquierdo usamos integración por partes (\( u = y, dv = e^y dy \)):
+    $$ y e^y - e^y = -e^{-x} - \frac{1}{3}e^{-3x} + C $$
+    Esta es la solución general en forma implícita.</p>
+
+    <h4>Ejercicio 4 </h4>
+    <p>Resuelve: $$ \frac{dy}{dx} = \frac{xy + 3x - y - 3}{xy - 2x + 4y - 8} $$</p>
+    <p><span class="solucion">Solución:</span> Agrupamos términos para factorizar numerador y denominador:
+    $$ \frac{dy}{dx} = \frac{x(y + 3) - 1(y + 3)}{x(y - 2) + 4(y - 2)} = \frac{(x - 1)(y + 3)}{(x + 4)(y - 2)} $$
+    Separando variables:
+    $$ \frac{y - 2}{y + 3} dy = \frac{x - 1}{x + 4} dx $$
+    Realizamos división polinomial en ambas integrales:
+    $$ \int \left( 1 - \frac{5}{y + 3} \right) dy = \int \left( 1 - \frac{5}{x + 4} \right) dx $$
+    $$ y - 5\ln|y + 3| = x - 5\ln|x + 4| + C $$</p>
+
+    <h4>Ejercicio 5 (Problema de Valor Inicial)</h4>
+    <p>Resuelve el PVI: $$ \sin(x) dx + y \cos(x) dy = 0 ,\quad\quad \hbox{con }\quad \( y(0) = 2 $$</p>
+    <p><span class="solucion">Solución:</span> Reacomodamos la ecuación:
+    $$ y \cos(x) dy = -\sin(x) dx \implies y dy = -\frac{\sin(x)}{\cos(x)} dx = -\tan(x) dx $$
+    Integrando:
+    $$ \frac{y^2}{2} = \ln|\cos(x)| + C $$
+    Aplicamos la condición inicial \( y(\pi/) = 2 \). 
+    $$ \frac{2^2}{2} = \ln|\cos(0)| + C \implies 2 = 0 + C \implies C = 2 $$
+    Finalmente, la solución es: \( y = \sqrt{2\ln|\cos(x)| + 4} \).</p>
+
+    <hr class="separador">
+
+    <h3>3. Aplicaciones Prácticas: Dinámica Poblacional</h3>
+    <p>Sea \( P(t) \) el tamaño de una población en el tiempo \( t \).</p>
+
+    <h4>A. Modelo de Malthus (Crecimiento Ilimitado)</h4>
+    <p>Supone que la tasa de crecimiento es proporcional a la población presente: $$ \frac{dP}{dt} = kP $$</p>
+    <p><span class="solucion">Solución paso a paso:</span> Separamos variables: \( \frac{dP}{P} = k dt \). Integrando: \( \ln(P) = kt + C \). Despejando: \( P(t) = P_0 e^{kt} \). Este modelo es válido solo a corto plazo.</p>
+
+    <h4>B. Modelo Logístico (Capacidad de Carga)</h4>
+    <p>Introduce un límite ecológico \( N \) (capacidad de carga): $$ \frac{dP}{dt} = kP \left(1 - \frac{P}{N}\right) $$</p>
+    <p><span class="solucion">Solución paso a paso:</span> Separando: \( \frac{dP}{P(1 - P/N)} = k dt \). Usamos fracciones parciales: \( \frac{1}{P} + \frac{1/N}{1 - P/N} \). Integrando: \( \ln|P| - \ln|1 - P/N| = kt + C \). Al despejar, se obtiene la curva sigmoidea: $$ P(t) = \frac{N}{1 + \left(\frac{N - P_0}{P_0}\right) e^{-kt}} $$</p>
+
+    <h4>C. Modelo con Efecto Allee (Umbral de Supervivencia)</h4>
+    <p>En algunas especies, si la población cae por debajo de un umbral \( a \), se extingue. El modelo es: $$ \frac{dP}{dt} = kP(N - P)(P - a) $$ donde \( 0 < a < N \).</p>
+    <p><span class="solucion">Análisis:</span> Separar e integrar requiere 3 fracciones parciales. Lo importante es el análisis cualitativo:</p>
+    <ul>
+        <li>Si \( P > N \): \( dP/dt < 0 \) (la población decrece a \( N \)).</li>
+        <li>Si \( a < P < N \): \( dP/dt > 0 \) (la población crece a \( N \)).</li>
+        <li>Si \( P < a \): \( dP/dt < 0 \) (la población decrece a 0, extinción).</li>
+    </ul>
+
+    <hr class="separador">
+
+    <h3>4. Exploración Interactiva (Formativa)</h3>
+    <p>
+    Entra a la liga siguiente, allí podrás explorar los modelos de Malthus y Logístico y analizar sus diferencias: diferenciales  mediante un archivo de Python en Google-Colab  <a href=" https://colab.research.google.com/drive/1iiOrz2sraznQMP2fisZ9n2Jvxb8eJmyz?usp=sharing" target="_blank">Exploración de modelos de Malthus y Logístico</a>     
+    </p>
+
+
+    <hr class="separador">
+
+    <h3>5. Práctica con Inteligencia Artificial</h3>
+    <p>Para dominar las fracciones parciales en modelos poblacionales avanzados, copia y pega este prompt en tu IA (ChatGPT o Gemini):</p>
+    <blockquote class="prompt-ia">
+        "Actúa como un profesor universitario de ecuaciones diferenciales. Muestra paso a paso cómo integrar la ecuación de variables separables del modelo de crecimiento poblacional con Efecto Allee: dP / [P(N-P)(P-a)] = k dt. Usa fracciones parciales genéricas (A, B, C) y explícame el planteamiento inicial de la descomposición sin resolver todo el álgebra pesada. Termina con una pregunta breve sobre el significado biológico de los signos de las constantes."
+    </blockquote>
+    <p><strong>Tarea de análisis:</strong> Verifica cómo la IA plantea la descomposición en fracciones simples. ¿Aseguró que los factores del denominador sean lineales? Responde a la pregunta biológica como autoevaluación.</p>
+
+    <hr class="separador">
+
+    <h3>6. Autoevaluación Interactiva</h3>
+    <p>Comprueba tus conocimientos conceptuales de esta sesión:</p>
+
+    <!-- Pregunta 1 -->
+    <div class="quiz-question">
+        <p><strong>1. ¿Cuál de las siguientes ecuaciones NO es de variables separables?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q1" value="A"> A) \( y' = e^{x+y} \)</label></li>
+            <li><label><input type="radio" name="q1" value="B"> B) \( y' = x^2 y + y \)</label></li>
+            <li><label><input type="radio" name="q1" value="C"> C) \( y' = x + y \)</label></li>
+            <li><label><input type="radio" name="q1" value="D"> D) \( y' = \frac{x}{y} \)</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q1', 'C')">Verificar</button>
+        <div class="feedback-box" id="feedback-q1"></div>
+    </div>
+
+    <!-- Pregunta 2 -->
+    <div class="quiz-question">
+        <p><strong>2. En el modelo logístico \( P' = kP(1 - P/N) \), ¿qué sucede con la población a largo plazo si la población inicial \( P_0 \) es mayor que cero?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q2" value="A"> A) Crece infinitamente.</label></li>
+            <li><label><input type="radio" name="q2" value="B"> B) Tiende a la capacidad de carga \( N \).</label></li>
+            <li><label><input type="radio" name="q2" value="C"> C) Se extingue (tiende a 0).</label></li>
+            <li><label><input type="radio" name="q2" value="D"> D) Oscila cíclicamente.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q2', 'B')">Verificar</button>
+        <div class="feedback-box" id="feedback-q2"></div>
+    </div>
+
+    <!-- Pregunta 3 -->
+    <div class="quiz-question">
+        <p><strong>3. En el modelo con efecto Allee \( P' = kP(N-P)(P-a) \), ¿qué representa el parámetro \( a \)?</strong></p>
+        <ul class="quiz-options">
+            <li><label><input type="radio" name="q3" value="A"> A) La tasa de crecimiento máxima.</label></li>
+            <li><label><input type="radio" name="q3" value="B"> B) La población inicial.</label></li>
+            <li><label><input type="radio" name="q3" value="C"> C) El umbral mínimo de supervivencia; por debajo de \( a \), la población se extingue.</label></li>
+            <li><label><input type="radio" name="q3" value="D"> D) El número de depredadores.</label></li>
+        </ul>
+        <button class="btn-verificar" onclick="checkAnswer('q3', 'C')">Verificar</button>
+        <div class="feedback-box" id="feedback-q3"></div>
+    </div>
+
+</div>
+
+<script>
+    const feedbacks = {
+        'q1': "Correcto. La opción C (\( y' = x + y \)) es una ecuación lineal, pero NO puede factorizarse como un producto \( g(x)h(y) \). Las demás sí: en A tenemos \( e^x e^y \), en B tenemos \( y(x^2+1) \) y D ya está separada.",
+        'q2': "Correcto. El término \( (1 - P/N) \) actúa como un freno ecológico. Matemáticamente, \( \lim_{t \to \infty} P(t) = N \), independientemente de la población inicial (siempre que \( P_0 > 0 \)).",
+        'q3': "Correcto. Si \( P < a \), el factor \( (P - a) \) se vuelve negativo, haciendo que \( P' < 0 \). Biológicamente, representa una población tan pequeña que los individuos no pueden encontrar parejas para reproducirse."
+    };
+
+    function checkAnswer(questionId, correctOption) {
+        const options = document.getElementsByName(questionId);
+        let selectedValue = null;
+        
+        for (const option of options) {
+            if (option.checked) {
+                selectedValue = option.value;
+                break;
+            }
+        }
+
+        const feedbackBox = document.getElementById('feedback-' + questionId);
+
+        if (!selectedValue) {
+            alert("Por favor, selecciona una respuesta.");
+            return;
+        }
+
+        feedbackBox.style.display = "block";
+        feedbackBox.classList.remove('feedback-correct', 'feedback-incorrect');
+
+        if (selectedValue === correctOption) {
+            feedbackBox.classList.add('feedback-correct');
+            feedbackBox.innerHTML = `<strong>¡Correcto!</strong> <br> ${feedbacks[questionId]}`;
+        } else {
+            feedbackBox.classList.add('feedback-incorrect');
+            feedbackBox.innerHTML = `<strong>Incorrecto (Opción ${selectedValue}).</strong> <br> <em>Explicación:</em> ${feedbacks[questionId]}`;
+        }
+        
+        if(window.MathJax) {
+            MathJax.typesetPromise([feedbackBox]).catch(function (err) {
+                console.log('Error MathJax: ' + err.message);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

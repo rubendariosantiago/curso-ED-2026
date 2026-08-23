@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 7: Coeficientes Indeterminados y el Oscilador Forzado</title>
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+        .content-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        h1, h2, h3 {
+            color: #2C3E50;
+        }
+        h4 {
+            color: #8E44AD; /* Púrpura para diferenciar la sesión */
+            margin-top: 30px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+        }
+        .solucion {
+            color: #2980B9;
+            font-weight: bold;
+        }
+        .teoria-box {
+            background-color: #f5eef8;
+            border-left: 5px solid #9B59B6;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .image-placeholder {
+            border: 2px dashed #bdc3c7;
+            background: #fdfdfd;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            color: #7f8c8d;
+            font-style: italic;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .quiz-container {
+            background-color: #f5f7fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #1ABC9C;
+        }
+        .question {
+            margin-bottom: 25px;
+        }
+        .feedback {
+            display: none;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .feedback.correct {
+            background-color: #d5f5e3;
+            border-left: 5px solid #27ae60;
+            color: #145a32;
+        }
+        .feedback.incorrect {
+            background-color: #fadbd8;
+            border-left: 5px solid #c0392b;
+            color: #78281f;
+        }
+        button.evaluate-btn {
+            background-color: #2C3E50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button.evaluate-btn:hover {
+            background-color: #1a252f;
+        }
+        .alert-warning {
+            background-color: #fcf3cf;
+            border-left: 5px solid #f1c40f;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        
+        <h2>1. ED Lineales No Homogéneas: El Principio de Superposición</h2>
+        <p>En el estudio de sistemas dinámicos reales, las ecuaciones homogéneas describen el comportamiento libre del sistema. Sin embargo, para modelar perturbaciones, entradas de señal o fuerzas externas activas, debemos resolver ecuaciones lineales no homogéneas de segundo orden con coeficientes constantes:</p>
+        $$ ay'' + by' + cy = f(x) $$
+        
+        <div class="teoria-box">
+            <strong>Estructura de la Solución General:</strong>
+            <p>La solución completa del sistema se obtiene superponiendo la respuesta libre y la respuesta forzada:</p>
+            $$ y(x) = y_c(x) + y_p(x) $$
+            <ul>
+                <li><strong>\( y_c(x) \) (Solución Complementaria):</strong> Es la solución de la ED homogénea asociada (\( ay'' + by' + cy = 0 \)). Describe el estado transitorio o la respuesta intrínseca del sistema.</li>
+                <li><strong>\( y_p(x) \) (Solución Particular):</strong> Es una solución específica que satisface la ecuación completa igualada a la excitación externa \(f(x)\). Representa el estado estacionario impulsado por la fuente.</li>
+            </ul>
+            <p><strong>El Método de Coeficientes Indeterminados:</strong> Consiste en proponer una forma analítica para \(y_p\) construida a partir de la familia funcional de \(f(x)\) y sus derivadas sucesivas (polinomios, exponenciales, senos y cosenos), determinando posteriormente los coeficientes numéricos mediante sustitución directa.</p>
+        </div>
+
+        <div class="alert-warning">
+            <strong>¡La Regla de Oro del Solapamiento (Modificación por Dependencia Lineal)!</strong><br>
+            Si cualquier término de la propuesta inicial para \(y_p\) coincide o es linealmente dependiente de algún término contenido en la solución complementaria \(y_c\), la propuesta estándar colapsará a cero al sustituirla en el lado izquierdo. Para evitar esto, se debe multiplicar toda la familia propuesta por \(x\) (o por \(x^2\) si la raíz homogénea es repetida) las veces que sea necesario hasta eliminar completamente cualquier duplicidad.
+        </div>
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>2. Ejercicios </h2>
+        
+        <!-- Ejercicio 1 -->
+        <h4>Ejercicio 1: Polinomio estándar (Sin solapamiento)</h4>
+        <p>Resuelve la ecuación diferencial no homogénea: \( y'' - y' - 2y = 4x^2 \)</p>
+        <p><span class="solucion">Solución:</span></p>
+        
+        <p>Para hallar la solución complementaria \(y_c\), planteamos y resolvemos primero la ecuación característica asociada:</p>
+        $$ r^2 - r - 2 = 0 \implies (r - 2)(r + 1) = 0 \implies r_1 = 2, \quad r_2 = -1 $$
+        <p>Al obtener raíces reales distintas, la respuesta libre toma la forma:</p>
+        $$ y_c(x) = C_1 e^{2x} + C_2 e^{-x} $$
+
+        <p>A continuación, construimos la solución particular \(y_p\). Como la función forzadora es un polinomio de segundo grado \(f(x) = 4x^2\), proponemos un polinomio completo del mismo grado. Dado que no existe coincidencia funcional con las exponenciales de \(y_c\), no hay solapamiento:</p>
+        $$ y_p(x) = Ax^2 + Bx + C $$
+        <p>Calculamos ahora las derivadas de primer y segundo orden, obteniendo:</p>
+        $$ y_p' = 2Ax + B $$
+        $$ y_p'' = 2A $$
+
+        <p>Sustituyendo estas expresiones en la ecuación diferencial original, tenemos:</p>
+        $$ (2A) - (2Ax + B) - 2(Ax^2 + Bx + C) = 4x^2 $$
+        <p>Al reagrupar y ordenar los términos según las potencias decrecientes de \(x\):</p>
+        $$ (-2A)x^2 + (-2A - 2B)x + (2A - B - 2C) = 4x^2 + 0x + 0 $$
+
+        <p>Para que la igualdad se cumpla, igualamos los coeficientes correspondientes en ambos miembros del sistema:</p>
+        <ul>
+            <li>Coeficiente de \(x^2\): \( -2A = 4 \implies A = -2 \)</li>
+            <li>Coeficiente de \(x\): \( -2A - 2B = 0 \implies -2(-2) - 2B = 0 \implies 4 - 2B = 0 \implies B = 2 \)</li>
+            <li>Término independiente \(x^0\): \( 2A - B - 2C = 0 \implies 2(-2) - 2 - 2C = 0 \implies -6 - 2C = 0 \implies C = -3 \)</li>
+        </ul>
+        <p>Obtenemos así la solución particular \( y_p(x) = -2x^2 + 2x - 3 \). Finalmente, combinando la respuesta libre y la forzada, la solución general resulta:</p>
+        $$ y(x) = C_1 e^{2x} + C_2 e^{-x} - 2x^2 + 2x - 3 $$
+
+        <!-- Ejercicio 2 -->
+        <h4>Ejercicio 2: Superposición simple (Senos y Exponenciales)</h4>
+        <p>Resuelve la ecuación diferencial: \( y'' + 4y = 5e^x - 4\cos(x) \)</p>
+        <p><span class="solucion">Solución:</span></p>
+
+        <p>Comenzamos calculando la solución complementaria \(y_c\) mediante su ecuación característica:</p>
+        $$ r^2 + 4 = 0 \implies r = \pm 2i $$
+        <p>Puesto que las raíces son complejas conjugadas con \(\alpha = 0\) y \(\beta = 2\), la solución libre se expresa como:</p>
+        $$ y_c(x) = C_1 \cos(2x) + C_2 \sin(2x) $$
+
+        <p>Para la solución particular \(y_p\), analizamos la excitación externa compuesta. Por el principio de superposición, proponemos \(Ae^x\) para el término exponencial y la combinación armónica \(B\cos(x) + C\sin(x)\) para el coseno. Como la frecuencia del forzador (\(\omega = 1\)) difiere de la frecuencia natural (\(\omega_0 = 2\)), no existe solapamiento:</p>
+        $$ y_p(x) = Ae^x + B\cos(x) + C\sin(x) $$
+        <p>Calculamos ahora la segunda derivada de nuestra propuesta:</p>
+        $$ y_p'' = Ae^x - B\cos(x) - C\sin(x) $$
+
+        <p>Sustituyendo \(y_p\) y \(y_p''\) en la ecuación diferencial original, obtenemos:</p>
+        $$ (Ae^x - B\cos(x) - C\sin(x)) + 4(Ae^x + B\cos(x) + C\sin(x)) = 5e^x - 4\cos(x) $$
+        <p>Agrupando por familias de funciones:</p>
+        $$ 5Ae^x + 3B\cos(x) + 3C\sin(x) = 5e^x - 4\cos(x) + 0\sin(x) $$
+
+        <p>Igualamos los coeficientes de cada término:</p>
+        <ul>
+            <li>Familia exponencial \(e^x\): \( 5A = 5 \implies A = 1 \)</li>
+            <li>Familia cosenoidal \(\cos(x)\): \( 3B = -4 \implies B = -\frac{4}{3} \)</li>
+            <li>Familia senoidal \(\sin(x)\): \( 3C = 0 \implies C = 0 \)</li>
+        </ul>
+
+        <p>Por consiguiente, la solución general completa del sistema es:</p>
+        $$ y(x) = C_1 \cos(2x) + C_2 \sin(2x) + e^x - \frac{4}{3}\cos(x) $$
+
+        <!-- Ejercicio 3 -->
+        <h4>Ejercicio 3: Caso de Solapamiento Simple (Regla de la x)</h4>
+        <p>Resuelve la ecuación diferencial: \( y'' - 5y' + 6y = 2e^{3x} \)</p>
+        <p><span class="solucion">Solución:</span></p>
+
+        <p>Iniciamos hallando la solución complementaria mediante la ecuación característica:</p>
+        $$ r^2 - 5r + 6 = 0 \implies (r-2)(r-3) = 0 \implies r_1 = 2, \quad r_2 = 3 $$
+        <p>De aquí obtenemos la solución libre:</p>
+        $$ y_c(x) = C_1 e^{2x} + C_2 e^{3x} $$
+
+        <p>Al analizar la función forzadora \(f(x) = 2e^{3x}\), notamos que la propuesta base \(Ae^{3x}\) ya está contenida en \(y_c\) debido a la raíz \(r = 3\). Para garantizar la independencia lineal, aplicamos la regla de modificación multiplicando por \(x\):</p>
+        $$ y_p(x) = Axe^{3x} $$
+
+        <p>Calculamos ahora las derivadas aplicando la regla del producto:</p>
+        $$ y_p' = Ae^{3x} + 3Axe^{3x} = e^{3x}(A + 3Ax) $$
+        $$ y_p'' = 3Ae^{3x} + 3e^{3x}(A + 3Ax) = e^{3x}(6A + 9Ax) $$
+
+        <p>Sustituyendo estas expresiones en la ecuación diferencial original, tenemos:</p>
+        $$ e^{3x}(6A + 9Ax) - 5e^{3x}(A + 3Ax) + 6(Axe^{3x}) = 2e^{3x} $$
+        <p>Factorizando la exponencial \(e^{3x}\), observamos cómo los términos en \(x\) se cancelan idénticamente a cero (\(9Ax - 15Ax + 6Ax = 0\)):</p>
+        $$ e^{3x} \left[ (9Ax - 15Ax + 6Ax) + (6A - 5A) \right] = 2e^{3x} \implies A e^{3x} = 2 e^{3x} \implies A = 2 $$
+
+        <p>Con esto obtenemos \(y_p(x) = 2xe^{3x}\). Así, la solución general completa resulta:</p>
+        $$ y(x) = C_1 e^{2x} + C_2 e^{3x} + 2xe^{3x} $$
+
+        <!-- Ejercicio 4 -->
+        <h4>Ejercicio 4: Solapamiento Extremo (Multiplicación por \(x^2\))</h4>
+        <p>Resuelve la ecuación diferencial: \( y'' - 4y' + 4y = 6e^{2x} \)</p>
+        <p><span class="solucion">Solución:</span></p>
+
+        <p>Comenzamos planteando la ecuación característica para determinar la solución complementaria:</p>
+        $$ r^2 - 4r + 4 = 0 \implies (r-2)^2 = 0 \implies r_1 = r_2 = 2 $$
+        <p>Al tratarse de una raíz real repetida, la solución libre toma la forma:</p>
+        $$ y_c(x) = C_1 e^{2x} + C_2 x e^{2x} $$
+
+        <p>En este caso, la propuesta inicial \(Ae^{2x}\) colisiona con el primer término de \(y_c\). Si multiplicamos por \(x\), obtenemos \(Axe^{2x}\), la cual también está en \(y_c\). Para romper la dependencia lineal con todo el espacio homogéneo, debemos multiplicar por \(x^2\):</p>
+        $$ y_p(x) = Ax^2e^{2x} $$
+
+        <p>Calculamos ahora sus derivadas correspondientes:</p>
+        $$ y_p' = 2Axe^{2x} + 2Ax^2e^{2x} = 2Ae^{2x}(x + x^2) $$
+        $$ y_p'' = 2Ae^{2x}(1 + 2x) + 4Ae^{2x}(x + x^2) = e^{2x}(2A + 8Ax + 4Ax^2) $$
+
+        <p>Sustituyendo en la ecuación diferencial original, obtenemos:</p>
+        $$ e^{2x}(2A + 8Ax + 4Ax^2) - 4e^{2x}(2Ax + 2Ax^2) + 4(Ax^2e^{2x}) = 6e^{2x} $$
+        <p>Factorizando \(e^{2x}\) y agrupando coeficientes por potencias de \(x\):</p>
+        $$ e^{2x} \left[ x^2(4A - 8A + 4A) + x(8A - 8A) + 2A \right] = 6e^{2x} $$
+        <p>Vemos que las potencias \(x^2\) y \(x\) se anulan por completo, simplificándose a:</p>
+        $$ 2A e^{2x} = 6 e^{2x} \implies 2A = 6 \implies A = 3 $$
+
+        <p>De este modo, la solución particular es \(y_p(x) = 3x^2e^{2x}\) y la solución general completa es:</p>
+        $$ y(x) = C_1 e^{2x} + C_2 x e^{2x} + 3x^2 e^{2x} $$
+
+        <!-- Ejercicio 5 -->
+        <h4>Ejercicio 5: Resonancia en un Problema de Valor Inicial (PVI)</h4>
+        <p>Resuelve el PVI: \( y'' + y = 2\sin(x) \), sujeto a las condiciones iniciales \( y(0)=1 \) y \( y'(0)=0 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+
+        <p>En primer lugar, resolvemos la ecuación característica homogénea \(r^2 + 1 = 0 \implies r = \pm i\), lo que nos da la solución complementaria:</p>
+        $$ y_c(x) = C_1 \cos(x) + C_2 \sin(x) $$
+
+        <p>Dado que la fuerza impulsora \(2\sin(x)\) coincide con la frecuencia natural del oscilador (\(\omega_0 = 1\)), existe solapamiento directo con \(y_c\). Modificamos la propuesta armónica multiplicando por \(x\):</p>
+        $$ y_p(x) = x(A\cos(x) + B\sin(x)) = Ax\cos(x) + Bx\sin(x) $$
+
+        <p>Calculamos sus derivadas aplicando la regla del producto:</p>
+        $$ y_p' = A\cos(x) - Ax\sin(x) + B\sin(x) + Bx\cos(x) $$
+        $$ y_p'' = -2A\sin(x) - Ax\cos(x) + 2B\cos(x) - Bx\sin(x) $$
+
+        <p>Sustituyendo en la ecuación diferencial \(y'' + y = 2\sin(x)\), tenemos:</p>
+        $$ (-2A\sin(x) - Ax\cos(x) + 2B\cos(x) - Bx\sin(x)) + (Ax\cos(x) + Bx\sin(x)) = 2\sin(x) $$
+        <p>Los términos en \(x\cos(x)\) y \(x\sin(x)\) se cancelan mutuamente, simplificándose a:</p>
+        $$ -2A\sin(x) + 2B\cos(x) = 2\sin(x) $$
+
+        <p>Igualando coeficientes obtenemos \( -2A = 2 \implies A = -1 \) y \( 2B = 0 \implies B = 0 \), por lo que la solución particular resulta \(y_p(x) = -x\cos(x)\).</p>
+        
+        <p>La solución general del sistema es entonces:</p>
+        $$ y(x) = C_1 \cos(x) + C_2 \sin(x) - x\cos(x) $$
+
+        <p>Aplicamos la primera condición inicial \(y(0) = 1\) para hallar \(C_1\):</p>
+        $$ y(0) = C_1(1) + C_2(0) - (0)(1) = 1 \implies C_1 = 1 $$
+
+        <p>Derivamos la solución general para aplicar la condición de velocidad inicial \(y'(0) = 0\):</p>
+        $$ y'(x) = -C_1\sin(x) + C_2\cos(x) - \left[\cos(x) - x\sin(x)\right] $$
+        $$ y'(0) = -1(0) + C_2(1) - (1 - 0) = 0 \implies C_2 - 1 = 0 \implies C_2 = 1 $$
+
+        <p>Por lo tanto, la solución única del problema de valor inicial es:</p>
+        $$ y(x) = \cos(x) + \sin(x) - x\cos(x) $$
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>3. Aplicación: El Oscilador Forzado y la Resonancia</h2>
+        <p>Consideremos un sistema mecánico masa-resorte-amortiguador sometido a una fuerza impulsora periódica continua:</p>
+        $$ mx'' + cx' + kx = F_0 \cos(\omega t) $$
+        <p><strong>El Fenómeno Físico de la Resonancia (Interpretación Física del Ejercicio 5):</strong></p>
+        <p>En ausencia de fricción o amortiguamiento (\(c = 0\)), la frecuencia natural del sistema viene dada por \(\omega_0 = \sqrt{k/m}\). Cuando la frecuencia de la excitación externa coincide exactamente con la natural (\(\omega = \omega_0\)), la fuerza aplicada transfiere energía al sistema en perfecta fase con su movimiento. Matemáticamente, esto obliga a multiplicar la solución particular por la variable temporal \(t\), generando un término de la forma \( t \sin(\omega t) \). La amplitud oscilatoria crece lineal e indefinidamente, provocando fallas estructurales por sobreesfuerzo en puentes, tuberías o sistemas mecánicos.</p>
+              <p>En la figura siguiente se muestra la gráfica de un oscilador forzado <//p>
+      <div style="text-align: center;">
+             <img src="img/s7fig1.png" alt="ejemplo" width="450" height="300">
+      </div>
+
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>4. Práctica con Inteligencia Artificial</h2>
+        <p>El paso crítico en el método de Coeficientes Indeterminados es determinar la estructura correcta de \(y_p\). Utiliza el siguiente prompt estructurado en un modelo de lenguaje para poner a prueba tu capacidad de razonamiento:</p>
+        <pre>
+Actúa como un profesor riguroso de Ecuaciones Diferenciales.
+Te voy a proporcionar una ecuación diferencial no homogénea. Tu única tarea es preguntarme cuál debe ser la propuesta analítica de mi "Solución Particular (y_p)".
+Si cometo un error por no aplicar la regla de modificación por solapamiento (multiplicar por x o x^2), corrígeme mostrándome explícitamente las raíces del polinomio característico de la solución complementaria.
+Inicia la sesión planteándome la siguiente ecuación diferencial para resolver: y'' - 6y' + 9y = 5e^(3x)
+        </pre>
+
+        <hr style="border: 0; border-top: 2px solid #bdc3c7; margin: 40px 0;">
+
+        <h2>5. Autoevaluación Interactiva</h2>
+        <p>Demuestra tu dominio sobre el método de coeficientes indeterminados y sus implicaciones físicas completando el siguiente cuestionario.</p>
+
+        <div class="quiz-container">
+            <form id="session7Quiz">
+                <!-- Pregunta 1: Conceptual -->
+                <div class="question">
+                    <strong>1. CONCEPTUAL: ¿Cuál es el propósito del Principio de Superposición en ecuaciones diferenciales lineales no homogéneas?</strong><br>
+                    <input type="radio" name="q1" value="a"> A) Encontrar únicamente la solución de \(f(x)\) e ignorar las condiciones iniciales.<br>
+                    <input type="radio" name="q1" value="b"> B) Establecer que la solución general es la suma de la solución complementaria \(y_c\) y una solución particular \(y_p\).<br>
+                    <input type="radio" name="q1" value="c"> C) Multiplicar las funciones seno y coseno para evitar resonancia.<br>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2: Conceptual/Aplicación -->
+                <div class="question">
+                    <strong>2. APLICACIÓN: Físicamente, ¿qué representa el factor de multiplicación \(x\) (o \(t\)) en \(y_p\) cuando ocurre un solapamiento con \(y_c\) en un oscilador sin fricción?</strong><br>
+                    <input type="radio" name="q2" value="a"> A) Que el sistema se detendrá rápidamente debido a un sobreamortiguamiento severo.<br>
+                    <input type="radio" name="q2" value="b"> B) Es una convención puramente matemática que no altera las propiedades físicas del sistema.<br>
+                    <input type="radio" name="q2" value="c"> C) Representa el fenómeno de resonancia pura, en el que la amplitud oscilatoria crece ilimitadamente con el tiempo.<br>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3: Proceso Algorítmico 1 -->
+                <div class="question">
+                    <strong>3. ALGORITMO: Para la ED \( y'' + 3y' + 2y = 4e^{-x} \), las raíces homogéneas son \(r = -1, -2\). ¿Cuál es la propuesta correcta para \(y_p\)?</strong><br>
+                    <input type="radio" name="q3" value="a"> A) \( y_p = A e^{-x} \)<br>
+                    <input type="radio" name="q3" value="b"> B) \( y_p = Ax e^{-x} \)<br>
+                    <input type="radio" name="q3" value="c"> C) \( y_p = Ax^2 e^{-x} \)<br>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4: Proceso Algorítmico 2 -->
+                <div class="question">
+                    <strong>4. ALGORITMO: Para la ED \( y'' + 9y = \sin(3x) \), la solución complementaria es \( y_c = C_1\cos(3x) + C_2\sin(3x) \). Identifica la forma correcta de \(y_p\):</strong><br>
+                    <input type="radio" name="q4" value="a"> A) \( y_p = A\cos(3x) + B\sin(3x) \)<br>
+                    <input type="radio" name="q4" value="b"> B) \( y_p = Ax\sin(3x) \)<br>
+                    <input type="radio" name="q4" value="c"> C) \( y_p = x(A\cos(3x) + B\sin(3x)) \)<br>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5: Operativa -->
+                <div class="question">
+                    <strong>5. OPERATIVA: Encuentra el valor del coeficiente indeterminado \(A\) para la solución particular de \( y'' - 4y = 5e^{3x} \).</strong><br>
+                    <input type="radio" name="q5" value="a"> A) \( A = 5 \)<br>
+                    <input type="radio" name="q5" value="b"> B) \( A = 1 \)<br>
+                    <input type="radio" name="q5" value="c"> C) \( A = -1 \)<br>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <button type="button" class="evaluate-btn" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Script de Evaluación e Interacción -->
+    <script>
+        function evaluateQuiz() {
+            const answers = {
+                q1: { 
+                    correct: 'b', 
+                    explanation: 'El Principio de Superposición para EDs no homogéneas establece que la solución general es la suma \\(y(x) = y_c(x) + y_p(x)\\). La solución complementaria \\(y_c\\) modela el estado transitorio libre (comportamiento intrínseco del sistema) y la solución particular \\(y_p\\) representa la respuesta forzada en estado estacionario provocada por la fuente externa \\(f(x)\\).'
+                },
+                q2: { 
+                    correct: 'c', 
+                    explanation: 'Físicamente, la inclusión del factor lineal \\(t\\) o \\(x\\) en la solución particular genera un término de amplitud modulada que crece ilimitadamente. Ocurre cuando la frecuencia de excitación coincide exactamente con la frecuencia natural del oscilador no amortiguado, originando el fenómeno de Resonancia Pura.'
+                },
+                q3: { 
+                    correct: 'b', 
+                    explanation: 'Como la función forzadora \\(4e^{-x}\\) comparte la raíz \\(r = -1\\) con la solución complementaria \\(y_c = C_1 e^{-x} + C_2 e^{-2x}\\), la propuesta ingenua \\(Ae^{-x}\\) se anularía al ser sustituida. Al multiplicar por \\(x\\), se obtiene \\(y_p = Ax e^{-x}\\), garantizando la independencia lineal requerida.'
+                },
+                q4: { 
+                    correct: 'c', 
+                    explanation: 'La fuerza externa incluye el término \\(\\sin(3x)\\), el cual está presente en \\(y_c = C_1\\cos(3x) + C_2\\sin(3x)\\). Para resolver el solapamiento se debe multiplicar la familia armónica completa por \\(x\\), resultando en \\(y_p = x(A\\cos(3x) + B\\sin(3x))\\).'
+                },
+                q5: { 
+                    correct: 'b', 
+                    explanation: 'Propuesta: \\(y_p = Ae^{3x}\\). Sus derivadas son \\(y_p\' = 3Ae^{3x}\\) y \\(y_p\'\' = 9Ae^{3x}\\). Sustituyendo en la ED: \\(9Ae^{3x} - 4(Ae^{3x}) = 5e^{3x} \\implies 5Ae^{3x} = 5e^{3x} \\implies 5A = 5 \\implies A = 1\\).'
+                }
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                let qName = 'q' + i;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${qName}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected) {
+                    if (selected.value === answers[qName].correct) {
+                        feedbackDiv.className = 'feedback correct';
+                        feedbackDiv.innerHTML ='<strong>¡Correcto!.</strong> ' +  answers[qName].explanation;
+                    } else {
+                        feedbackDiv.className = 'feedback incorrect';
+                        feedbackDiv.innerHTML = '<strong>¡Incorrecto!. .</strong> ' + answers[qName].explanation;
+                    }
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = 'Por favor, selecciona una respuesta antes de evaluar.';
+                }
+            }
+
+            // Re-renderizado de MathJax para las explicaciones dinámicas
+            MathJax.typesetPromise().then(() => {
+                console.log("MathJax re-renderizado exitosamente.");
+            }).catch((err) => console.log('Error al re-renderizar MathJax: ', err.message));
+        }
+    </script>
+</body>
+</html>

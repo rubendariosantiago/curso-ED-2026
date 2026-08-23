@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 8: Variación de Parámetros y Circuitos RLC</title>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e1b4b;
+            --primary-accent: #3730a3;
+            --secondary: #4338ca;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-border: #16a34a;
+            --success-text: #14532d;
+            --danger-bg: #fef2f2;
+            --danger-border: #dc2626;
+            --danger-text: #7f1d1d;
+            --accent-box-bg: #eff6ff;
+            --accent-box-border: #2563eb;
+            --quiz-bg: #f5f7fa;
+            --solution-color: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: var(--primary-accent);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #334155;
+        }
+
+        /* Callout Boxes */
+        .box {
+            padding: 20px 24px;
+            border-radius: 10px;
+            margin: 24px 0;
+            border-left: 5px solid;
+        }
+
+        .box-theory {
+            background-color: var(--accent-box-bg);
+            border-color: var(--accent-box-border);
+        }
+
+        .box-theory h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+
+        .box-danger {
+            background-color: var(--danger-bg);
+            border-color: var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        /* Exercise Styling */
+        .exercise-card {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-accent);
+            margin-bottom: 12px;
+        }
+
+        .exercise-statement {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .solution-tag {
+            color: var(--solution-color);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exercise-body p {
+            margin-bottom: 14px;
+        }
+
+        /* Code Block */
+        pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        /* Image Placeholder */
+        .figure-placeholder {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 35px;
+            text-align: center;
+            color: var(--text-muted);
+            margin: 20px 0;
+        }
+
+        .figure-placeholder svg {
+            width: 48px;
+            height: 48px;
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 1.5;
+            margin-bottom: 8px;
+        }
+
+        /* Quiz Styling */
+        .quiz-section {
+            background: var(--quiz-bg);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--secondary);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .question-block {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input[type="radio"] {
+            accent-color: var(--secondary);
+            width: 16px;
+            height: 16px;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 12px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .feedback.correct {
+            background-color: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .feedback.incorrect {
+            background-color: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        .btn-evaluate {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .btn-evaluate:hover {
+            background-color: var(--primary-accent);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>Sesión 8: Variación de Parámetros y Circuitos RLC</h1>
+        </header>
+
+        <section>
+            <h2>1. El Método de Variación de Parámetros</h2>
+            <p>El método de coeficientes indeterminados resulta ser una herramienta práctica y ágil, pero presenta una limitación fundamental: requiere estrictamente que la función no homogénea \(R(x)\) pertenezca a la familia de polinomios, exponenciales o funciones seno y coseno. Frente a términos más complejos como \(\sec(x)\), \(\tan(x)\) o \(\frac{1}{x}\), dicha técnica queda inoperante.</p>
+            <p>Para abordar estas situaciones sin restricción de forma funcional, recurrimos al método de <strong>Variación de Parámetros</strong> introducido por Joseph-Louis Lagrange. Este enfoque posee un carácter universal: permite resolver cualquier ecuación diferencial lineal no homogénea siempre que sea posible resolver la ecuación homogénea asociada y calcular las integrales resultantes.</p>
+
+
+    <p>Deducimos ahora algunas expresiones importantes sobre este métodos. Consideremos la ecuación diferencial general:
+$$y'' + P(x)y' + Q(x)y = R(x)$$
+Suponemos que la ecuación homogénea:
+$$y'' + P(x)y' + Q(x)y = 0$$ tiene
+solución general como una combinación lineal de dos soluciones linealmente independientes \(y_1(x)\) y \(y_2(x)\):
+$$y_h(x) = C_1 y_1(x) + C_2 y_2(x) $$
+Sustituimos las constantes \(C_1\) y \(C_2\) por funciones incógnitas \(u_1(x)\) y \(u_2(x)\), así obtenemos
+$$y_p(x) = u_1(x)y_1(x) + u_2(x)y_2(x)$$
+Derivamos la solución propuesta:
+$$ y_p' = (u_1' y_1 + u_2' y_2) + (u_1 y_1' + u_2 y_2')$$
+Imponemos la condición auxiliar para simplificar el cálculo:
+$$ u_1' y_1 + u_2' y_2 = 0$$
+Entonces, la primera derivada se reduce a: 
+$$y_p' = u_1 y_1' + u_2 y_2'$$
+Derivando otra vez resulta   $$y_p'' = (u_1' y_1' + u_2' y_2') + (u_1 y_1'' + u_2 y_2'')$$
+Sustituimos \(y_p\), \(y_p'\) y \(y_p''\) en la ecuación diferencial inicial y agrupamos términos respecto a \(u_1\) y \(u_2\):
+$$u_1(y_1'' + P y_1' + Q y_1) + u_2(y_2'' + P y_2' + Q y_2) + u_1' y_1' + u_2' y_2' = R(x)$$
+Como \(y_1\) y \(y_2\) son soluciones de la homogénea, los términos entre paréntesis se anulan, obtenemos entonces:
+$$u_1' y_1' + u_2' y_2' = R(x)$$
+Formamos un sistema de ecuaciones lineales siguiente, que nos permitirá  conocer  \(u_1'\) y \(u_2'\) 
+$$ \begin{eqnarray} u_1' y_1 + u_2' y_2  &=&0; \\ u_1' y_1' + u_2' y_2' &=& R(x) \end{eqnarray}$$
+ Al aplicar la regla de Cramer se tiene 
+    $$ u_1'= \frac{ \begin{vmatrix} 0 & y_2 \\  R(x) & y_2' \end{vmatrix}  }{  \begin{vmatrix} y_1 & y_2 \\ y_1' & y_2' \end{vmatrix} } =\frac{-y_2R(x)}{W} ; $$
+        $$ u_2'= \frac{ \begin{vmatrix} y_1 & 0 \\ y_1' & R(x) \end{vmatrix}  }{  \begin{vmatrix} y_1 & y_2 \\ y_1' & y_2' \end{vmatrix} } =\frac{y_1R(x)}{W} $$
+        donde hemos usado el wronskiano \(W\) definido por
+                $$ W = \begin{vmatrix} y_1 & y_2 \\ y_1' & y_2' \end{vmatrix} = y_1 y_2' - y_2 y_1' $$ 
+    Integramos para obtener \(u_1\) y \(u_2\):
+$$ u_1(x) = \int \frac{-y_2 R(x)}{W} dx, \quad u_2(x) = \int \frac{y_1 R(x)}{W} dx $$
+La solución particular queda definida como:
+$$y_p(x) = y_1(x) \int \frac{-y_2 R(x)}{W} dx + y_2(x) \int \frac{y_1 R(x)}{W} dx$$
+ Como consecuencia, tenemos el siguiente algoritmo de solución.</p>
+            
+
+            <div class="box box-theory">
+                <h3>Algoritmo de Variación de Parámetros</h3>
+                <p>
+                    <ul>
+                        	<li>  Comenzamos transformando la ecuación a su forma estándar para garantizar que el coeficiente del término de mayor orden sea unitario, dividiendo entre \(a\) en caso necesario  $$ y'' + P(x)y' + Q(x)y = R(x) $$</li>
+       			<li>Posteriormente, resolvemos la parte homogénea para hallar el conjunto fundamental de soluciones y construir la solución complementaria \(y_c = C_1 y_1 + C_2 y_2\). Con estas soluciones, evaluamos el wronskiano:
+                $$ W = \begin{vmatrix} y_1 & y_2 \\ y_1' & y_2' \end{vmatrix} = y_1 y_2' - y_2 y_1' $$ </li>
+                        	<li>Asumimos que la solución particular adopta la forma de parámetros variables \(y_p = u_1 y_1 + u_2 y_2\). Las derivadas de estas funciones desconocidas se determinan mediante las expresiones:
+                $$ u_1' = -\frac{y_2 R(x)}{W} \quad \text{y} \quad u_2' = \frac{y_1 R(x)}{W} $$  </li>
+       			<li> Finalmente, integramos ambas derivadas para obtener las funciones \(u_1\) y \(u_2\), sustituyéndolas en la solución particular para construir la solución general del sistema.</li>
+		</ul>
+    </p>
+            </div>
+
+            <div class="box box-danger">
+                Un detalle crítico al aplicar este método consiste en verificar que la ecuación diferencial se encuentre expresada en su forma estándar antes de identificar la función \(R(x)\). Si se omite la división previa entre el coeficiente principal, la función forzadora será incorrecta y alterará por completo el cálculo de los parámetros.
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>2. Ejercicios Resueltos</h2>
+
+            <!-- Ejercicio 1 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 1</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial: $$y'' + y = \sec(x) $$
+                </div>
+                
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Iniciamos el desarrollo resolviendo la ecuación homogénea asociada \(y'' + y = 0\). Su ecuación característica es 
+                    \(r^2 + 1 = 0\), cuyas raíces complejas son \(r = \pm i\). De este modo, obtenemos las funciones del conjunto fundamental 
+                    \(y_1 = \cos(x)\) y \(y_2 = \sin(x)\). Por lo cual, la solución complementaria está dada por:
+                    $$ y_c = C_1 \cos(x) + C_2 \sin(x) $$
+                    A continuación, calculamos el Wronskiano asociado a estas funciones principales:
+                    $$ W = \begin{vmatrix} \cos(x) & \sin(x) \\ -\sin(x) & \cos(x) \end{vmatrix} = \cos^2(x) + \sin^2(x) = 1 $$
+                  Dado que el coeficiente de \(y''\) es uno, identificamos directamente la función  \(R(x) = \sec(x)\). 
+                        $$ u_1= -\int{ \frac{y_2 R(x)}{W} }dx=- \int{ \frac{\sin(x)\sec(x)}{1}   } dx=- \int{ \tan(x)  } = \ln|\cos(x)|   $$
+                    $$ u_2= \int{\frac{y_1 R(x)}{W} } dx= \int{ \frac{\cos(x)\sec(x)}{1}   }  dx=  \int{dx  } =x $$                
+Sustituyendo estos resultados construimos la solución particular $$y_p = \cos(x)\ln|\cos(x)| + x\sin(x).$$
+ Al unirla con la solución homogénea, encontramos la solución general:</p>
+                    $$ y(x) = C_1 \cos(x) + C_2 \sin(x) + \cos(x)\ln|\cos(x)| + x\sin(x) $$
+                </div>
+            </div>
+
+            <!-- Ejercicio 2 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 2</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial: $$y'' + y = \tan(x) $$
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>La parte homogénea coincide con el problema anterior, por lo que disponemos del mismo conjunto fundamental compuesto por \(y_1 = \cos(x)\) y \(y_2 = \sin(x)\), y el Wronskiano \(W = 1\).</p>
+
+                    <p>Calculamos ahora las derivadas de las funciones incógnita considerando la función\(R(x) = \tan(x)\):</p>
+                    $$ u_1' = -\sin(x)\tan(x) = -\frac{\sin^2(x)}{\cos(x)} = -\frac{1 - \cos^2(x)}{\cos(x)} = \cos(x) - \sec(x) $$
+                    $$ u_2' = \cos(x)\tan(x) = \sin(x) $$
+
+                    <p>Al integrar ambas expresiones obtenemos los parámetros correspondientes:</p>
+                    $$ u_1 = \int (\cos(x) - \sec(x)) \, dx = \sin(x) - \ln|\sec(x) + \tan(x)| $$
+                    $$ u_2 = \int \sin(x) \, dx = -\cos(x) $$
+
+                    <p>Al estructurar la solución particular y multiplicar por sus respectivas soluciones base tenemos
+                     $$ y_p = \left(\sin(x) - \ln|\sec(x) + \tan(x)|\right)\cos(x) - \cos(x)\sin(x), $$ simplificando
+                    $$ y_p = -\cos(x)\ln|\sec(x) + \tan(x)| $$
+
+                    <p>Por lo tanto, agrupando términos semejantes con la parte homogénea, la solución general queda expresada como:</p>
+                    $$ y(x) = C_1 \cos(x) + C_2 \sin(x) - \cos(x)\ln|\sec(x) + \tan(x)| $$
+                </div>
+            </div>
+
+            <!-- Ejercicio 3 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 3</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial para el dominio \(x > 0\): 
+                    $$y'' - 2y' + y = \frac{e^x}{x} $$
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Comenzamos por resolver la ecuación homogénea asociada. En este caso, el polinomio característico es 
+                      $$r^2 - 2r + 1 = (r-1)^2=0 \implies y_1 = e^x \quad \hbox{y} \quad   y_2 = x e^x. $$
+                 Evaluamos el wronskiano de estas soluciones:
+                    $$ W =\begin{vmatrix} e^x  & xe^{x} \\  e^x & e^{x}+xe^x \end{vmatrix} = e^x(e^x + x e^x) - (x e^x)(e^x) = e^{2x} + x e^{2x} - x e^{2x} = e^{2x} $$
+
+                    <p>Calculamos ahora \(u_1\) , \(u_2\) sustituyendo la función  \(R(x) = \frac{e^x}{x}\) en sus expresiones</p>
+                    $$ u_1= -\int{ \frac{y_2 R(x)}{W} }dx = - \int{  \frac{(x e^x)(e^x / x)}{e^{2x}} }dx = -\int{ \frac{e^{2x}}{e^{2x}}}dx = -\int dx=-x $$
+                    $$ u_2= \int{\frac{y_1 R(x)}{W} } dx =\int{   \frac{(e^x)(e^x / x)}{e^{2x} }}dx = \int{  \frac{e^{2x} / x}{e^{2x} }  }dx=\int{ \frac{dx}{x}}=\ln(x)$$
+   Con ello, construimos la solución particular:</p>
+                    $$ y_p = -x e^x + x e^x \ln(x) $$
+
+                    <p>Es importante observar que el término \(-x e^x\) presenta la misma forma funcional que la solución homogénea \(C_2 x e^x\), por lo que puede absorber dentro de dicha constante arbitraria. Así, la solución general se simplifica de forma elegante a:</p>
+                    $$ y(x) = C_1 e^x + C_2 x e^x + x e^x \ln(x) $$
+                </div>
+            </div>
+
+            <!-- Ejercicio 4 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 4</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial: $$y'' - 3y' + 2y = \frac{1}{1+e^{-x}} $$
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Iniciamos resolviendo la ecuación homogénea. La ecuación característica es:
+                    $$ r^2-3r+2=(r-2)(r-1)$$
+                    Sus raíces características  son  \(r_1 = 1\);  \(r_2 = 2\). Por lo cual,  tenemos las soluciones 
+                    $$y_1 = e^x \quad \hbox{ y } \quad  y_2 = e^{2x}.$$ 
+                    A partir de estas expresiones, el Wronskiano es:
+                   $$ W = \begin{vmatrix} e^x  & e^{2x} \\  e^x & 2e^{2x} \end{vmatrix} = (e^x)(2e^{2x}) - (e^{2x})(e^x) = e^{3x} $$
+                   Tenemos que:
+                     $$ u_1 = -\int{ \frac{y_2 R(x)}{W} }dx = -\int{ \frac{e^{2x} }{e^{3x}(1+e^{-x}) }}dx = -\int{\frac{e^{-x}}{1+e^{-x}}}dx $$
+                    $$ u_2= \int{\frac{y_1 R(x)}{W} } dx=\int{\frac{e^x}{e^{3x}(1+e^{-x}) }} dx= \int{\frac{e^{-2x}}{1+e^{-x}} }dx$$
+                  Hacemos  ahora el cambio de variable 
+                  $$u = e^{-x}; \quad du=-e^{-x} dx;$$ de donde
+                  $$ \frac{e^{-x}dx}{1+e^{-x}} = \frac{du}{1+u };$$ y 
+                  $$ \frac{e^{-2x}dx}{1+e^{-x}}=\frac{e^{-x}e^{-x}dx}{1+e^{-x}}= -\frac{udu}{1+u}=\left(-1+\frac{ 1}{1+u} \right) du   $$ 
+                  integrando tenemos;
+                    $$ u_1 = \int{ \frac{du}{1+u }} =\ln(1+u)=\ln(1+e^{-x}) $$
+                    $$ u_2  =\int{  \left( -1 +  \frac{1}{1+u} \right) }  du=-u+\ln(1+u)=-e^{-x}+\ln(1+e^{-x})   $$
+                 Al multiplicar por $y_1$ e $y_2$ , se concluye que la solución general está dada por:</p>
+                    $$ y(x) = C_1 e^x + C_2 e^{2x} + (e^x + e^{2x})\ln(1+e^{-x}) $$
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>3. Aplicación Física: Circuito RLC</h2>
+            
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 5: Aplicación en Ingeniería</div>
+                <div class="exercise-statement">
+                    Determina la respuesta en la carga \(q(t)\) de un capacitor perteneciente a un circuito RLC críticamente amortiguado modelado por la siguiente ecuación diferencial:
+                    $$ q'' + 2q' + q = \frac{e^{-t}}{t^2+1} $$
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Analizamos primero el comportamiento transitorio resolviendo la parte homogénea. La raíz doble \(r = -1\) nos entrega el conjunto de soluciones \(q_1(t) = e^{-t}\) y \(q_2(t) = t e^{-t}\), cuyo determinante Wronskiano resulta ser \(W = e^{-2t}\).</p>
+
+                    <p>Calculamos ahora las derivadas de los parámetros asociadas a la perturbación externa:</p>
+                    $$ u_1' = -\frac{t e^{-t}}{e^{-2t}} \cdot \frac{e^{-t}}{t^2+1} = -\frac{t}{t^2+1} $$
+                    $$ u_2' = \frac{e^{-t}}{e^{-2t}} \cdot \frac{e^{-t}}{t^2+1} = \frac{1}{t^2+1} $$
+
+                    <p>Al realizar la integración de ambas expresiones obtenemos 
+                    $$ u_1 = -int{\frac{t}{t^2+1} }dt= -\frac{1}{2}\ln(t^2+1) $$ y $$ \(u_2 =  = \int{\frac{1}{t^2+1}{dt= \arctan(t). $$
+                    Ensamblando estos términos con la parte transitoria, determinamos la respuesta completa en la carga del sistema:</p>
+                    $$ q(t) = C_1 e^{-t} + C_2 t e^{-t} - \frac{1}{2}e^{-t}\ln(t^2+1) + t e^{-t}\arctan(t) $$
+                                   <p> La gráfica siguiente ilustra cómo la carga incrementa progresivamente al absorber la energía recibida del pulso externo y, posteriormente, decae hacia cero de forma exponencial a medida que el sistema disipa dicha energía.</p>
+ 
+                 <div style="text-align: center;">
+             <img src="img/s8fig1.png" alt="ejemplo" width="450" height="300">
+                  </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>4. Práctica de Apoyo con Inteligencia Artificial</h2>
+            <p>El cálculo correcto del Wronskiano representa la piedra angular para evitar errores en este método. Se sugiere utilizar el siguiente prompt de entrenamiento en una herramienta de IA:</p>
+            
+<pre><code>Actúa como un profesor universitario de Ecuaciones Diferenciales.
+Dame 3 pares de funciones (y1, y2) que sean solución de alguna 
+ecuación diferencial homogénea de segundo orden.
+Pídeme que calcule el Wronskiano de la primera. Una vez que te dé 
+el resultado, corrígeme si me equivoco, y luego dame la segunda. 
+Mantén las funciones a nivel universitario intermedio.
+</code></pre>
+        </section>
+
+        <hr>
+
+        <section class="quiz-section">
+            <h2>5. Autoevaluación Interactiva</h2>
+            <p>Selecciona la respuesta que consideres correcta para cada una de las siguientes preguntas teóricas y prácticas.</p>
+
+            <form id="quizForm">
+                <!-- Pregunta 1 -->
+                <div class="question-block">
+                    <div class="question-title">1.  ¿Cuál es la principal ventaja del método de variación de parámetros frente al de coeficientes indeterminados?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q1" value="a"> A) Requiere menos pasos de integración.</label>
+                        <label class="option-label"><input type="radio" name="q1" value="b"> B) No necesita determinar la solución homogénea \(y_c\).</label>
+                        <label class="option-label"><input type="radio" name="q1" value="c"> C) Se aplica únicamente cuando los coeficientes son variables.</label>
+                        <label class="option-label"><input type="radio" name="q1" value="d"> D) No está restringido a un tipo específico de función forzadora \(R(x)\).</label>
+                    </div>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="question-block">
+                    <div class="question-title">2. Si se requiere resolver \( 2y'' + 8y = \tan(x) \), ¿cuál es la función \(R(x)\) correcta que debe utilizarse en el cálculo de los parámetros?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q2" value="a"> A) \( R(x) = \tan(x) \)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="b"> B) \( R(x) = \frac{1}{2}\tan(x) \)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="c"> C) \( R(x) = 2\tan(x) \)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="d"> D) \( R(x) = \sec^2(x) \)</label>
+                    </div>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="question-block">
+                    <div class="question-title">3. Determina el Wronskiano \(W\) asociado a la ecuación diferencial homogénea \( y'' - 4y = 0 \).</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q3" value="a"> A) \( W = 4 \)</label>
+                        <label class="option-label"><input type="radio" name="q3" value="b"> B) \( W = -4 \)</label>
+                        <label class="option-label"><input type="radio" name="q3" value="c"> C) \( W = 4e^{4x} \)</label>
+                        <label class="option-label"><input type="radio" name="q3" value="d"> D) \( W = -4x \)</label>
+                    </div>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="question-block">
+                    <div class="question-title">4. Para la ecuación \( y'' + y = \csc(x) \), ¿cuál es la expresión equivalente de \( u_1' \) previa a la integración?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q4" value="a"> A) \( u_1' = -1 \)</label>
+                        <label class="option-label"><input type="radio" name="q4" value="b"> B) \( u_1' = -\cot(x) \)</label>
+                        <label class="option-label"><input type="radio" name="q4" value="c"> C) \( u_1' = \cos(x) \)</label>
+                        <label class="option-label"><input type="radio" name="q4" value="d"> D) \( u_1' = 1 \)</label>
+                    </div>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="question-block">
+                    <div class="question-title">5. Dado un sistema con soluciones fundamentales \(y_1 = e^{3x}\) y \(y_2 = x e^{3x}\), evalúa el valor del Wronskiano \(W(y_1, y_2)\).</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q5" value="a"> A) \( e^{6x} \)</label>
+                        <label class="option-label"><input type="radio" name="q5" value="b"> B) \( 3e^{6x} \)</label>
+                        <label class="option-label"><input type="radio" name="q5" value="c"> C) \( x e^{6x} \)</label>
+                        <label class="option-label"><input type="radio" name="q5" value="d"> D) \( 0 \)</label>
+                    </div>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <button type="button" class="btn-evaluate" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+        </section>
+
+    </div>
+
+    <script>
+        function evaluateQuiz() {
+            const answers = {
+                q1: { 
+                    correct: 'd', 
+                    explanation: ' La mayor fortaleza de este método radica en su aplicabilidad universal para cualquier función continua \\(R(x)\\), superando las restricciones del método de coeficientes indeterminados.'
+                },
+                q2: { 
+                    correct: 'b', 
+                    explanation: ' Es indispensable transformar la ecuación diferencial a su forma estándar \\(y\'\' + P(x)y\' + Q(x)y = R(x)\\) dividiendo entre el coeficiente principal. En este caso, al dividir entre 2 obtenemos \\(R(x) = \\frac{\\tan(x)}{2}\\).'
+                },
+                q3: { 
+                    correct: 'b', 
+                    explanation: ' Las raíces de la ecuación característica \\(r^2 - 4 = 0\\) son \\(r = \\pm 2\\), dando las soluciones \\(y_1 = e^{2x}\\) y \\(y_2 = e^{-2x}\\). Calculando el determinante obtenemos \\(W = (e^{2x})(-2e^{-2x}) - (e^{-2x})(2e^{2x}) = -2 - 2 = -4\\).'
+                },
+                q4: { 
+                    correct: 'a', 
+                    explanation: ' El Wronskiano del conjunto seno y coseno es \\(W = 1\\). Al aplicar la fórmula \\(u_1\' = -\\frac{y_2 R(x)}{W}\\), obtenemos \\(-\\frac{\\sin(x)\\csc(x)}{1}\\). Dado que \\(\\csc(x) = \\frac{1}{\\sin(x)}\\), la expresión se simplifica directamente a \\(-1\\).'
+                },
+                q5: { 
+                    correct: 'a', 
+                    explanation: '  Con \\(y_1 = e^{3x}\\) e \\(y_2 = x e^{3x}\\), derivamos \\(y_2\' = e^{3x} + 3xe^{3x}\\). Al evaluar el determinante resulta \\(W = (e^{3x})(e^{3x} + 3xe^{3x}) - (xe^{3x})(3e^{3x}) = e^{6x} + 3xe^{6x} - 3xe^{6x} = e^{6x}\\).'
+                }
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                const qKey = 'q' + i;
+                const selected = document.querySelector(`input[name="${qKey}"]:checked`);
+                const feedbackDiv = document.getElementById(`feedback-${qKey}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected) {
+                    if (selected.value === answers[qKey].correct) {
+                        feedbackDiv.className = 'feedback correct';
+                        feedbackDiv.innerHTML ='<strong>Correcto.</strong> ' +  answers[qKey].explanation;
+                    } else {
+                        feedbackDiv.className = 'feedback incorrect';
+                        feedbackDiv.innerHTML = '<strong>Incorrecto.</strong> ' + answers[qKey].explanation;
+                    }
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = 'Por favor, selecciona una alternativa para visualizar el análisis.';
+                }
+            }
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    </script>
+</body>
+</html>

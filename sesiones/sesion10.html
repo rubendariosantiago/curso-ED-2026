@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 10: Aplicaciones de Ecuaciones Diferenciales de Segundo Orden</title>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e1b4b;
+            --primary-accent: #3730a3;
+            --secondary: #4338ca;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-border: #16a34a;
+            --success-text: #14532d;
+            --danger-bg: #fef2f2;
+            --danger-border: #dc2626;
+            --danger-text: #7f1d1d;
+            --accent-box-bg: #eff6ff;
+            --accent-box-border: #2563eb;
+            --quiz-bg: #f5f7fa;
+            --solution-color: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: var(--primary-accent);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #334155;
+        }
+
+        /* Callout Boxes */
+        .box {
+            padding: 20px 24px;
+            border-radius: 10px;
+            margin: 24px 0;
+            border-left: 5px solid;
+        }
+
+        .box-theory {
+            background-color: var(--accent-box-bg);
+            border-color: var(--accent-box-border);
+        }
+
+        .box-theory h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+
+        .box-danger {
+            background-color: var(--danger-bg);
+            border-color: var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        /* Exercise Styling */
+        .exercise-card {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-accent);
+            margin-bottom: 12px;
+        }
+
+        .exercise-statement {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .solution-tag {
+            color: var(--solution-color);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exercise-body p {
+            margin-bottom: 14px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Code Block */
+        pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        /* Quiz Styling */
+        .quiz-section {
+            background: var(--quiz-bg);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--secondary);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .question-block {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input[type="radio"] {
+            accent-color: var(--secondary);
+            width: 16px;
+            height: 16px;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 12px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .feedback.correct {
+            background-color: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .feedback.incorrect {
+            background-color: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        .btn-evaluate {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .btn-evaluate:hover {
+            background-color: var(--primary-accent);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>Sesión 10: Aplicaciones de Ecuaciones Diferenciales de Segundo Orden</h1>
+        </header>
+
+        <section>
+            <h2>1. Modelado Físico y Movimiento Mecánico</h2>
+            <p>Las ecuaciones diferenciales lineales de segundo orden con coeficientes constantes constituyen el pilar fundamental para modelar sistemas físicos oscilatorios. Entre las aplicaciones más emblemáticas se encuentran los sistemas mecánicos masa-resorte y los circuitos eléctricos RLC. Sorprendentemente, ambos fenómenos comparten la misma estructura matemática subyacente, lo que demuestra la profunda unificación de la física a través de las ecuaciones diferenciales.</p>
+            
+            <p>Consideremos un cuerpo de masa \(m\) sujeto a un resorte vertical u horizontal con constante de restitución \(k\). Al desplazar la masa de su posición de equilibrio una distancia \(x(t)\), el resorte ejerce una fuerza restauradora expresada por la ley de Hooke \(F_R = -kx\). Si además el sistema experimenta una resistencia del medio proporcional a la velocidad instantánea, introducimos una fuerza de amortiguamiento \(F_A = -\beta \frac{dx}{dt}\), donde \(\beta > 0\) es la constante de amortiguamiento.</p>
+
+            <p>Aplicando la Segunda Ley de Newton \(\sum F = m a = m \frac{d^2x}{dt^2}\) bajo la presencia de una fuerza externa impulsora \(F(t)\), obtenemos la ecuación diferencial ordinaria del movimiento:</p>
+            $$m \frac{d^2x}{dt^2} + \beta \frac{dx}{dt} + k x = F(t)$$
+
+            <p>Al dividir entre la masa \(m\), la ecuación se expresa habitualmente en su forma canónica:</p>
+            $$\frac{d^2x}{dt^2} + 2\lambda \frac{dx}{dt} + \omega^2 x = f(t)$$
+            <p>donde \(\lambda = \frac{\beta}{2m}\) representa el coeficiente de amortiguamiento atenuado, \(\omega = \sqrt{\frac{k}{m}}\) es la frecuencia natural del sistema no amortiguado y \(f(t) = \frac{F(t)}{m}\).</p>
+
+            <div class="box box-theory">
+                <h3>Clasificación del Movimiento Libre (\(F(t) = 0\))</h3>
+                <p>El comportamiento cualitativo del sistema depende directamente del discriminante de la ecuación característica \(r^2 + 2\lambda r + \omega^2 = 0\), dado por \(\lambda^2 - \omega^2 = \frac{\beta^2 - 4mk}{4m^2}\):</p>
+                <ul>
+                    <li><strong>Sobreamortiguado (\(\beta^2 - 4mk > 0\)):</strong> Las raíces son reales y distintas. El amortiguamiento es fuerte, impidiendo que la masa oscile; el sistema regresa gradualmente a la posición de equilibrio.</li>
+                    <li><strong>Críticamente amortiguado (\(\beta^2 - 4mk = 0\)):</strong> Existe una raíz real doble. Representa el límite donde el sistema retorna a la posición de equilibrio en el menor tiempo posible sin llegar a oscilar.</li>
+                    <li><strong>Subamortiguado (\(\beta^2 - 4mk < 0\)):</strong> Las raíces son complejas conjugadas \(-\lambda \pm i \omega_d\), donde \(\omega_d = \sqrt{\omega^2 - \lambda^2}\) es la frecuencia cuasi-periódica. El sistema presenta oscilaciones cuyas amplitudes decaen exponencialmente con el tiempo según la envolvente \(e^{-\lambda t}\).</li>
+                </ul>
+            </div>
+
+            <div class="box box-danger">
+                Un aspecto crítico en la formulación de problemas mecánicos es la correcta conversión entre el peso \(W\) y la masa \(m\). Recordamos que el peso se define como \(W = mg\). En el Sistema Internacional se utiliza \(g \approx 9.8 \text{ m/s}^2\), mientras que en el sistema inglés la masa se mide en <em>slugs</em> dividiendo el peso en libras entre la aceleración de la gravedad \(g \approx 32 \text{ ft/s}^2\). Confundir peso con masa conducirá indefectiblemente a coeficientes erróneos en la ecuación diferencial.
+            </div>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>2. Circuitos Eléctricos RLC en Serie</h2>
+            <p>Un circuito eléctrico en serie que contiene un inductor de inductancia \(L\) (henrios), un resistor de resistencia \(R\) (ohmios) y un capacitor de capacitancia \(C\) (faradios), conectado a una fuente de voltaje variable \(E(t)\) (voltios), se rige por la Segunda Ley de Kirchhoff: la suma de las caídas de potencial a lo largo del circuito cerrado es igual al voltaje suministrado.</p>
+
+            <p>Expresando las caídas de voltaje en términos de la carga eléctrica \(q(t)\) en el capacitor, donde la corriente instantánea cumple \(i(t) = \frac{dq}{dt}\), se llega directamente a la ecuación diferencial de segundo orden:</p>
+            $$L \frac{d^2q}{dt^2} + R \frac{dq}{dt} + \frac{1}{C} q = E(t)$$
+
+            <p>Si diferenciamos esta ecuación respecto al tiempo \(t\), obtenemos la formulación equivalente para la corriente eléctrica \(i(t)\):</p>
+            $$L \frac{d^2i}{dt^2} + R \frac{di}{dt} + \frac{1}{C} i = E'(t)$$
+
+            <p>A continuación se presenta la correspondencia formal entre los elementos mecánicos y eléctricos:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sistema Mecánico Masa-Resorte</th>
+                        <th>Sistema Eléctrico Circuito RLC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Desplazamiento \(x(t)\)</td>
+                        <td>Carga eléctrica \(q(t)\)</td>
+                    </tr>
+                    <tr>
+                        <td>Velocidad \(v(t) = x'(t)\)</td>
+                        <td>Corriente eléctrica \(i(t) = q'(t)\)</td>
+                    </tr>
+                    <tr>
+                        <td>Masa \(m\)</td>
+                        <td>Inductancia \(L\)</td>
+                    </tr>
+                    <tr>
+                        <td>Constante de amortiguamiento \(\beta\)</td>
+                        <td>Resistencia \(R\)</td>
+                    </tr>
+                    <tr>
+                        <td>Constante de resorte \(k\)</td>
+                        <td>Recíproco de la capacitancia \(1/C\)</td>
+                    </tr>
+                    <tr>
+                        <td>Fuerza externa \(F(t)\)</td>
+                        <td>Voltaje de la fuente \(E(t)\)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>3. Ejercicios Resueltos</h2>
+
+            <!-- Ejercicio 1 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 1: Sistema Masa-Resorte Críticamente Amortiguado</div>
+                <div class="exercise-statement">
+                    Un objeto que pesa \(8\text{ lb}\) estira un resorte \(2\text{ pies}\). El sistema se sumerge en un medio fluido que ofrece una resistencia numéricamente igual a \(2\) veces la velocidad instantánea. Si la masa se suelta desde un punto situado \(1\text{ pie}\) por debajo de la posición de equilibrio con una velocidad ascendente de \(3\text{ ft/s}\), determina la ecuación del movimiento \(x(t)\).
+                </div>
+                
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Iniciamos determinando los parámetros físicos del sistema a partir de las condiciones dadas. La masa se obtiene dividiendo el peso entre la gravedad en el sistema inglés, es decir, $$m = \frac{W}{g} = \frac{8}{32} = \frac{1}{4}\text{ slug}.$$ Por su parte, la constante del resorte se deduce de la Ley de Hooke al considerar el estiramiento en equilibrio, resultando $$k = \frac{W}{s} = \frac{8}{2} = 4\text{ lb/ft}.$$ El coeficiente de amortiguamiento es $$\beta = 2\text{ lb}\cdot\text{s/ft}$$</p>
+
+                    <p>Sustituyendo estos valores en la ecuación general del movimiento diferencial obtenemos $$\frac{1}{4}x'' + 2x' + 4x = 0.$$ Para simplificar los coeficientes, multiplicamos toda la ecuación por \(4\), lo que conduce a la forma estándar $$x'' + 8x' + 16x = 0.$$</p>
+
+                    <p>Resolvemos la ecuación característica asociada $$r^2 + 8r + 16 = (r+4)^2=0. \implies r_{1}=r_{2}=-4, $$ confirmando que el sistema se encuentra en un régimen críticamente amortiguado. La solución general adopta la forma  $$x(t) = C_1 e^{-4t} + C_2 t e^{-4t}.$$</p>
+
+                    <p>Para determinar las constantes arbitrarias aplicamos las condiciones iniciales del problema. Tomando la convención de que las posiciones por debajo del equilibrio son positivas y las velocidades ascendentes son negativas, establecemos \(x(0) = 1\) y \(x'(0) = -3\). Al evaluar \(x(0) = 1\) en la solución general encontramos de inmediato que \(C_1 = 1\).</p>
+
+                    <p>Calculamos la primera derivada de la función de posición mediante la regla del producto, obteniendo $$x'(t) = -4C_1 e^{-4t} + C_2 e^{-4t} - 4C_2 t e^{-4t}.$$ Evaluando en \(t = 0\) y sustituyendo el valor de \(C_1\), tenemos $$x'(0) = -4(1) + C_2 = -3 \implies  C_2 = 1. $$</p>
+
+                    <p>Sustituyendo ambas constantes en la solución general, encontramos:r:</p>
+                    $$ x(t) = e^{-4t} + t e^{-4t} = (1 + t)e^{-4t}\text{ ft} $$
+                    <p> La figura siguiente muestra la gráfica de la solución </p>
+                     <div style="text-align: center;"> <img src="img/s10fig1.png" alt="ejemplo" width="450" height="300">  </div>
+
+                </div>
+            </div>
+
+            <!-- Ejercicio 2 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 2: Movimiento Forzado No Amortiguado y Resonancia Pura</div>
+                <div class="exercise-statement">
+                    Una masa de \(1\text{ kg}\) está sujeta a un resorte de constante \(k = 9\text{ N/m}\) sin presencia de amortiguamiento. A partir de la posición de equilibrio y partiendo del reposo (\(x(0) = 0\), \(x'(0) = 0\)), se aplica una fuerza impulsora externa \(F(t) = 6 \cos(3t)\text{ N}\). Determina la solución del problema de valor inicial e interpreta el comportamiento dinámico.
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Planteamos la ecuación diferencial del movimiento sustituyendo los datos del problema 
+                    $$m = 1, \beta = 0, k = 9, F(t) = 6 \cos(3t),$$ lo que resulta en la ecuación no homogénea $$x'' + 9x = 6 \cos(3t).$$</p>
+
+                    <p>Comenzamos resolviendo la ecuación homogénea asociada $$x'' + 9x = 0.$$ Su polinomio característico es  $$r^2 + 9 = 0\implies  r = \pm 3i,$$ por lo que la solución complementaria es $$x_c(t) = C_1 \cos(3t) + C_2 \sin(3t).$$ La frecuencia natural de oscilación del sistema es $$\omega = 3\text{ rad/s}.$$</p>
+
+                    <p>Observamos que la frecuencia de la fuerza externa coincide exactamente con la frecuencia natural del sistema. Por lo tanto, al proponer la solución particular mediante el método de coeficientes indeterminados, debemos multiplicar por la variable independiente \(t\) para evitar duplicación con los términos homogéneos, proponemos entonces:
+                    $$x_p(t) = t(A \cos(3t) + B \sin(3t))$$</p>
+
+                    <p>Derivamos la función propuesta dos veces para sustituirla en la ecuación diferencial. La primera derivada resulta $$x_p'(t) = A \cos(3t) + B \sin(3t) + t(-3A \sin(3t) + 3B \cos(3t)),$$ y la segunda derivada es $$x_p''(t) = -6A \sin(3t) + 6B \cos(3t) - 9t(A \cos(3t) + B \sin(3t)).$$</p>
+
+                    <p>Al sustituir \(x_p''(t)\) y \(x_p(t)\) en la ecuación diferencial \(x'' + 9x = 6 \cos(3t)\), los términos proporcionales a \(t\) se cancelan mutuamente, reduciéndose la expresión a $$-6A \sin(3t) + 6B \cos(3t) = 6 \cos(3t).$$ Igualando los coeficientes de las funciones seno y coseno obtenemos 
+                    $$-6A = 0 \implies A = 0 \quad \hbox{  y } \quad 6B = 6 \implies B = 1.$$ 
+                    La solución particular es: $$x_p(t) = t \sin(3t).$$</p>
+
+                    <p>La solución general del sistema es: $$x(t) = C_1 \cos(3t) + C_2 \sin(3t) + t \sin(3t).$$
+                     Aplicando la condición inicial de posición \(x(0) = 0\), hallamos directamente \(C_1 = 0\). Derivando la expresión y evaluando la velocidad inicial  \(x'(0) = 3C_2 = 0\), por lo cual  \(C_2 = 0\).</p>
+
+                    <p>Finalmente la solución del sistema está expresada por:</p>
+                    $$ x(t) = t \sin(3t)\text{ m} $$
+
+                    <p>Este resultado demuestra teóricamente el fenómeno de <strong>resonancia pura</strong>: la amplitud de las oscilaciones incrementa linealmente sin límite de forma proporcional al tiempo \(t\), lo cual conduciría en la práctica a la ruptura física del resorte o del sistema mecánico. 
+                        La figura siguiente muestra la gráfica de la solución </p>
+                     <div style="text-align: center;"> <img src="img/s10fig2.png" alt="ejemplo" width="450" height="300">  </div>
+
+                </div>
+            </div>
+
+            <!-- Ejercicio 3 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 3: Respuesta en Carga y Corriente en un Circuito RLC</div>
+                <div class="exercise-statement">
+                    Un circuito RLC en serie consta de un inductor de \(L = 0.25\text{ H}\), una resistencia de \(R = 10\ \Omega\), un capacitor de \(C = 0.01\text{ F}\) y una fuente de alimentación sinusoidal \(E(t) = 100 \sin(10t)\text{ V}\). Si la carga y la corriente iniciales en el capacitor son nulas (\(q(0) = 0\), \(i(0) = 0\)), halla la función de carga \(q(t)\).
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Sustituimos los componentes eléctricos en la ecuación diferencial de la carga 
+                    $$L q'' + R q' + \frac{1}{C} q = E(t) \implies 0.25 q'' + 10 q' + \frac{1}{0.01} q = 100 \sin(10t) . $$
+                     Al simplificar el término constante del capacitor \(\frac{1}{0.01} = 100\) y multiplicar toda la ecuación por \(4\), se obtiene
+                     $$q'' + 40 q' + 400 q = 400 \sin(10t).$$</p>
+
+                    <p>Resolvemos en primer lugar la parte homogénea \(q'' + 40 q' + 400 q = 0\). La ecuación característica asociada es:
+                    $$ r^2 + 40r + 400 = (r + 20)^2 = 0 \implies r _1=r_2= -20, $$, por lo cual
+                    $$ q_c(t) = C_1 e^{-20t} + C_2 t e^{-20t}. $$</p>
+
+                    <p>Para la solución particular en estado estacionario proponemos la combinación sinusoidal \
+                    $$q_p(t) = A \cos(10t) + B \sin(10t).$$
+                     Calculamos sus derivadas sucesivas: $$ q_p'(t) = -10A \sin(10t) + 10B \cos(10t) $$ y $$q_p''(t) = -100A \cos(10t) - 100B \sin(10t).$$</p>
+
+                    <p>Sustituimos estas derivadas en la ecuación diferencial y agrupamos términos semejantes respecto a \(\cos(10t)\) y \(\sin(10t)\). Esto nos conduce al sistema de ecuaciones lineales de dos variables: 
+                    $$ \begin{eqnarray} 300A + 400B &=&6 0 \\ -400A + 300B &=& 400 \end{eqnarray}  $$ 
+                    De la primera ecuación obtenemos \(A = -\frac{4}{3}B\); al reemplazar en la segunda resulta 
+                    $$\frac{16}{3}B + 3B = 4 \implies \frac{25}{3}B = 4 \implies (B = \frac{12}{25} = 0.48 $$ y consecuentemente $$A = -\frac{16}{25} = -0.64.$$</p>
+
+                    <p>La solución particular es: $$q_p(t) = -0.64 \cos(10t) + 0.48 \sin(10t).$$. La solución general ueda definida como
+                    $$ q(t) = C_1 e^{-20t} + C_2 t e^{-20t} - 0.64 \cos(10t) + 0.48 \sin(10t).$$</p>
+
+                    <p>Aplicandolas condiciones iniciales para determinar las constantes se tiene. Evaluando la carga inicial 
+                    $$ q(0) = C_1 - 0.64 = 0\ \implies C_1 = 0.64$$ Derivamos la función de carga para obtener la corriente 
+                    $$(i(t) = q'(t) = -20 C_1 e^{-20t} + C_2 e^{-20t} - 20 C_2 t e^{-20t} + 6.4 \sin(10t) + 4.8 \cos(10t).$$
+                    Evaluando en \(t = 0\) con \(i(0) = 0\), obtenemos 
+                    $$ -20(0.64) + C_2 + 4.8 = 0 \implies -12.8 + C_2 + 4.8 = 0\implies C_2 = 8. $$</p>
+
+                    <p>Sustituyendo estos coeficientes obtenemos la solución completa para la carga del capacitor:</p>
+                    $$ q(t) = 0.64 e^{-20t} + 8 t e^{-20t} - 0.64 \cos(10t) + 0.48 \sin(10t)\text{ C} $$
+                        </div>
+            </div>
+
+            <!-- Ejercicio 4 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 4: Sistema Masa-Resorte Subamortiguado con Fuerza Constante</div>
+                <div class="exercise-statement">
+                    Una masa \(m = 1\text{ kg}\) se conecta a un resorte con constante \(k = 5\text{ N/m}\) y un amortiguador con \(\beta = 2\text{ N}\cdot\text{s/m}\). Se aplica de forma continua una fuerza externa constante \(F(t) = 10\text{ N}\). Si la masa inicia desde el reposo en la posición de equilibrio (\(x(0) = 0\), \(x'(0) = 0\)), encuentra la posición \(x(t)\) para cualquier tiempo \(t \ge 0\).
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Sustituimos los coeficientes físicos en la ecuación diferencial de segundo orden, obteniendo la ecuación no homogénea 
+                    $$x'' + 2x' + 5x = 10.$$</p>
+
+                    <p>Para la parte homogénea \(x'' + 2x' + 5x = 0\), tenemos la ecuación característica 
+                    $$r^2 + 2r + 5 =(r+1)^2+4=0 \implies r = -1 \pm 2i. $$ Se tiene un régimen subamortiguado con solución 
+                    dada por $$x_c(t) = e^{-t}(C_1 \cos(2t) + C_2 \sin(2t)).$$</p>
+
+                    <p>Dado que la fuerza externa es una constante, proponemos una solución particular constante \(x_p(t) = A\). Sustituyendo en la ecuación diferencial tenemos
+                     $$0 + 2(0) + 5A = 10 \implies A = 2.$$
+                      La solución particular representa la nueva posición de equilibrio estático bajo la fuerza aplicada.</p>
+
+                    <p>Escribimos la solución general como: $$x(t) = e^{-t}(C_1 \cos(2t) + C_2 \sin(2t)) + 2.$$ Aplicando la condición de posición inicial \(x(0) = 0\), obtenemos 
+                    $$C_1 + 2 = 0 \implies C_1 = -2$$</p>
+
+                    <p>Derivando a función de posición mediante la regla del producto obtenemos:
+                     $$x'(t) = -e^{-t}(C_1 \cos(2t) + C_2 \sin(2t)) + e^{-t}(-2C_1 \sin(2t) + 2C_2 \cos(2t)).$$ Al evaluar la velocidad inicial \(x'(0) = 0\), se tiene 
+                     $$-C_1 + 2C_2 = 0 \implies -(-2) + 2C_2 = 0 \implies C_2 = -1.$$</p>
+
+                    <p>Finalmente, a trayectoria de la masa en el tiempo está dada por::</p>
+                    $$ x(t) = 2 - e^{-t}\left(2 \cos(2t) + \sin(2t)\right)\text{ m} $$
+                                        <p> La figura siguiente muestra la gráfica de la solución </p>
+                     <div style="text-align: center;"> <img src="img/s10fig4.png" alt="ejemplo" width="450" height="300">  </div>
+
+                </div>
+            </div>
+               
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>4. Práctica de Apoyo con Inteligencia Artificial</h2>
+            <p>Para dominar la interpretación física de las ecuaciones diferenciales de segundo orden y verificar la correcta formulación de problemas de valor inicial, puedes utilizar el siguiente prompt estructurado en un modelo de IA:</p>
+            
+<pre><code>Actúa como un profesor universitario experto en Física y Ecuaciones Diferenciales.
+Genera un problema práctico de aplicación (sistema masa-resorte o circuito RLC) indicando los parámetros físicos y las condiciones iniciales.
+Pídeme que formule la ecuación diferencial y determine el régimen de amortiguamiento (sobreamortiguado, críticamente amortiguado o subamortiguado).
+Una vez que te envíe mi respuesta, analiza minuciosamente mi razonamiento, señala posibles errores de conversión de unidades o signos, y proporciona la solución completa paso a paso de forma continua.
+</code></pre>
+        </section>
+
+        <hr>
+
+        <section class="quiz-section">
+        
+        
+            <h2>5. Autoevaluación Interactiva</h2>
+            <p>Selecciona la opción correcta para evaluar tu comprensión sobre las aplicaciones de ecuaciones diferenciales de segundo orden.</p>
+
+            <form id="quizForm">
+                <!-- Pregunta 1 -->
+                <div class="question-block">
+                    <div class="question-title">1. En un sistema masa-resorte con \(m = 1\text{ kg}\), \(k = 9\text{ N/m}\) y \(\beta = 6\text{ N}\cdot\text{s/m}\), ¿cuál es el régimen de amortiguamiento del sistema?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q1" value="a"> A) Subamortiguado</label>
+                        <label class="option-label"><input type="radio" name="q1" value="b"> B) Críticamente amortiguado</label>
+                        <label class="option-label"><input type="radio" name="q1" value="c"> C) Sobreamortiguado</label>
+                        <label class="option-label"><input type="radio" name="q1" value="d"> D) No amortiguado</label>
+                    </div>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="question-block">
+                    <div class="question-title">2. En la analogía entre sistemas mecánicos y circuitos RLC en serie, ¿qué elemento eléctrico equivale a la constante del resorte \(k\)?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q2" value="a"> A) La inductancia \(L\)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="b"> B) La resistencia \(R\)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="c"> C) El recíproco de la capacitancia \(1/C\)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="d"> D) El voltaje suministrado \(E(t)\)</label>
+                    </div>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="question-block">
+                    <div class="question-title">3. ¿Bajo qué condición física se produce el fenómeno de resonancia pura en un sistema masa-resorte sujeto a una fuerza externa \(F_0 \cos(\gamma t)\)?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q3" value="a"> A) Cuando el amortiguamiento es máximo (\(\beta \to \infty\)).</label>
+                        <label class="option-label"><input type="radio" name="q3" value="b"> B) Cuando no hay amortiguamiento (\(\beta = 0\)) y la frecuencia externa \(\gamma\) iguala a la frecuencia natural \(\omega\).</label>
+                        <label class="option-label"><input type="radio" name="q3" value="c"> C) Cuando la masa es igual a cero.</label>
+                        <label class="option-label"><input type="radio" name="q3" value="d"> D) Cuando la fuerza externa es una constante dependiente únicamente del tiempo.</label>
+                    </div>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="question-block">
+                    <div class="question-title">4. Un objeto tiene un peso de \(16\text{ lb}\) en el sistema inglés. ¿Cuál es el valor de su masa \(m\) en <em>slugs</em> que debe emplearse en la ecuación diferencial?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q4" value="a"> A) \( 16\text{ slugs} \)</label>
+                        <label class="option-label"><input type="radio" name="q4" value="b"> B) \( 32\text{ slugs} \)</label>
+                        <label class="option-label"><input type="radio" name="q4" value="c"> C) \( 0.5\text{ slugs} \)</label>
+                        <label class="option-label"><input type="radio" name="q4" value="d"> D) \( 2\text{ slugs} \)</label>
+                    </div>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="question-block">
+                    <div class="question-title">5. En la solución de un circuito RLC con resistencia \(R > 0\) alimentado por una fuente sinusoidal, ¿qué sucede con la solución complementaria \(q_c(t)\) conforme \(t \to \infty\)?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q5" value="a"> A) Crece indefinidamente debido a la fuente.</label>
+                        <label class="option-label"><input type="radio" name="q5" value="b"> B) Tiende a cero exponencialmente, por lo que se denomina término transitorio.</label>
+                        <label class="option-label"><input type="radio" name="q5" value="c"> C) Se convierte en la solución de estado estacionario.</label>
+                        <label class="option-label"><input type="radio" name="q5" value="d"> D) Permanece constante con amplitud igual al voltaje máximo.</label>
+                    </div>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <button type="button" class="btn-evaluate" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+        </section>
+
+    </div>
+
+    <script>
+        function evaluateQuiz() {
+            const answers = {
+                q1: { 
+                    correct: 'b', 
+                    explanation: ' Evaluando el discriminante \\(\\beta^2 - 4mk = 6^2 - 4(1)(9) = 36 - 36 = 0\\). Al ser igual a cero, el sistema es críticamente amortiguado.'
+                },
+                q2: { 
+                    correct: 'c', 
+                    explanation: ' En la ecuación del circuito \\(L q\'\' + R q\' + \\frac{1}{C} q = E(t)\\), el término \\(\\frac{1}{C}\\) multiplica a la carga \\(q\\), análogamente a cómo la constante del resorte \\(k\\) multiplica al desplazamiento \\(x\\).'
+                },
+                q3: { 
+                    correct: 'b', 
+                    explanation: ' La resonancia pura ocurre cuando un sistema sin amortiguamiento se excita a su propia frecuencia natural (\\(\\gamma = \\omega\\)), provocando que la amplitud crezca linealmente con el tiempo \\(t\\).'
+                },
+                q4: { 
+                    correct: 'c', 
+                    explanation: ' La masa en slugs se calcula mediante la relación \\(m = \\frac{W}{g}\\). Con \\(W = 16\\text{ lb}\\) y \\(g = 32\\text{ ft/s}^2\\), se obtiene \\(m = \\frac{16}{32} = 0.5\\text{ slugs}\\).'
+                },
+                q5: { 
+                    correct: 'b', 
+                    explanation: ' Debido a la presencia de resistencia \\(R > 0\\), los factores exponenciales negativos \\(e^{-\\lambda t}\\) en la solución homogénea provocan que \\(q_c(t) \\to 0\\) cuando \\(t \\to \\infty\\), quedando únicamente el término de estado estacionario \\(q_p(t)\\).'
+                }
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                const qKey = 'q' + i;
+                const selected = document.querySelector(`input[name="${qKey}"]:checked`);
+                const feedbackDiv = document.getElementById(`feedback-${qKey}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected) {
+                    if (selected.value === answers[qKey].correct) {
+                        feedbackDiv.className = 'feedback correct';
+                        feedbackDiv.innerHTML = '<strong>Correcto.</strong>' + answers[qKey].explanation;
+                    } else {
+                        feedbackDiv.className = 'feedback incorrect';
+                        feedbackDiv.innerHTML = '<strong>Incorrecto.</strong>' + answers[qKey].explanation;
+                    }
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = 'Por favor, selecciona una alternativa antes de evaluar.';
+                }
+            }
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    </script>
+</body>
+</html>

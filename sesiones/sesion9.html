@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 9: Aplicaciones Avanzadas de Ecuaciones de Primer Orden</title>
+    
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e1b4b;
+            --primary-accent: #3730a3;
+            --secondary: #4338ca;
+            --bg-main: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-bg: #f0fdf4;
+            --success-border: #16a34a;
+            --success-text: #14532d;
+            --danger-bg: #fef2f2;
+            --danger-border: #dc2626;
+            --danger-text: #7f1d1d;
+            --accent-box-bg: #eff6ff;
+            --accent-box-border: #2563eb;
+            --quiz-bg: #f5f7fa;
+            --solution-color: #d97706;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.7;
+            color: var(--text-main);
+            background-color: var(--bg-main);
+            padding: 30px 15px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+            border: 1px solid var(--border-color);
+        }
+
+        header {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 20px;
+            margin-bottom: 35px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-top: 40px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: var(--primary-accent);
+            font-size: 1.2rem;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: #334155;
+        }
+
+        /* Callout Boxes */
+        .box {
+            padding: 20px 24px;
+            border-radius: 10px;
+            margin: 24px 0;
+            border-left: 5px solid;
+        }
+
+        .box-theory {
+            background-color: var(--accent-box-bg);
+            border-color: var(--accent-box-border);
+        }
+
+        .box-theory h3 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+
+        .box-danger {
+            background-color: var(--danger-bg);
+            border-color: var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        /* Exercise Card Styling */
+        .exercise-card {
+            background: #fafafa;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .exercise-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-accent);
+            margin-bottom: 12px;
+        }
+
+        .exercise-statement {
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .solution-tag {
+            color: var(--solution-color);
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .exercise-body p {
+            margin-bottom: 14px;
+        }
+
+        /* Code Block */
+        pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, Monaco, monospace;
+            font-size: 0.9rem;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        /* Image Placeholder */
+        .figure-placeholder {
+            border: 2px dashed #cbd5e1;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 35px;
+            text-align: center;
+            color: var(--text-muted);
+            margin: 20px 0;
+        }
+
+        .figure-placeholder svg {
+            width: 48px;
+            height: 48px;
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 1.5;
+            margin-bottom: 8px;
+        }
+
+        /* Quiz Styling */
+        .quiz-section {
+            background: var(--quiz-bg);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--secondary);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .question-block {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-title {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input[type="radio"] {
+            accent-color: var(--secondary);
+            width: 16px;
+            height: 16px;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 12px;
+            padding: 14px 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .feedback.correct {
+            background-color: var(--success-bg);
+            border: 1px solid var(--success-border);
+            color: var(--success-text);
+        }
+
+        .feedback.incorrect {
+            background-color: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+        }
+
+        .btn-evaluate {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 25px;
+        }
+
+        .btn-evaluate:hover {
+            background-color: var(--primary-accent);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 40px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>Sesión 9: Aplicaciones Avanzadas de Ecuaciones de Primer Orden</h1>
+        </header>
+
+        <section>
+            <h2>1. Introducción</h2>
+            <p>Tras dominar las técnicas de integración analítica para Ecuaciones Diferenciales de primer orden (Separables, Homogéneas, Lineales y Bernoulli), esta sesión se enfoca en su aplicación en contextos reales. A lo largo de esta sección, utilizaremos estos métodos para modelar sistemas cuya evolución depende de su razón de cambio. Analizaremos casos de estudio prácticos que van desde la física nuclear (decaimiento radiactivo y cadenas de desintegración) y la termodinámica (modelos de enfriamiento/calentamiento), hasta la ecología (dinámica poblacional) y la hidráulica (ley de Torricelli), demostrando cómo una misma estructura matemática permite dar solución a problemas diversos del entorno real. </p>
+            
+
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>2. Ejemplos en Contexto</h2>
+
+            <!-- Ejercicio 1 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 1: Datación Arqueológica (Decaimiento Radiactivo)</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial para el modelo de decaimiento radiactivo de un fragmento de pergamino histórico: \( \frac{dN}{dt} = -\lambda N \). Determina la antigüedad del pergamino sabiendo que la vida media del Carbono-14 es de 5730 años y la muestra conserva el 65% del átomo radiactivo original respecto a un organismo vivo contemporáneo.
+                </div>
+                
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Iniciamos resolviendo la ecuación diferencial mediante el método de <strong>variables separables</strong>. Agrupamos los términos con la variable de estado $N$ en el lado izquierdo y los términos temporales en el lado derecho:</p>
+                    $$ \frac{dN}{N} = -\lambda \, dt $$
+
+                    <p>Integrando de manera indefinida a ambos lados de la igualdad:</p>
+                    $$ \int \frac{dN}{N} = \int -\lambda \, dt \implies \ln|N| = -\lambda t + C_1 $$
+
+                    <p>Aplicando la función exponencial a ambos miembros para despejar la función $N(t)$:</p>
+                    $$ N(t) = e^{-\lambda t + C_1} = e^{C_1} e^{-\lambda t} = N_0 e^{-\lambda t} $$
+                    <p>donde $N_0 = N(0)$ representa la cantidad inicial de núcleos de Carbono-14 presentes al momento en que el organismo dejó de intercambiar carbono con la atmósfera.</p>
+
+                    <p>Para determinar la constante de decaimiento $\lambda$, empleamos el concepto de <em>vida media</em> (\(t_{1/2} = 5730\) años), definida como el tiempo requerido para que la sustancia se reduzca a la mitad (\(N(t_{1/2}) = \frac{N_0}{2}\)):</p>
+                    $$ \frac{N_0}{2} = N_0 e^{-\lambda (5730)} \implies \frac{1}{2} = e^{-5730 \lambda} $$
+                    $$ \ln\left(\frac{1}{2}\right) = -5730 \lambda \implies \lambda = \frac{\ln(2)}{5730} \approx 1.2097 \times 10^{-4} \text{ años}^{-1} $$
+
+                    <p>Sustituimos la información del hallazgo arqueológico, donde $N(t) = 0.65 N_0$:</p>
+                    $$ 0.65 N_0 = N_0 e^{-\lambda t} \implies 0.65 = e^{-\lambda t} $$
+                    $$ \ln(0.65) = -\lambda t \implies t = -\frac{\ln(0.65)}{1.2097 \times 10^{-4}} \approx \frac{-0.43078}{-0.00012097} \approx 3561.05 \text{ años} $$
+
+                    <p>Por lo tanto, la antigüedad calculada del pergamino es aproximadamente de <strong>3561 años</strong>.
+                          <div style="text-align: center;"> <img src="img/s9fig1.png" alt="ejemplo" width="450" height="300">  </div>
+                    La curva solución muestra un decaimiento decreciente de tasa decreciente. La recta vertical en $t = 3561$ intercepta el valor exacto del $65\%$ de la masa inicial. A medida que $t \to \infty$, la masa tiende asintóticamente a 0 pero jamás se anula teóricamente. </p>
+                </div>
+            </div>
+
+            <!-- Ejercicio 2 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 2: Serie de Decaimiento Radiactivo en Cadena (Isótopos Nucleares)</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial para la masa $y(t)$ de un isótopo B producido por la desintegración de un isótopo padre A en una cadena $A \xrightarrow{\lambda_1} B \xrightarrow{\lambda_2} C$:
+                    $$ \frac{dy}{dt} + \lambda_2 y = \lambda_1 N_0 e^{-\lambda_1 t} $$
+                    Considera las condiciones iniciales $y(0) = 0$, $N_0 = 100\text{ g}$, $\lambda_1 = 0.4\text{ h}^{-1}$ y $\lambda_2 = 0.1\text{ h}^{-1}$.
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>La ecuación diferencial dada es una <strong>Ecuación Lineal de Primer Orden</strong> en la forma estándar $y' + P(t)y = Q(t)$, donde $P(t) = \lambda_2 = 0.1$ y $Q(t) = \lambda_1 N_0 e^{-\lambda_1 t} = (0.4)(100)e^{-0.4 t} = 40 e^{-0.4 t}$.</p>
+
+                    <p>Calculamos el factor integrante $\mu(t)$:</p>
+                    $$ \mu(t) = e^{\int P(t) \, dt} = e^{\int 0.1 \, dt} = e^{0.1 t} $$
+                    <p>Calculamos $I=\int \mu(t) Q(t) dt$:</p>
+                    $$ I= \int{ 40 e^{-0.4 t}  e^{0.1 t}  dt } = 40 \int{ e^{-0.3 t} dt} = -\frac{400}{3} e^{-0.3 t} $$
+                    <p>Finalmente, la solución es::</p>
+                    $$ y(t) =\frac{I+C}{\mu}=\frac{ -\frac{400}{3} e^{-0.3 t} +C }{ e^{0.1 t} }  = -\frac{400}{3} e^{-0.4 t} + C e^{-0.1 t} $$
+
+                    <p>Aplicando la condición inicial $y(0) = 0$ para hallar la constante arbitraria $C$ se tiene:</p>
+                    $$ 0 = -\frac{400}{3} e^0 + C e^0 \implies C = \frac{400}{3} $$
+
+                    <p>Sustituyendo el valor de $C$, la solución para la cantidad de isótopo B en función del tiempo es:</p>
+                    $$ y(t) = \frac{400}{3} \left( e^{-0.1 t} - e^{-0.4 t} \right) \text{ gramos} $$
+                  <div style="text-align: center;"> <img src="img/s9fig2.png" alt="ejemplo" width="450" height="300">  </div>
+El gráfico del Isótopo B inicia en cero, alcanza una acumulación máxima en $t = \frac{\ln(0.4/0.1)}{0.4 - 0.1} \approx 4.62 \text{ horas}$ (donde la producción del padre iguala la desintegración del hijo) y luego decae dominado por la constante de decaimiento más lenta ($\lambda_2 = 0.1$).                </div>
+            </div>
+
+            <!-- Ejercicio 3 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 3: Enfriamiento No Lineal Cuadrático de una Pieza Metálica</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial no lineal que modela la pérdida de temperatura por radiación extrema de una pieza de forja metálica:
+                    $$ \frac{dT}{dt} = -k(T - T_a)^2 $$
+                    Sabiendo que la temperatura ambiente es $T_a = 20^\circ\text{C}$, la temperatura inicial de la pieza es $T(0) = 1000^\circ\text{C}$ y a los $t = 10\text{ minutos}$ se enfría a $500^\circ\text{C}$.
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Esta es una ecuación diferencial de <strong>variables separables</strong>. Sustituyendo $T_a = 20$, agrupamos los términos de temperatura a la izquierda:</p>
+                    $$ \frac{dT}{(T - 20)^2} = -k \, dt $$
+
+                    <p>Integrando ambos lados del modelo:</p>
+                    $$ \int (T - 20)^{-2} \, dT = \int -k \, dt \implies -\frac{1}{T - 20} = -kt + C $$
+                    $$ \frac{1}{T - 20} = kt - C_1 \quad (\text{donde } C_1 = -C) $$
+
+                    <p>Evaluamos la condición inicial $T(0) = 1000$ para determinar $C_1$:</p>
+                    $$ \frac{1}{1000 - 20} = k(0) - C_1 \implies -C_1 = \frac{1}{980} \implies C_1 = -\frac{1}{980} $$
+                    $$ \frac{1}{T - 20} = kt + \frac{1}{980} $$
+
+                    <p>Utilizamos el segundo dato experimental $T(10) = 500$ para determinar la constante de transferencia de calor $k$:</p>
+                    $$ \frac{1}{500 - 20} = 10k + \frac{1}{980} \implies \frac{1}{480} = 10k + \frac{1}{980} $$
+                    $$ 10k = \frac{1}{480} - \frac{1}{980} = \frac{980 - 480}{470400} = \frac{500}{470400} = \frac{5}{4704} \implies k = \frac{1}{9408} \approx 0.00010629 \text{ min}^{-1} $$
+
+                    <p>Despejando $T(t)$ de la relación algebraica obtenemos la ley de temperatura:
+                    $$ T(t) = 20 + \frac{1}{\frac{t}{9408} + \frac{1}{980}} = 20 + \frac{9408}{t + 9.6} \, ^\circ\text{C} $$
+                     <div style="text-align: center;"> <img src="img/s9fig3.png" alt="ejemplo" width="450" height="300">  </div>
+                     A diferencia de la ley lineal de Newton (exponencial), la pérdida cuadrática por radiación genera una caída inicial extremadamente abrupta, que luego se desacelera fuertemente al aproximarse a la asíntota horizontal del ambiente ($T_a = 20^\circ\text{C}$).</p>
+                </div>
+            </div>
+
+            <!-- Ejercicio 4 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 4: Enfriamiento Mixto (Convección + Radiación / Bernoulli)</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial de Bernoulli que describe el enfriamiento simultáneo por convección y radiación de una placa industrial:
+                    $$ \frac{dT}{dt} + 0.1(T - 25) = -0.01(T - 25)^2 $$
+                    Sabiendo que la temperatura ambiente es $T_a = 25^\circ\text{C}$ y la temperatura inicial es $T(0) = 125^\circ\text{C}$.
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Para simplificar la estructura de la ecuación diferencial, realizamos primero la sustitución $u(t) = T(t) - 25$. Como $\frac{du}{dt} = \frac{dT}{dt}$, sustituimos en la expresión original:</p>
+                    $$ \frac{du}{dt} + 0.1 u = -0.01 u^2 $$
+
+                    <p>Esta es una <strong>Ecuación Diferencial de Bernoulli</strong> con $n = 2$. Dividimos toda la ecuación entre $u^2$:</p>
+                    $$ u^{-2} \frac{du}{dt} + 0.1 u^{-1} = -0.01 $$
+
+                    <p>Efectuamos el cambio de variable clásico de Bernoulli: $v = u^{1-n} = u^{1-2} = u^{-1}$. Su derivada es $\frac{dv}{dt} = -u^{-2} \frac{du}{dt}$, por lo que $-u^{-2} \frac{du}{dt} = -\frac{dv}{dt}$. Sustituyendo en la ecuación:</p>
+                    $$ -\frac{dv}{dt} + 0.1 v = -0.01 \implies \frac{dv}{dt} - 0.1 v = 0.01 $$
+
+                    <p>Esta es una lineal de primer orden para $v(t)$. Su factor integrante es $\mu(t) = e^{\int -0.1 dt} = e^{-0.1 t}$:</p>
+                    $$ \frac{d}{dt} \left[ v e^{-0.1 t} \right] = 0.01 e^{-0.1 t} $$
+                    $$ v e^{-0.1 t} = \int 0.01 e^{-0.1 t} \, dt = -\frac{0.01}{0.1} e^{-0.1 t} + C = -0.1 e^{-0.1 t} + C $$
+                    $$ v(t) = -0.1 + C e^{0.1 t} $$
+
+                    <p>Regresamos a la variable $u(t) = \frac{1}{v(t)}$ y evaluamos la condición inicial $T(0) = 125 \implies u(0) = 125 - 25 = 100$. Por ende, $v(0) = \frac{1}{100} = 0.01$:</p>
+                    $$ 0.01 = -0.1 + C e^0 \implies C = 0.11 $$
+
+                    <p>Reconstruimos la solución explícita para la temperatura $T(t)$:</p>
+                    $$ u(t) = \frac{1}{-0.1 + 0.11 e^{0.1 t}} \implies T(t) = 25 + \frac{1}{0.11 e^{0.1 t} - 0.1} \, ^\circ\text{C} $$
+                    
+          <div style="text-align: center;"> <img src="img/s9fig4.png" alt="ejemplo" width="450" height="300">  </div>
+El término cuadrático acelera la pérdida de calor a altas temperaturas. Al acercarse la temperatura al entorno ($25^\circ\text{C}$), el término cuadrático pierde dominancia frente al término lineal, aproximándose suavemente al equilibrio térmico..</p>
+                     
+                </div>
+            </div>
+
+            <!-- Ejercicio 5 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 5: Dinámica Poblacional con Efecto Allee</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial que modela la población $P(t)$ de una especie en peligro de extinción sujeto a un umbral de supervivencia (Efecto Allee):
+                    $$ \frac{dP}{dt} = 0.1 P \left( \frac{P}{20} - 1 \right) \left( 1 - \frac{P}{100} \right) $$
+                    Determina el comportamiento asintótico a largo plazo $\lim_{t \to \infty} P(t)$ si la población inicial es $P(0) = 50$ individuos.
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>El modelo presenta tres puntos de equilibrio donde $\frac{dP}{dt} = 0$: $P = 0$ (extinción), $P = 20$ (umbral crítico $A$) y $P = 100$ (capacidad de carga $K$).</p>
+
+                    <p>Separamos variables para obtener la forma integral:</p>
+                    $$ \frac{dP}{P \left( \frac{P}{20} - 1 \right) \left( 1 - \frac{P}{100} \right)} = 0.1 \, dt $$
+                    $$ \frac{2000 \, dP}{P (P - 20) (100 - P)} = 0.1 \, dt \implies \frac{dP}{P (P - 20) (100 - P)} = 0.00005 \, dt $$
+
+                    <p>Descomponemos el lado izquierdo en <strong>fracciones parciales</strong>:</p>
+                    $$ \frac{1}{P (P - 20) (100 - P)} = \frac{A_1}{P} + \frac{A_2}{P - 20} + \frac{A_3}{100 - P} $$
+                    <p>Multiplicando por el denominador común y resolviendo para los coeficientes:</p>
+                    <ul>
+                        <li>Para $P = 0$: $1 = A_1 (-20)(100) \implies A_1 = -\frac{1}{2000}$</li>
+                        <li>Para $P = 20$: $1 = A_2 (20)(80) \implies A_2 = \frac{1}{1600}$</li>
+                        <li>Para $P = 100$: $1 = A_3 (100)(80) \implies A_3 = \frac{1}{8000}$</li>
+                    </ul>
+
+                    <p>Integrando cada término logarítmico:</p>
+                    $$ -\frac{1}{2000} \ln|P| + \frac{1}{1600} \ln|P - 20| - \frac{1}{8000} \ln|100 - P| = 0.00005 t + C $$
+
+                    <p><strong>Análisis Cualitativo del Comportamiento:</strong> Dado que la población inicial es $P(0) = 50$, se cumple que $20 < P(0) < 100$. Evaluamos el signo de la derivada en $P = 50$:</p>
+                    $$ \left. \frac{dP}{dt} \right|_{P=50} = 0.1(50) \left( \frac{50}{20} - 1 \right) \left( 1 - \frac{50}{100} \right) = 5 (1.5) (0.5) = 3.75 > 0 $$
+                    <p>Dado que la derivada es estrictamente positiva sobre el intervalo $(20, 100)$, la población crecerá sostenidamente alejándose del umbral de extinción $A=20$ y aproximándose asintóticamente a la capacidad de carga del ecosistema:</p>
+                    $$ \lim_{t \to \infty} P(t) = 100 \text{ individuos} $$
+                    En la figura siguiente se muestra el comportamiento en este caso. 
+                              <div style="text-align: center;"> <img src="img/s9fig5.png" alt="ejemplo" width="450" height="300">  </div>
+El diagrama de fases y curvas de solución muestran una bifurcación: trayectorias con $P_0 < 20$ caen hacia la extinción ($P \to 0$), mientras que aquellas con $P_0 > 20$ crecen de forma sigmoide hacia la capacidad de carga ($K = 100$)..</p>
+                </div>
+            </div>
+
+            <!-- Ejercicio 6 -->
+            <div class="exercise-card">
+                <div class="exercise-title">Ejercicio 6: Vaciado de un Tanque Cónico (Ley de Torricelli)</div>
+                <div class="exercise-statement">
+                    Resuelve la siguiente ecuación diferencial para la altura del agua $h(t)$ en un tanque cónico invertido (radio superior $R = 2\text{ m}$, altura total $H = 4\text{ m}$) que se vacía por un orificio en el fondo de área $a = 0.01\text{ m}^2$:
+                    $$ \pi \left( \frac{1}{2} h \right)^2 \frac{dh}{dt} = - (0.01) \sqrt{2(9.8) h} $$
+                    Si el tanque se encuentra completamente lleno en $t = 0$ ($h(0) = 4\text{ m}$), calcula el tiempo total en segundos necesario para vaciarse por completo.
+                </div>
+
+                <span class="solution-tag">Solución:</span>
+
+                <div class="exercise-body">
+                    <p>Por semejanza de triángulos en el cono, el radio de la superficie libre a una altura $h$ es $r(h) = \frac{R}{H} h = \frac{2}{4} h = \frac{1}{2} h$. El área de la sección transversal es $A(h) = \pi r^2 = \frac{\pi}{4} h^2$.</p>
+
+                    <p>Sustituyendo $\sqrt{2g} = \sqrt{2(9.8)} = \sqrt{19.6} \approx 4.4272$ en la ecuación diferencial:</p>
+                    $$ \frac{\pi}{4} h^2 \frac{dh}{dt} = -0.01 (4.4272) \sqrt{h} = -0.044272 \sqrt{h} $$
+
+                    <p>Separando las variables $h$ y $t$:</p>
+                    $$ \frac{h^2}{\sqrt{h}} \, dh = -\frac{4(0.044272)}{\pi} \, dt $$
+                    $$ h^{3/2} \, dh = -0.05637 \, dt $$
+
+                    <p>Integrando ambos lados de la expresión:</p>
+                    $$ \int h^{3/2} \, dh = \int -0.05637 \, dt \implies \frac{2}{5} h^{5/2} = -0.05637 t + C $$
+
+                    <p>Aplicamos la condición inicial $h(0) = 4\text{ m}$ para calcular $C$:</p>
+                    $$ \frac{2}{5} (4)^{5/2} = -0.05637(0) + C \implies C = 0.4 \times 32 = 12.8 $$
+
+                    <p>La ecuación que describe la altura del fluido en cualquier instante $t$ es:</p>
+                    $$ \frac{2}{5} h^{5/2} = 12.8 - 0.05637 t \implies h(t) = \left( 32 - 0.140925 t \right)^{2/5} $$
+
+                    <p>Para hallar el tiempo total de vaciado $t_{\text{vaciado}}$, hacemos la altura igual a cero ($h = 0$):</p>
+                    $$ 32 - 0.140925 t_{\text{vaciado}} = 0 \implies t_{\text{vaciado}} = \frac{32}{0.140925} \approx 227.07 \text{ segundos} $$
+
+                    <p>El tanque cónico se vacía por completo en aproximadamente <strong>227 segundos</strong> ($\approx 3.78\text{ minutos}$).  </p>                            <div style="text-align: center;"> <img src="img/s9fig6.png" alt="ejemplo" width="450" height="300">  </div>
+                    <p>  A diferencia del tanque cilíndrico (cuya altura decrece de forma parabólica), el cono reduce la superficie de agua a medida que baja el nivel, causando que la altura decrezca de forma acelerada conforme $h \to 0$..</p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+
+        <section>
+            <h2>3. Práctica Guiada con Inteligencia Artificial</h2>
+            <p>Copia y pega el siguiente prompt en un modelo de lenguaje para poner a prueba tus habilidades de modelado formal:</p>
+
+<pre><code>Actúa como un profesor de física matemática. Plantéame un problema práctico 
+sobre la Ley de Torricelli o el Enfriamiento de Newton con valores numéricos concretos. 
+No me des la respuesta de inmediato. Pídeme que plantee la Ecuación Diferencial 
+y la resuelva paso a paso. Corrige mis cálculos numéricos y mis unidades físicas 
+en cada interacción.
+</code></pre>
+        </section>
+
+        <hr>
+
+        <section class="quiz-section">
+            <h2> 4. Autoevaluación Interactiva de Aplicaciones</h2>
+            <p>Resuelve los siguientes ejercicios de aplicación práctica y conceptual para validar tu comprensión de la sesión.</p>
+
+            <form id="quizForm">
+                <!-- Pregunta 1 -->
+                <div class="question-block">
+                    <div class="question-title">1. Se analiza un fósil cuya concentración de C-14 se ha reducido al 25% respecto a su valor inicial. Si $t_{1/2} = 5730$ años, ¿cuál es la edad exacta del fósil?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q1" value="a"> A) 5,730 años</label>
+                        <label class="option-label"><input type="radio" name="q1" value="b"> B) 11,460 años</label>
+                        <label class="option-label"><input type="radio" name="q1" value="c"> C) 17,190 años</label>
+                        <label class="option-label"><input type="radio" name="q1" value="d"> D) 22,920 años</label>
+                    </div>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="question-block">
+                    <div class="question-title">2.  En la cadena radiactiva $A \xrightarrow{\lambda_1} B \xrightarrow{\lambda_2} C$ con $y(t) = \frac{\lambda_1 N_0}{\lambda_2 - \lambda_1}(e^{-\lambda_1 t} - e^{-\lambda_2 t})$, ¿en qué instante de tiempo $t_{\text{máx}}$ alcanza el isótopo B su concentración máxima?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q2" value="a"> A) \( t_{\text{máx}} = \frac{\ln(\lambda_2 / \lambda_1)}{\lambda_2 - \lambda_1} \)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="b"> B) \( t_{\text{máx}} = \frac{\lambda_1 + \lambda_2}{2} \)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="c"> C) \( t_{\text{máx}} = \frac{\ln(\lambda_1 \lambda_2)}{\lambda_1} \)</label>
+                        <label class="option-label"><input type="radio" name="q2" value="d"> D) \( t_{\text{máx}} = \frac{1}{\lambda_1 - \lambda_2} \)</label>
+                    </div>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="question-block">
+                    <div class="question-title">3.  Si modelamos el enfriamiento por radiación mediante la ecuación \( \frac{dT}{dt} = -k(T - T_a)^3 \), ¿qué sustitución de Bernoulli $v$ transforma esta ED no lineal en una ecuación lineal?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q3" value="a"> A) \( v = (T - T_a)^{-1} \)</label>
+                        <label class="option-label"><input type="radio" name="q3" value="b"> B) \( v = (T - T_a)^{-2} \)</label>
+                        <label class="option-label"><input type="radio" name="q3" value="c"> C) \( v = (T - T_a)^2 \)</label>
+                        <label class="option-label"><input type="radio" name="q3" value="d"> D) \( v = \ln(T - T_a) \)</label>
+                    </div>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4 -->
+                <div class="question-block">
+                    <div class="question-title">4. Un modelo poblacional con Efecto Allee responde a \( \frac{dP}{dt} = 0.05 P (P - 30)(150 - P) \). Si la población inicial es de $P(0) = 25$ individuos, ¿cuál será el destino de la especie a largo plazo?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q4" value="a"> A) Crecerá hasta estabilizarse en 150 individuos.</label>
+                        <label class="option-label"><input type="radio" name="q4" value="b"> B) Se mantendrá constante en 25 individuos.</label>
+                        <label class="option-label"><input type="radio" name="q4" value="c"> C) La derivada será negativa y la población colapsará hacia la extinción (\(P \to 0\)).</label>
+                        <label class="option-label"><input type="radio" name="q4" value="d"> D) Oscilará indefinidamente entre 30 y 150.</label>
+                    </div>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5 -->
+                <div class="question-block">
+                    <div class="question-title">5. Un tanque cilíndrico vertical y un tanque cónico tienen la misma altura inicial de agua $H$ y la misma área de orificio de salida $a$. ¿Cómo es el ritmo de caída del nivel del agua $dh/dt$ al acercarse al fondo ($h \to 0$)?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q5" value="a"> A) Idéntico en ambos tanques.</label>
+                        <label class="option-label"><input type="radio" name="q5" value="b"> B) En el tanque cónico cae aceleradamente rápido porque el área del espejo de agua disminuye cuadráticamente.</label>
+                        <label class="option-label"><input type="radio" name="q5" value="c"> C) En el cilindro cae más rápido porque hay más masa sobre el orificio.</label>
+                        <label class="option-label"><input type="radio" name="q5" value="d"> D) El nivel deja de bajar antes de llegar al fondo.</label>
+                    </div>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 6 -->
+                <div class="question-block">
+                    <div class="question-title">6.  Si el vaciado de un depósito responde a la ED integrada \( h(t)^{3/2} = 8 - 0.02 t \), ¿cuál es el tiempo exacto en que el depósito queda vacío por completo?</div>
+                    <div class="options">
+                        <label class="option-label"><input type="radio" name="q6" value="a"> A) 100 segundos</label>
+                        <label class="option-label"><input type="radio" name="q6" value="b"> B) 200 segundos</label>
+                        <label class="option-label"><input type="radio" name="q6" value="c"> C) 400 segundos</label>
+                        <label class="option-label"><input type="radio" name="q6" value="d"> D) 800 segundos</label>
+                    </div>
+                    <div id="feedback-q6" class="feedback"></div>
+                </div>
+
+                <button type="button" class="btn-evaluate" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+        </section>
+
+    </div>
+
+    <script>
+        function evaluateQuiz() {
+            const answers = {
+                q1: { 
+                    correct: 'b', 
+                    explanation: '<strong>¡Correcto!</strong> El 25% representa exactamente dos vidas medias: \\(N(t) = N_0 \\left(\\frac{1}{2}\\right)^2 = 0.25 N_0\\). Por lo tanto, \\(t = 2 \\times 5730 = 11,460\\) años.'
+                },
+                q2: { 
+                    correct: 'a', 
+                    explanation: ' El pico máximo ocurre cuando la derivada es nula (\\(dy/dt = 0\\)). Derivando \\(y(t)\\) e igualando a cero: \\(-\\lambda_1 e^{-\\lambda_1 t} + \\lambda_2 e^{-\\lambda_2 t} = 0 \\implies e^{(\\lambda_2 - \\lambda_1)t} = \\frac{\\lambda_2}{\\lambda_1}\\). Aplicando logaritmo natural se obtiene \\(t_{\\text{máx}} = \\frac{\\ln(\\lambda_2 / \\lambda_1)}{\\lambda_2 - \\lambda_1}\\).'
+                },
+                q3: { 
+                    correct: 'b', 
+                    explanation: 'Sustituyendo \\(u = T - T_a\\), la ED toma la forma \\(u\' = -k u^3\\), que es una ecuación de Bernoulli con \\(n=3\\). El cambio de variable estándar es \\(v = u^{1-n} = u^{1-3} = u^{-2} = (T - T_a)^{-2}\\).'
+                },
+                q4: { 
+                    correct: 'c', 
+                    explanation: 'Para \\(P(0) = 25\\), al estar por debajo del umbral crítico de supervivencia \\(A = 30\\), el factor \\((P - 30)\\) es negativo mientras que los demás son positivos. Esto hace que \\(dP/dt < 0\\), arrastrando irreversiblemente la población hacia cero (extinción).'
+                },
+                q5: { 
+                    correct: 'b', 
+                    explanation: 'En la ley de Torricelli \\(A(h)\\frac{dh}{dt} = -a\\sqrt{2gh}\\), al reducirse el área transversal \\(A(h) = \\pi r^2\\) de manera cuadrática hacia la punta del cono, para un mismo flujo de salida, la velocidad de caída del nivel \\(\\frac{dh}{dt}\\) se acelera drásticamente.'
+                },
+                q6: { 
+                    correct: 'c', 
+                    explanation: 'El tanque se vacía cuando la altura es cero (\\(h(t) = 0\\)). Sustituyendo en la ecuación: \\(0 = 8 - 0.02 t \\implies 0.02 t = 8 \\implies t = \\frac{8}{0.02} = 400\\) segundos.'
+                }
+            };
+
+            for (let i = 1; i <= 6; i++) {
+                const qKey = 'q' + i;
+                const selected = document.querySelector(`input[name="${qKey}"]:checked`);
+                const feedbackDiv = document.getElementById(`feedback-${qKey}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected) {
+                    if (selected.value === answers[qKey].correct) {
+                        feedbackDiv.className = 'feedback correct';
+                        feedbackDiv.innerHTML =  '<strong>¡Correcto!. </strong> ' + answers[qKey].explanation;
+                    } else {
+                        feedbackDiv.className = 'feedback incorrect';
+                        feedbackDiv.innerHTML = '<strong>¡Incorrecto!. </strong> ' + answers[qKey].explanation;
+                    }
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = 'Por favor, selecciona una alternativa para evaluar.';
+                }
+            }
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+    </script>
+</body>
+</html>

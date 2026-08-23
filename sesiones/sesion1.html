@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesión 1: Conceptos Básicos de ED y Ecuaciones de la forma y'=f(x) e y'=f(y)</title>
+    <!-- MathJax Configuration -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fafafa;
+        }
+        .content-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #1A237E; /* Azul Marino Oscuro */
+        }
+        h4 {
+            color: #00695C; /* Verde/Teal */
+            margin-top: 30px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 5px;
+        }
+        .solucion {
+            color: #D84315; /* Naranja/Rojo oscuro */
+            font-weight: bold;
+        }
+        .image-placeholder {
+            border: 2px dashed #999;
+            background: #f9f9f9;
+            text-align: center;
+            padding: 40px;
+            margin: 20px 0;
+            color: #555;
+            font-style: italic;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .quiz-container {
+            background-color: #e3f2fd;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #1976D2;
+        }
+        .question {
+            margin-bottom: 25px;
+        }
+        .feedback {
+            display: none;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .feedback.correct {
+            background-color: #c8e6c9;
+            border-left: 5px solid #2e7d32;
+            color: #1b5e20;
+        }
+        .feedback.incorrect {
+            background-color: #ffcdd2;
+            border-left: 5px solid #c62828;
+            color: #b71c1c;
+        }
+        button.evaluate-btn {
+            background-color: #1A237E;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button.evaluate-btn:hover {
+            background-color: #283593;
+        }
+        .alert-info {
+            background-color: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        
+        <h2>1. Introducción y Objetivos</h2>
+        <p>¡Bienvenidos a su primera sesión del curso de Ecuaciones Diferenciales (ED)! Antes de sumergirnos en métodos avanzados, debemos asegurar nuestros cimientos. Una Ecuación Diferencial es, en esencia, una ecuación que relaciona una función desconocida con sus derivadas.</p>
+        
+        <p>Hoy trabajaremos con las formas más puras y fundamentales de ED de primer orden:</p>
+        <ul>
+            <li><strong>Forma de integración directa \( y' = f(x) \):</strong> La derivada depende únicamente de la variable independiente. Su solución es la antiderivada directa.</li>
+            <li><strong>ED Autónomas \( y' = f(y) \):</strong> La derivada depende únicamente de la variable dependiente. Su solución implica "separar" las variables y resolver integrales respecto a \(y\).</li>
+        </ul>
+        
+        <p><strong>Objetivo de la sesión:</strong> Utilizar estas ecuaciones como vehículo para repasar intensamente técnicas cruciales de Cálculo Integral: <em>Integración por Partes</em>, <em>Método Tabular</em> y <em>Fracciones Parciales (Caso 1: Factores lineales no repetidos)</em>.</p>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>2. Desarrollo y Ejercicios Operativos</h2>
+        <p>Resolveremos 6 ejercicios. Los primeros abordarán el método por partes y tabular evaluando la forma \( y' = f(x) \), y luego pasaremos a las ED autónomas \( y' = f(y) \) para dominar las fracciones parciales.</p>
+
+        <!-- Ejercicio 1 -->
+        <h4>Ejercicio 1: Repaso de Integración por Partes Clásica</h4>
+        <p>Resuelve la ecuación diferencial: \( \frac{dy}{dx} = x e^{3x} \)</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Al ser de la forma \(y' = f(x)\), integramos directamente: \( y = \int x e^{3x} dx \).</p>
+        <p>Aplicamos integración por partes (\( \int u \, dv = u v - \int v \, du \)):</p>
+        <p>Sea \( u = x \implies du = dx \).</p>
+        <p>Sea \( dv = e^{3x} dx \implies v = \frac{1}{3}e^{3x} \).</p>
+        <p>Sustituimos en la fórmula:</p>
+        $$ y = x \left(\frac{1}{3}e^{3x}\right) - \int \frac{1}{3}e^{3x} dx $$ por lo cual
+        $$ y(x) = \frac{1}{3}x e^{3x} - \frac{1}{9}e^{3x} + C $$
+
+        <!-- Ejercicio 2 -->
+        <h4>Ejercicio 2: El Método Tabular y Graficación </h4>
+        <p>Resuelve el problema de valor inicial: \( y' = x^3 \cos(x) \) con \( y(0) = 1 \).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>La integral es \( y = \int x^3 \cos(x) dx \). Al tener un polinomio de grado 3 multiplicando a una trigonométrica, usaremos el <strong>método tabular</strong> (integración por partes sucesiva).</p>
+        <p>Construimos la tabla derivando \(x^3\) hasta cero, e integrando \(\cos(x)\):</p>
+
+        
+<table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+  <thead>
+    <tr style="background-color: #f2f2f2;">
+      <th>Signo</th>
+      <th>\(u\) y sus derivadas</th>
+      <th> \(v\) y sus integrales</th>
+      <th>Diagonal / Resultado</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>(+)</strong></td>
+      <td>\(x^3\)</td>
+      <td>\(\cos(x)\)</td>
+      <td><em> </em></td>
+    </tr>
+    <tr>
+      <td><strong>(-)</strong></td>
+      <td>\(3x^2\)</td>
+      <td>\(\sin(x)\)</td>
+      <td><em> \(+x^3 \sin x\) </em></td>
+    </tr>
+    <tr>
+      <td><strong>(+)</strong></td>
+      <td>\(6x\)</td>
+      <td>\(-\cos(x)\)</td>
+      <td><em> \(-3x^2(-\cos x)\)  </em></td>
+    </tr>
+    <tr>
+      <td><strong>(-)</strong></td>
+      <td>\(6\)</td>
+      <td>\(-\sin(x)\)</td>
+      <td><em> \(+6x(-\sin x)\)   </em></td>
+    </tr>
+    <tr>
+      <td><strong>(+)</strong></td>
+      <td>\(0\)</td>
+      <td>\(\cos(x)\)</td>
+      <td><em>- \(-6(\cos x)\)  </em></td>
+    </tr>
+  </tbody>
+</table>
+
+
+        <p>Sumando los productos diagonales obtenemos la solución general:</p>
+        $$ y(x) = x^3 \sin(x) + 3x^2 \cos(x) - 6x \sin(x) - 6\cos(x) + C $$
+        <p>Evaluamos la condición inicial \( y(0) = 1 \):</p>
+        $$ 1 = 0 + 0 - 0 - 6(1) + C \implies C = 7 $$ por lo caul
+        <p>Solución particular: $$ y(x) = x^3 \sin(x) + 3x^2 \cos(x) - 6x \sin(x) - 6\cos(x) + 7 $$</p>
+
+
+        <!-- Ejercicio 3 -->
+        <h4>Ejercicio 3: ED Autónoma y Fracciones Parciales Básicas</h4>
+        <p>Resuelve la ecuación diferencial: \( y' = y^2 - 4 \)</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Esta es una ED autónoma (\(y' = f(y)\)). "Separamos" las variables dividiendo entre la función de \(y\):</p>
+        $$ \frac{dy}{y^2 - 4} = dx $$
+        <p>Integramos ambos lados. El lado izquierdo requiere descomposición en <strong>fracciones parciales (Caso 1: Factores lineales  no repetidos)</strong>:</p>
+        $$ \frac{1}{(y-2)(y+2)} = \frac{A}{y-2} + \frac{B}{y+2} $$
+        Multiplicando por el denominador común: $$1 = A(y+2) + B(y-2) $$.</p>
+        <ul>
+            <li>Si \(y = -2 \implies 1 = -4B \implies B = -1/4\).</li>
+            <li>Si \(y = 2 \implies 1 = 4A \implies A = 1/4\).</li>
+        </ul>
+        <p>Sustituimos e integramos:
+        $$ \frac{1}{4} \int \frac{1}{y-2} dy - \frac{1}{4} \int \frac{1}{y+2} dy = \int dx $$
+        $$ \frac{1}{4} \ln|y-2| - \frac{1}{4} \ln|y+2| = x + C \implies \frac{1}{4} \ln\left|\frac{y-2}{y+2}\right| = x + C $$
+        Despejando \(y\) (usando propiedades de exponenciales):
+        $$ \left|\frac{y-2}{y+2}\right| = e^{4x+4C} = K e^{4x} $$
+        $$ y-2 = K e^{4x}(y+2) \implies y - Ky e^{4x} = 2 + 2Ke^{4x} $$
+        Finalmente, a solución es:
+        $$ y(x) = \frac{2 + 2Ke^{4x}}{1 - Ke^{4x}} $$ </p>
+
+        <!-- Ejercicio 4 -->
+        <h4>Ejercicio 4: Fracciones Parciales con 3 Factores </h4>
+        <p>Resuelve la ecuación diferencial: $$\frac{dy}{dx} = y^3 - 9y $$</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Separando variables y factorizando el denominador: $$ \frac{dy}{y(y^2 - 9)} = dx \implies \frac{dy}{y(y-3)(y+3)} = dx $$ 
+        Planteamos fracciones parciales:
+        $$ \frac{1}{y(y-3)(y+3)} = \frac{A}{y} + \frac{B}{y-3} + \frac{C}{y+3} $$
+       multiplicando por \( y(y-3)(y+3) \) se tiene 
+        $$ 1 = A(y-3)(y+3) + B(y)(y+3) + C(y)(y-3) $$ </p>
+        <ul>
+            <li>Si \(y = 0 \implies 1 = -9A \implies A = -1/9\)</li>
+            <li>Si \(y = 3 \implies 1 = 18B \implies B = 1/18\)</li>
+            <li>Si \(y = -3 \implies 1 = 18C \implies C = 1/18\)</li>
+        </ul>
+        <p>Al integrar resulta
+        $$ -\frac{1}{9}\ln|y| + \frac{1}{18}\ln|y-3| + \frac{1}{18}\ln|y+3| = x + K $$
+        Multiplicando todo por 18 y usando propiedades de logaritmos: 
+        $$ \ln\left| \frac{(y^2 - 9)}{y^2} \right| = 18x + C_1 \implies 1 - \frac{9}{y^2} = C_2 e^{18x} $$
+        Finalmente, despejando \(y\) obtenemos la solución: $$ y(x) = \pm \frac{3}{\sqrt{1 - C_2 e^{18x}}} $$</p>
+
+        <!-- Ejercicio 5 -->
+        <h4>Ejercicio 5: Integración por Partes Cíclica</h4>
+        <p>Resuelve \( y' = e^{2x} \cos(3x) \) con \(y(0) = 0\).</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>La forma de la ED es del tipo (y'=f(x)\). Entonces sólo se necesita integrar. Usaremos la fórmula directa para este tipo estándar de integrales por partes: $$\int e^{ax} \cos(bx) dx = \frac{e^{ax}}{a^2+b^2}(a \cos(bx) + b \sin(bx)) $$
+        Aplicando la fórmula con \(a=2, b=3\) se tiene :
+        $$ y(x) = \frac{e^{2x}}{4+9}(2\cos(3x) + 3\sin(3x)) + C = \frac{e^{2x}}{13}(2\cos(3x) + 3\sin(3x)) + C $$
+        Usando la condición  \(y(0)=0\) se tiene:
+                $$ 0 = \frac{1}{13}(2(1) + 3(0)) + C \implies C = -\frac{2}{13} $$
+        Finalmente, la solución particular está dada por: 
+        $$ y(x) = \frac{e^{2x}}{13}(2\cos(3x) + 3\sin(3x)) - \frac{2}{13} $$ 
+        en la figura siguiente se muestra la gráfica de la solución. </p>
+      <div style="text-align: center;">
+             <img src="img/s1fig1.png" alt="ejemplo" width="450" height="300">
+      </div>
+
+        <!-- Ejercicio 6 -->
+        <h4>Ejercicio 6: Trinomio Cuadrático y Fracciones Parciales</h4>
+        <p>Resuelve la ecuación diferencial autónoma: $$ y' = y^2 - 5y + 6 $$</p>
+        <p><span class="solucion">Solución:</span></p>
+        <p>Factorizamos el lado derecho: $$y' = (y-3)(y-2) $$
+        Separamos variables: $$ \frac{dy}{(y-3)(y-2)} = dx $$
+        Proponemos $$ \frac{1}{(y-3)(y-2)} = \frac{A}{y-3} + \frac{B}{y-2} $$
+        Mutiplicamos por  \((y-2) (y-3)\)   se tiene $$1 = A(y-2) + B(y-3) $$</p>
+        <ul>
+            <li>Si \(y = 2 \implies 1 = -B \implies B = -1\)</li>
+            <li>Si \(y = 3 \implies 1 = A \implies A = 1\)</li>
+        </ul>
+        <p>Integramos:
+        $$ \int \frac{1}{y-3} dy - \int \frac{1}{y-2} dy = \int dx \implies \ln|y-3| - \ln|y-2| = x + C $$
+        $$ \ln\left|\frac{y-3}{y-2}\right| = x + C \implies \frac{y-3}{y-2} = K e^x $$
+        Despejamos \(y\):
+        $$ y - 3 = K y e^x - 2K e^x \implies y(1 - K e^x) = 3 - 2K e^x $$
+        Finalmente, la solución es:
+        $$ y(x) = \frac{3 - 2K e^x}{1 - K e^x} $$ </p>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>3. Aplicaciones Prácticas: Modelos de Temperatura</h2>
+        <p>Las Ecuaciones Diferenciales Autónomas y la integración por fracciones parciales son excelentes para modelar procesos termodinámicos.</p>
+
+        <h4>Aplicación 1: Ley de Enfriamiento de Newton Clásica</h4>
+        <p>La Ley de Newton establece que la tasa de cambio de la temperatura \(T\) de un cuerpo es proporcional a la diferencia entre su temperatura y la temperatura ambiente \(T_a\):</p>
+        $$ \frac{dT}{dt} = -k(T - T_a) $$
+        <p><strong>Problema:</strong> Una taza de café a 90°C se coloca en una habitación a 20°C. Después de 10 minutos, el café está a 70°C. Encuentra la función \(T(t)\).</p>
+        <p><span class="solucion">Solución </span></p>
+        <p> La ED Autónoma a resolver es: $$ \frac{dT}{dt} = -k(T - 20) $$
+            Separando variables e integramos:  $$ \int \frac{dT}{T-20} = \int -k dt \implies \ln|T-20| = -kt + C $$
+         Ahora despejando se tiene: $$T(t) = 20 + C_1 e^{-kt} $$
+         Al usar la condicion inicial \(T(0) = 90\), se tiene  $$90 = 20 + C_1 \implies C_1 = 70 $$
+         Si usamos \(T(10) = 70\) resulta $$70 = 20 + 70 e^{-10k} \implies \frac{5}{7} = e^{-10k} \implies k = -\frac{1}{10}\ln(5/7) \approx 0.0336 $$
+        La temperatura en el tiempo está dada por: $$ T(t) = 20 + 70 e^{-0.0336t} $$
+        En la figura siguiente se muestra la gráfica de la solución. Observa que la temperatura del medio es asíntota </p>
+      <div style="text-align: center;">
+             <img src="img/s1fig2.png" alt="ejemplo" width="450" height="300">
+      </div>
+
+        <h4>Aplicación 2: Fuga Térmica. Modelo No Lineal</h4>
+        <p>En ciertas reacciones químicas exotérmicas dentro de contenedores sellados, la temperatura acelera su propio crecimiento. Un modelo simplificado es el crecimiento cuadrático autónomo: \( \frac{dT}{dt} = k(T - T_a)(T_c - T) \), donde \(T_c\) es la temperatura crítica máxima antes de la explosión y \(T_a\) la temperatura del medio.</p>
+        <p><strong>Problema:</strong> Asume \(k=1\), \(T_a = 20\),  \(T(0)=30\) y \(T_c = 100\). Plantea la integral para resolver este modelo.</p>
+        <p><span class="solucion">Solución</span></p>
+       <p>Dado el modelo con los valores \(k=1\), \(T_a=20\), \(T_c=100\) y condición inicial \(T(0)=30\):</p>
+    <p>\[ \frac{dT}{dt} = 1 \cdot (T - 20)(100 - T) \]</p>
+
+        <p>Reorganizamos la ecuación para dejar todos los términos que dependen de \(T\) a un lado y \(dt\) al otro:
+        $$\frac{dT}{(T - 20)(100 - T)} = dt $$
+        Integrando ambos lados:
+        $$  \int \frac{dT}{(T - 20)(100 - T)} = \int dt $$
+         Descomponemos el integrando del lado izquierdo:
+        $$\frac{1}{(T - 20)(100 - T)} = \frac{A}{T - 20} + \frac{B}{100 - T} $$
+        Multiplicando cruzado para hallar los coeficientes \(A\) y \(B\):
+        $$1 = A(100 - T) + B(T - 20) $$</p>
+        <ul>
+            <li>Si \(T = 20 \implies 1 = A(80) \implies A = \frac{1}{80}\)</li>
+            <li>Si \(T = 100 \implies 1 = B(80) \implies B = \frac{1}{80}\)</li>
+        </ul>
+        <p>Sustituyendo los valores:
+        $$ \int \left( \frac{1/80}{T - 20} + \frac{1/80}{100 - T} \right) dT = \int dt $$
+        Sacamos el factor común \(\frac{1}{80}\) e integramos cada término:
+        $$ \frac{1}{80} \left( \ln|T - 20| - \ln|100 - T| \right) = t + C_1$$
+        Aplicando propiedades de los logaritmos (\(\ln a - \ln b = \ln\frac{a}{b}\))
+        $$ \frac{1}{80} \ln\left| \frac{T - 20}{100 - T} \right| = t + C_1 $$
+        Multiplicamos por \(80\) ambos lados (\(C = 80C_1\)):
+        $$ \ln\left| \frac{T - 20}{100 - T} \right| = 80t + C $$
+        Sustituimos \(t = 0\) y \(T = 30\):
+        $$ \ln\left| \frac{30 - 20}{100 - 30} \right| = 80(0) + C $$
+        $$  \ln\left( \frac{10}{70} \right) = C \implies \ln\left(\frac{1}{7}\right) = C \implies C = -\ln(7) $$
+         Sustituimos \(C\) de vuelta en la ecuación:
+        $$ \ln\left( \frac{T - 20}{100 - T} \right) = 80t - \ln(7) $$
+         Aplicamos exponencial \(e\) a ambos lados:
+        $$ \frac{T - 20}{100 - T} = e^{80t - \ln(7)} = e^{- \ln(7)} \cdot e^{80t} = \frac{1}{7} e^{80t} $$
+         Despejando \(T\):
+        $$ 7(T - 20) = (100 - T)e^{80t} $$
+        $$ 7T - 140 = 100e^{80t} - Te^{80t}$$
+        Finalmente
+       $$ T(7 + e^{80t}) = 140 + 100e^{80t}  $$
+        $$  T(t) = \frac{140 + 100e^{80t}}{7 + e^{80t}} $$
+  
+   
+           <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>4. Exploración Interactiva (Formativa)</h2>
+  
+        <div class="container">
+        <h2>Campo de Direcciones: y' = f(x,y)</h3>
+    
+    <div class="definition">
+        <h3>¿Qué es?</h3>
+        <p>Un <strong>campo de direcciones</strong> es un bosquejo gráfico de pequeños elementos lineales (segmentos rectilíneos) trazados sobre una malla de puntos en el plano coordenado <code>(x, y)</code>.</p>
+    </div>
+
+    <h3>Propiedades Principales</h3>
+    <ul>
+        <li><strong>Pendiente local:</strong> La pendiente de cada segmento en el punto <code>(x, y)</code> está dada exactamente por el valor de la función <code>f(x, y)</code>.</li>
+        <li><strong>Curvas solución:</strong> Las soluciones de la ecuación diferencial son curvas continuas que pasan a través del campo de modo que resultan <em>tangentes</em> a los segmentos en cada intersección.</li>
+        <li><strong>Análisis visual:</strong> Facilita predecir si las soluciones crecen, decrecen, se estabilizan o presentan asíntotas sin integrar la ecuación.</li>
+    </ul>
+             <p> Por ejemplo, al considerar la ecuación diferencial
+      $$\frac{dy}{dx}=x-y$$
+      para determinar su campo de pendientes, se elige el punto \((a,b)\) entonces el segmento de recta tiene pendiente \(m=a-b\). De forma que un segmento de recta que pasa por ese punto y con la pendiente dada tiene  la ecuación \(y=b+m(x-a)=b+(a-b)(x-a)\). En la figura siguiente se muestra el campo de pendientes de la ecuación diferencial
+    </p>
+      <div style="text-align: center;">
+             <img src="img/s1fig3.png" alt="ejemplo" width="450" height="300">
+      </div>
+    <p>
+ En el caso de un problema de enfriamiento con la ecuación diferencial  $$ \frac{dT}{dt} = -0.333* (T - 20)$$ se tiene el campo de pendientes de la figura siguiente:
+    </p>
+      <div style="text-align: center;">
+             <img src="img/s1fig4.png" alt="ejemplo" width="450" height="300">
+      </div>
+
+    <h3>Interpretación Física</h3>
+    <ul>
+        <li><strong>Arriba de 20°ómetro:</strong> Las pendientes apuntan hacia abajo (el objeto se enfría).</li>
+        <li><strong>Abajo de 20°C:</strong> Las pendientes apuntan hacia arriba (el objeto absorbe calor).</li>
+        <li><strong>En 20°C:</strong> Las pendientes son planas (dT/dt = 0, equilibrio térmico).</li>
+    </ul>
+</div>
+
+      <div class="alert-info">
+            <strong>Actividad Formativa:</strong> Entra a la liga siguiente, allí podrás explorar la construcción de campos de direcciones de diferentes ecuaciones diferenciales  mediante un archivo de Python en Google-Colab  <a href=" https://colab.research.google.com/drive/1iiOrz2sraznQMP2fisZ9n2Jvxb8eJmyz?usp=sharing" target="_blank">Google Colab</a> 
+         </div>
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+        
+        
+        <h2>5. Práctica con Inteligencia Artificial</h2>
+        <p>Utiliza ChatGPT, Gemini o Claude para reforzar tu comprensión del Método Tabular copiando el siguiente prompt:</p>
+        <pre>
+Actúa como un profesor paciente de Cálculo Integral. 
+Quiero resolver la integral de x^4 * e^(-x) dx usando el método tabular.
+No me des la respuesta final todavía. Primero, explícame cómo
+construir las dos columnas principales (derivadas e integrales) y
+cuándo debo detenerme. Luego, pregúntame cuál es mi resultado de
+la tabla para ver si lo hice bien.
+        </pre>
+
+        <hr style="border: 0; border-top: 2px solid #1976D2; margin: 40px 0; opacity: 0.6;">
+
+        <h2>6. Autoevaluación Interactiva</h2>
+        <p>Demuestra tu dominio inicial de estos conceptos respondiendo el siguiente cuestionario.</p>
+
+        <div class="quiz-container">
+            <form id="session1Quiz">
+                <!-- Pregunta 1 (Conceptual) -->
+                <div class="question">
+                    <strong>1. CONCEPTUAL: ¿Cuál es la característica principal de una Ecuación Diferencial Autónoma?</strong><br>
+                    <input type="radio" name="q1" value="a"> A) La variable independiente no aparece explícitamente en la ecuación.<br>
+                    <input type="radio" name="q1" value="b"> B) Todas las variables están separadas por signos de suma.<br>
+                    <input type="radio" name="q1" value="c"> C) Contiene derivadas de segundo orden siempre.<br>
+                    <div id="feedback-q1" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 2 (Conceptual) -->
+                <div class="question">
+                    <strong>2. CONCEPTUAL: En la ecuación autónoma \( y' = y(y-5) \), ¿cuáles son las soluciones de equilibrio (constantes)?</strong><br>
+                    <input type="radio" name="q2" value="a"> A) \( y = 1 \) y \( y = -5 \)<br>
+                    <input type="radio" name="q2" value="b"> B) \( y = 0 \) y \( y = 5 \)<br>
+                    <input type="radio" name="q2" value="c"> C) No tiene puntos de equilibrio.<br>
+                    <div id="feedback-q2" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 3 (Operativa/Setup) -->
+                <div class="question">
+                    <strong>3. OPERATIVA: Al utilizar el método tabular para resolver \( \int x^2 e^{5x} dx \), ¿cuáles son los signos correspondientes a los términos diagonales?</strong><br>
+                    <input type="radio" name="q3" value="a"> A) Todos positivos (+, +, +)<br>
+                    <input type="radio" name="q3" value="b"> B) Alternados empezando con menos (-, +, -)<br>
+                    <input type="radio" name="q3" value="c"> C) Alternados empezando con más (+, -, +)<br>
+                    <div id="feedback-q3" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 4 (Operativa/Setup) -->
+                <div class="question">
+                    <strong>4. OPERATIVA: ¿Cuál es el planteamiento correcto en fracciones parciales para resolver la ED autónoma \( y' = 25 - y^2 \)?</strong><br>
+                    <input type="radio" name="q4" value="a"> A) \( \frac{A}{5-y} + \frac{B}{(5-y)^2} \)<br>
+                    <input type="radio" name="q4" value="b"> B) \( \frac{A}{5-y} + \frac{B}{5+y} \)<br>
+                    <input type="radio" name="q4" value="c"> C) \( \frac{Ay + B}{25 - y^2} \)<br>
+                    <div id="feedback-q4" class="feedback"></div>
+                </div>
+
+                <!-- Pregunta 5 (Operativa) -->
+                <div class="question">
+                    <strong>5. OPERATIVA: Si resolvemos la ED sencilla \( y' = 2y \), ¿cuál es la solución general obtenida tras integrar separando variables?</strong><br>
+                    <input type="radio" name="q5" value="a"> A) \( y = C e^{2x} \)<br>
+                    <input type="radio" name="q5" value="b"> B) \( y = e^{x^2} + C \)<br>
+                    <input type="radio" name="q5" value="c"> C) \( y = 2x + C \)<br>
+                    <div id="feedback-q5" class="feedback"></div>
+                </div>
+
+                <button type="button" class="evaluate-btn" onclick="evaluateQuiz()">Evaluar Cuestionario</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Script de Evaluación -->
+    <script>
+        function evaluateQuiz() {
+            const answers = {
+                q1: { 
+                    correct: 'a', 
+                    explanation: ' Una ED Autónoma tiene la forma \( y\' = f(y) \), lo que significa que la variable independiente (usualmente \(x\) o \(t\)) no forma parte explícita de la ecuación.'
+                },
+                q2: { 
+                    correct: 'b', 
+                    explanation: 'Los puntos de equilibrio se encuentran donde \( y\' = 0 \). Igualando \( y(y-5) = 0 \), obtenemos inmediatamente las raíces \( y=0 \) y \( y=5 \).'
+                },
+                q3: { 
+                    correct: 'c', 
+                    explanation: 'El método tabular siempre alterna signos comenzando con positivo para el primer producto diagonal: (+, -, +).'
+                },
+                q4: { 
+                    correct: 'b', 
+                    explanation: 'Dado que \( 25 - y^2 = (5-y)(5+y) \), se trata del Caso 1 de fracciones parciales (factores lineales no repetidos), lo que demanda la forma \( \frac{A}{5-y} + \frac{B}{5+y} \).'
+                },
+                q5: { 
+                    correct: 'a', 
+                    explanation: 'Separando variables queda \( \frac{dy}{y} = 2 dx \). Integrando: \( \ln|y| = 2x + C_1 \). Exponenciando: \( y = e^{2x + C_1} \implies y = C e^{2x} \).'
+                }
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                let qName = 'q' + i;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let feedbackDiv = document.getElementById(`feedback-${qName}`);
+                
+                feedbackDiv.style.display = 'block';
+                
+                if (selected) {
+                    if (selected.value === answers[qName].correct) {
+                        feedbackDiv.className = 'feedback correct';
+                        feedbackDiv.innerHTML = '<strong>¡Correcto!.</strong> ' + answers[qName].explanation;
+                    } else {
+                        feedbackDiv.className = 'feedback incorrect';
+                        feedbackDiv.innerHTML = '<strong>Incorrecto.</strong> ' + answers[qName].explanation;
+                    }
+                } else {
+                    feedbackDiv.className = 'feedback incorrect';
+                    feedbackDiv.innerHTML = 'Por favor, selecciona una respuesta.';
+                }
+            }
+
+            // Renderizar las matemáticas que están dentro del feedback dinámico
+            MathJax.typesetPromise().then(() => {
+                console.log("MathJax re-renderizado en la retroalimentación.");
+            }).catch((err) => console.log('MathJax error: ', err.message));
+        }
+    </script>
+</body>
+</html>
