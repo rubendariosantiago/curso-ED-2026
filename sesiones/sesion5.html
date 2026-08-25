@@ -160,181 +160,147 @@
 
     <hr class="separador">
 
-    <h3>2. Desarrollo y Ejercicios Operativos</h3>
+    <h3>2. Desarrollo y Ejercicios</h3>
     <p><strong>Deducción General del Método según la Estrategia:</strong></p>
-    <p>Dada la ecuación diferencial $y' + p(x)y = q(x)y^n$, al dividir entre $y^n$ se tiene:</p>
-    <p>$$ y^{-n}y' + p(x)y^{1-n} = q(x) $$</p>
-    <p>Si consideramos el cambio de variable:</p>
-    <p>$$ z = y^{1-n} $$</p>
-    <p>Al derivar $z$ con respecto a $x$ mediante la regla de la cadena, resulta:</p>
-    <p>$$ z' = (1-n)y^{-n}y' \implies y^{-n}y' = \frac{1}{1-n}z' $$</p>
-    <p>Al sustituir estos términos, transformamos la ecuación diferencial en:</p>
-    <p>$$ \frac{1}{1-n}z' + p(x)z = q(x) \implies z' + (1-n)p(x)z = (1-n)q(x) $$</p>
-    <p>Reescribiendo esta E.D. lineal en su forma estándar $z' + P(x)z = Q(x)$, identificamos la relación entre los coeficientes:</p>
-    <p>$$ P(x) = (1-n)p(x) \quad \text{y} \quad Q(x) = (1-n)q(x) $$</p>
-    <p>Aplicando el método para resolver ED lineales de primer orden, se calcula el factor integrante $\mu$:</p>
-    <p>$$ \mu = \exp\left(\int P(x) dx\right) $$</p>
-    <p>Posteriormente, evaluamos la integral $I$:</p>
-    <p>$$ I = \int \mu \cdot Q(x) dx $$</p>
-    <p>De este modo, obtenemos la solución en términos de $z$:</p>
-    <p>$$ z = \frac{I + C}{\mu} $$</p>
-    <p>Finalmente, al regresar a la variable original $y$, despejamos de $z = y^{1-n}$.</p>
+    <p>Dada la ecuación diferencial $y' + p(x)y = q(x)y^n$, al dividir entre $y^n$ se tiene:
+    $$ y^{-n}y' + p(x)y^{1-n} = q(x) $$
+    Si consideramos el cambio de variable:
+    $$ z = y^{1-n} $$
+    Al derivar $z$ con respecto a $x$ mediante la regla de la cadena, resulta:
+    $$ z' = (1-n)y^{-n}y' \implies y^{-n}y' = \frac{1}{1-n}z' $$
+    Al sustituir estos términos, transformamos la ecuación diferencial en:
+    $$ \frac{1}{1-n}z' + p(x)z = q(x) \implies z' + (1-n)p(x)z = (1-n)q(x) $$
+    Reescribiendo esta E.D. lineal en su forma estándar $z' + P(x)z = Q(x)$, identificamos la relación entre los coeficientes:
+    $$ P(x) = (1-n)p(x) \quad \text{y} \quad Q(x) = (1-n)q(x) $$
+    Aplicando el método para resolver ED lineales de primer orden, se calcula el factor integrante $\mu$:
+    $$ \mu = \exp\left(\int P(x) dx\right) $$
+    Posteriormente, evaluamos la integral $I$:
+    $$ I = \int \mu \cdot Q(x) dx $$
+    De este modo, obtenemos la solución en términos de $z$:
+    $$ z = \frac{I + C}{\mu} $$
+    Finalmente, al regresar a la variable original $y$, despejamos de $z = y^{1-n}$.</p>
 
-    <h4>Ejercicio 1 (Nivel Intermedio)</h4>
-    <p>Resuelve la ecuación diferencial: $ y' + \frac{1}{x}y = x y^2 $</p>
+    <h4>Ejercicio 1</h4>
+    <p>Resuelve la ecuación diferencial: $$ y' + \frac{1}{x}y = x y^2 $$</p>
     <p><span class="solucion">Solución:</span></p>
-    <p>Identificamos que es de Bernoulli con $n = 2$, $p(x) = \frac{1}{x}$ y $q(x) = x$.</p>
-    <p>Al dividir entre $y^2$, se tiene:</p>
-    <p>$$ y^{-2}y' + \frac{1}{x}y^{-1} = x $$</p>
-    <p>Si usamos el cambio de variable $z = y^{1-2} = y^{-1}$ y derivamos respecto a $x$, resulta:</p>
-    <p>$$ z' = -y^{-2}y' \implies y^{-2}y' = -z' $$</p>
-    <p>Al sustituir estos términos, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
-    <p>$$ -z' + \frac{1}{x}z = x \implies z' - \frac{1}{x}z = -x $$</p>
-    <p>Observamos la relación entre coeficientes:</p>
-    <p>$$ P(x) = (1-n)p(x) = (1-2)\left(\frac{1}{x}\right) = -\frac{1}{x} $$</p>
-    <p>$$ Q(x) = (1-n)q(x) = (1-2)(x) = -x $$</p>
-    <p>Al calcular el factor integrante $\mu$, resulta:</p>
-    <p>$$ \mu = \exp\left(\int P(x)dx\right) = \exp\left(\int -\frac{1}{x}dx\right) = e^{-\ln|x|} = \frac{1}{x} $$</p>
-    <p>Al evaluar la integral $I = \int \mu \cdot Q(x) dx$, obtenemos:</p>
-    <p>$$ I = \int \frac{1}{x}(-x) dx = \int (-1) dx = -x $$</p>
-    <p>Así, la solución en la variable $z$ es:</p>
-    <p>$$ z = \frac{I + C}{\mu} = \frac{-x + C}{\frac{1}{x}} = x(C - x) = Cx - x^2 $$</p>
-    <p>Finalmente, al regresar a la variable original $y$, como $z = y^{-1} = \frac{1}{y}$, resulta:</p>
+    <p>Identificamos que es de Bernoulli con 
+         $$n = 2,\quad p(x) = \frac{1}{x}, \quad  q(x) = x.$$
+       Al dividir entre $y^2$, se tiene:
+      $$ y^{-2}y' + \frac{1}{x}y^{-1} = x $$
+     Si usamos el cambio de variable $$z = y^{1-2} = y^{-1}$$ y derivamos respecto a $x$, resulta:
+    $$ z' = -y^{-2}y' \implies y^{-2}y' = -z' $$
+     Al sustituir estos términos, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:
+     $$ -z' + \frac{1}{x}z = x \implies z' - \frac{1}{x}z = -x $$
+    Observamos la relación entre coeficientes:</p>
+    $$ P(x) = (1-n)p(x) = (1-2)\left(\frac{1}{x}\right) = -\frac{1}{x} $$
+    $$ Q(x) = (1-n)q(x) = (1-2)(x) = -x $$
+    Al calcular el factor integrante $\mu$, resulta:
+    $$ \mu = \exp\left(\int P(x)dx\right) = \exp\left(\int -\frac{1}{x}dx\right) = e^{-\ln|x|} = \frac{1}{x} $$
+    Al evaluar la integral $I = \int \mu \cdot Q(x) dx$, obtenemos:
+    $$ I = \int \frac{1}{x}(-x) dx = \int (-1) dx = -x $$
+    En consecuencia, la solución en la variable $z$ es:
+    $$ z = \frac{I + C}{\mu} = \frac{-x + C}{\frac{1}{x}} = x(C - x) = Cx - x^2 $$
+    Finalmente, al regresar a la variable original $y$, como $$z = y^{-1} = \frac{1}{y},$$resulta:
     <p>$$ y(x) = \frac{1}{Cx - x^2} $$</p>
 
-    <h4>Ejercicio 2 (Nivel Intermedio con Graficación)</h4>
-    <p>Resuelve el Problema de Valor Inicial (PVI): $ x y' + y = x^2 y^2 $, con condición inicial $y(1) = 1$. Grafica la solución particular e identifica sus asíntotas.</p>
+    <h4>Ejercicio 2</h4>
+    <p>Resuelve el Problema de Valor Inicial (PVI): $$ x y' + y = x^2 y^2 ,\quad\hbox{ con condición inicial }\quad y(1) = 1.$$
+     Grafica la solución particular e identifica sus asíntotas.</p>
     <p><span class="solucion">Solución:</span></p>
-    <p>Al dividir entre $x$, obtenemos la forma estándar de Bernoulli: $y' + \frac{1}{x}y = x y^2$. Identificamos $n = 2$, $p(x) = \frac{1}{x}$ y $q(x) = x$.</p>
-    <p>Al dividir entre $y^2$, se tiene: $y^{-2}y' + \frac{1}{x}y^{-1} = x$.</p>
-    <p>Si consideramos el cambio $z = y^{-1}$ y derivamos respecto a $x$, resulta $z' = -y^{-2}y'$, por lo que $y^{-2}y' = -z'$.</p>
-    <p>Al sustituir en la ecuación, la transformamos en la E.D. lineal $z' - \frac{1}{x}z = -x$.</p>
-    <p>Las relaciones entre coeficientes son $P(x) = (1-2)p(x) = -\frac{1}{x}$ y $Q(x) = (1-2)q(x) = -x$.</p>
-    <p>Al calcular el factor integrante $\mu$, resulta: $\mu = \exp\left(\int -\frac{1}{x}dx\right) = \frac{1}{x}$.</p>
-    <p>Al evaluar la integral $I$, obtenemos: $I = \int \frac{1}{x}(-x)dx = -x$.</p>
-    <p>De este modo, la solución para $z$ es: $z = \frac{I + C}{\mu} = \frac{-x + C}{1/x} = Cx - x^2$.</p>
-    <p>Al regresar a la variable original $y$, se tiene: $y(x) = \frac{1}{z} = \frac{1}{Cx - x^2}$.</p>
-    <p>Al aplicar la condición inicial $y(1) = 1$, resulta:</p>
-    <p>$$ 1 = \frac{1}{C(1) - 1^2} \implies C - 1 = 1 \implies C = 2 $$</p>
-    <p>Por lo tanto, la solución particular es: $$ y(x) = \frac{1}{2x - x^2} = \frac{1}{x(2 - x)} $$</p>
-    <p>Observa que la solución se desconecta o explota hacia infinito (singularidad) en $x = 0$ y $x = 2$. Por lo tanto, el dominio del PVI es el intervalo abierto $(0, 2)$.</p>
+    <p>Al dividir entre $x$, obtenemos la forma estándar de Bernoulli: $$y' + \frac{1}{x}y = x y^2.$$
+     Identificamos $$n = 2, \quad p(x) = \frac{1}{x}\quad\hbox{ y } \quad q(x) = x$$
+    Al dividir entre $y^2$, se tiene: $$y^{-2}y' + \frac{1}{x}y^{-1} = x$$
+    Si consideramos el cambio $z = y^{-1}$ y derivamos respecto a $x$, resulta 
+    $$ z' = -y^{-2}y'\implies $y^{-2}y' = -z',$$
+    Al sustituir en la ecuación, obtenemos la ecuación diferencial  lineal $$z' - \frac{1}{x}z = -x.$$
+    Las relaciones entre coeficientes son $$P(x) = (1-2)p(x) = -\frac{1}{x}\quad\hbox{ y }\quad Q(x) = (1-2)q(x) = -x.$$
+    Al calcular el factor integrante $\mu$, resulta: $$\mu = \exp\left(\int -\frac{1}{x}dx\right) = \frac{1}{x}.$$
+   Continuamos evaluando $I$, obtenemos: $$I = \int \frac{1}{x}(-x)dx = -x.$$</p>
+    De este modo, la solución para $z$ es: $$z = \frac{I + C}{\mu} = \frac{-x + C}{1/x} = Cx - x^2.$$
+    Regresando a la variable original $y$, se tiene: $$y(x) = \frac{1}{z} = \frac{1}{Cx - x^2}.$$
+    Si aplicamos la condición inicial $y(1) = 1$, resulta:
+    $$ 1 = \frac{1}{C(1) - 1^2} \implies C - 1 = 1 \implies C = 2 $$
+    Por lo tanto, la solución particular es: $$ y(x) = \frac{1}{2x - x^2} = \frac{1}{x(2 - x)} $$
+    Observa que la solución tiene singularidad en $x = 0$ y  en $ x = 2$. Por lo tanto, el dominio del PVI es el intervalo abierto $(0, 2)$.
+           En la figura siguiente se muestra la gráfica de la curva solución</p>
+          <div style="text-align: center;">
+             <img src="img/s5fig2.png" alt="ejemplo" width="450" height="300">
+      </div>
+   
 
-    <p><strong>Generación de la Gráfica en Python:</strong></p>
-    <pre>
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Dominio continuo dentro del intervalo de validez del PVI (0, 2)
-x = np.linspace(0.01, 1.99, 500)
-y = 1 / (x * (2 - x))
-
-plt.figure(figsize=(8, 5))
-plt.plot(x, y, label=r'Solución $y(x) = \frac{1}{x(2-x)}$', color='#D84315', linewidth=2.5)
-plt.scatter([1], [1], color='#1A237E', zorder=5, s=60, label='Condición Inicial (1, 1)')
-
-# Líneas de asíntotas verticales
-plt.axvline(0, color='gray', linestyle='--', alpha=0.7, label='Asíntotas $x=0, x=2$')
-plt.axvline(2, color='gray', linestyle='--', alpha=0.7)
-
-plt.title('Solución Particular del PVI y Explosión en Tiempo Finito')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.ylim(0, 10)
-plt.grid(True, linestyle=':')
-plt.legend()
-plt.show()
-    </pre>
-    <div class="image-placeholder">
-        [Espacio para insertar imagen de gráfica generada con Python del Ejercicio 2]
-    </div>
-
-    <h4>Ejercicio 3 (Nivel Avanzado - Funciones Trigonométricas)</h4>
+    <h4>Ejercicio 3</h4>
     <p>Encuentra la solución general de la ecuación: $ y' + y\tan(x) = y^3 \sec(x) $</p>
     <p><span class="solucion">Solución:</span></p>
-    <p>Identificamos $n = 3$, $p(x) = \tan(x)$ y $q(x) = \sec(x)$.</p>
-    <p>Al dividir entre $y^3$, se tiene:</p>
-    <p>$$ y^{-3}y' + y^{-2}\tan(x) = \sec(x) $$</p>
-    <p>Si usamos el cambio de variable $z = y^{1-3} = y^{-2}$ y derivamos respecto a $x$, resulta:</p>
-    <p>$$ z' = -2y^{-3}y' \implies y^{-3}y' = -\frac{1}{2}z' $$</p>
-    <p>Al sustituir los términos, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
-    <p>$$ -\frac{1}{2}z' + z\tan(x) = \sec(x) \implies z' - 2\tan(x)z = -2\sec(x) $$</p>
-    <p>Se observan las relaciones entre coeficientes:</p>
-    <p>$$ P(x) = (1-n)p(x) = (1-3)\tan(x) = -2\tan(x) $$</p>
-    <p>$$ Q(x) = (1-n)q(x) = (1-3)\sec(x) = -2\sec(x) $$</p>
-    <p>Al calcular el factor integrante $\mu$, se tiene:</p>
-    <p>$$ \mu = \exp\left(\int P(x)dx\right) = \exp\left(\int -2\tan(x)dx\right) = \exp(2\ln|\cos(x)|) = \cos^2(x) $$</p>
-    <p>Al evaluar la integral $I = \int \mu \cdot Q(x)dx$, resulta:</p>
-    <p>$$ I = \int \cos^2(x) \cdot (-2\sec(x)) dx = \int -2\cos(x) dx = -2\sin(x) $$</p>
-    <p>De este modo, la solución en la variable $z$ es:</p>
-    <p>$$ z = \frac{I + C}{\mu} = \frac{-2\sin(x) + C}{\cos^2(x)} $$</p>
-    <p>Finalmente, al regresar a la variable original $y$, como $z = y^{-2} \implies y = z^{-1/2} = \frac{1}{\sqrt{z}}$, obtenemos:</p>
-    <p>$$ y(x) = \frac{1}{\sqrt{\frac{-2\sin(x) + C}{\cos^2(x)}}} = \frac{\cos(x)}{\sqrt{C - 2\sin(x)}} $$</p>
+    <p>Identificamos $$n = 3, \quad p(x) = \tan(x), \quad  q(x) = \sec(x)$$
+      Al dividir entre $y^3$, se tiene:</p>
+     $$ y^{-3}y' + y^{-2}\tan(x) = \sec(x) $$
+    Si usamos el cambio de variable $z = y^{1-3} = y^{-2}$ y derivamos respecto a $x$, resulta:
+    $$ z' = -2y^{-3}y' \implies y^{-3}y' = -\frac{1}{2}z' $$
+    Al sustituir los términos, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$: Tenemos en este caso:
+    $$ -\frac{1}{2}z' + z\tan(x) = \sec(x) \implies z' - 2\tan(x)z = -2\sec(x) $$
+    Notemos que  las 
+      $$ P(x) = (1-n)p(x) = (1-3)\tan(x) = -2\tan(x), \quad 
+     Q(x) = (1-n)q(x) = (1-3)\sec(x) = -2\sec(x) $$
+     Al calcular el factor integrante $\mu$, se tiene:
+    $$ \mu = \exp\left(\int {P(x)dx} \right) = \exp\left(\int{( -2)\tan(x)dx} \right) = \exp(2\ln|\cos(x)|) = \cos^2(x) $$
+  Evaluamos ahora  $I$, tenemos:
+     $$ I = \int {\mu  Q(x)dx} = \int{ \cos^2(x)  (-2\sec(x)) dx }= \int { -2\cos(x) dx } = -2\sin(x) $$
+    La solución en la variable $z$ es:
+    $$ z = \frac{I + C}{\mu} = \frac{-2\sin(x) + C}{\cos^2(x)} $$
+    Finalmente, regresamos a la variable original $y$, como 
+    $$z = y^{-2} \implies y = z^{-1/2} = \frac{1}{\sqrt{z}},$$ obtenemos:
+    $$ y(x) = \frac{1}{\sqrt{\frac{-2\sin(x) + C}{\cos^2(x)}}} = \frac{\cos(x)}{\sqrt{C - 2\sin(x)}} $$</p>
 
-    <h4>Ejercicio 4 (Nivel Avanzado con Graficación)</h4>
-    <p>Resuelve el PVI: $ y' - \frac{y}{2x} = \frac{x}{2y} $, con $y(1) = 2$. Genera la gráfica de la solución.</p>
+    <h4>Ejercicio 4</h4>
+    <p>Resuelve el PVI: 
+     $$ y' - \frac{y}{2x} = \frac{x}{2y}, \quad \hbox{ con }\quad  y(1) = 2.$$ Genera la gráfica de la solución.</p>
     <p><span class="solucion">Solución:</span></p>
-    <p>Reorganizamos la ecuación: $y' - \frac{1}{2x}y = \frac{x}{2} y^{-1}$. Es de Bernoulli con $n = -1$, $p(x) = -\frac{1}{2x}$ y $q(x) = \frac{x}{2}$.</p>
-    <p>Al dividir entre $y^{-1}$ (multiplicar por $y$), se tiene:</p>
-    <p>$$ y y' - \frac{1}{2x}y^2 = \frac{x}{2} $$</p>
-    <p>Si consideramos el cambio $z = y^{1 - (-1)} = y^2$ y derivamos respecto a $x$, resulta:</p>
-    <p>$$ z' = 2y y' \implies y y' = \frac{1}{2}z' $$</p>
-    <p>Al sustituir, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
-    <p>$$ \frac{1}{2}z' - \frac{1}{2x}z = \frac{x}{2} \implies z' - \frac{1}{x}z = x $$</p>
-    <p>Las relaciones entre coeficientes son:</p>
-    <p>$$ P(x) = (1 - (-1))p(x) = 2\left(-\frac{1}{2x}\right) = -\frac{1}{x} $$</p>
-    <p>$$ Q(x) = (1 - (-1))q(x) = 2\left(\frac{x}{2}\right) = x $$</p>
-    <p>Al calcular el factor integrante $\mu$, resulta:</p>
-    <p>$$ \mu = \exp\left(\int -\frac{1}{x} dx\right) = e^{-\ln|x|} = \frac{1}{x} $$</p>
-    <p>Al evaluar la integral $I$, obtenemos:</p>
-    <p>$$ I = \int \mu \cdot Q(x) dx = \int \frac{1}{x}(x) dx = \int 1 dx = x $$</p>
-    <p>Así, la solución en la variable $z$ es:</p>
-    <p>$$ z = \frac{I + C}{\mu} = \frac{x + C}{\frac{1}{x}} = x(x + C) = x^2 + Cx $$</p>
-    <p>Al regresar a la variable original $y$, sustituimos $z = y^2 \implies y^2 = x^2 + Cx \implies y(x) = \sqrt{x^2 + Cx}$.</p>
-    <p>Al aplicar la condición inicial $y(1) = 2$, resulta:</p>
-    <p>$$ 2 = \sqrt{1^2 + C(1)} \implies 4 = 1 + C \implies C = 3 $$</p>
-    <p>Por ende, la solución particular es: $$ y(x) = \sqrt{x^2 + 3x} $$</p>
+    <p>Reorganizamos primero la ecuación, se tiene: 
+      $$y' - \frac{1}{2x}y = \frac{x}{2} y^{-1}$$ Es una ecuación diferencial de Bernoulli con
+      $$n = -1, 'quad p = -\frac{1}{2x} \quad\hbox{ y } \quad q= \frac{x}{2}$$
+      Tenemos que $n=-1$, entonces
+      $$z = y^{1 - n} = y^2;\quad  P= (1 - n)p  = 2\left(-\frac{1}{2x}\right) = -\frac{1}{x} \quad 
+Q = (1 - n)q= 2\left(\frac{x}{2}\right) = x $$
+  La ecuación diferencial en $z$ es 
+  $$ z' - \frac{1}{x}z = x $$
 
-    <p><strong>Generación de la Gráfica en Python:</strong></p>
-    <pre>
-import numpy as np
-import matplotlib.pyplot as plt
+    El factor integrante $\mu$ está dado por:
+    $$ \mu = \exp\left(\int -\frac{1}{x} dx\right) = e^{-\ln|x|} = \frac{1}{x} $$
+    La integral $I$ está dada por:</p>
+    $$ I = \int \mu Q(dx = \int \frac{1}{x}(x) dx = \int 1 dx = x $$
+    Así, la solución en la variable $z$ es:
+    $$ z = \frac{I + C}{\mu} = \frac{x + C}{\frac{1}{x}} = x(x + C) = x^2 + Cx $$
+   Regresando a la variable $y$  sustituyendo $z = y^24, obtenemos:
+   $$y^2 = x^2 + Cx \implies y= \sqrt{x^2 + Cx}$$.</p>
+   Aplicamos ahora la condición inicial $y(1) = 2$, tenemos:
+    $$ 2 = \sqrt{1^2 + C(1)} \implies 4 = 1 + C \implies C = 3 $$
+   finalmente, la solución particular es: $$ y(x) = \sqrt{x^2 + 3x} $$
+          En la figura siguiente se muestra la gráfica de la curva solución</p>
+          <div style="text-align: center;">
+             <img src="img/s5fig1.png" alt="ejemplo" width="450" height="300">
+      </div>
 
-x = np.linspace(0.1, 5, 400)
-y = np.sqrt(x**2 + 3*x)
 
-plt.figure(figsize=(8, 5))
-plt.plot(x, y, label=r'Solución $y(x) = \sqrt{x^2 + 3x}$', color='#00695C', linewidth=2.5)
-plt.scatter([1], [2], color='#D84315', zorder=5, s=60, label='Condición Inicial (1, 2)')
-plt.title('Trayectoria de la Solución Particular de Bernoulli ($n=-1$)')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.grid(True, linestyle='--')
-plt.legend()
-plt.show()
-    </pre>
-    <div class="image-placeholder">
-        [Espacio para insertar imagen de gráfica generada con Python del Ejercicio 4]
-    </div>
-
-    <h4>Ejercicio 5 (Nivel Avanzado - Exponentes Negativos/Fraccionarios)</h4>
-    <p>Resuelve la ecuación diferencial: $ y' + y = e^x y^4 $</p>
+    <h4>Ejercicio 5 </h4>
+    <p>Resuelve la ecuación diferencial: $$ y' + y = e^x y^4 $$</p>
     <p><span class="solucion">Solución:</span></p>
-    <p>Identificamos $n = 4$, $p(x) = 1$, $q(x) = e^x$.</p>
-    <p>Al dividir entre $y^4$, se tiene:</p>
-    <p>$$ y^{-4}y' + y^{-3} = e^x $$</p>
-    <p>Si consideramos el cambio $z = y^{1-4} = y^{-3}$ y derivamos respecto a $x$, resulta:</p>
-    <p>$$ z' = -3y^{-4}y' \implies y^{-4}y' = -\frac{1}{3}z' $$</p>
-    <p>Al sustituir, transformamos la ecuación a la forma lineal $z' + P(x)z = Q(x)$:</p>
-    <p>$$ -\frac{1}{3}z' + z = e^x \implies z' - 3z = -3e^x $$</p>
-    <p>donde las relaciones de coeficientes son $P(x) = (1-4)p(x) = -3(1) = -3$ y $Q(x) = (1-4)q(x) = -3e^x$.</p>
-    <p>Al calcular el factor integrante $\mu$, resulta:</p>
-    <p>$$ \mu = \exp\left(\int -3 dx\right) = e^{-3x} $$</p>
-    <p>Al evaluar la integral $I$, obtenemos:</p>
-    <p>$$ I = \int \mu \cdot Q(x) dx = \int e^{-3x} (-3e^x) dx = \int -3e^{-2x} dx = \frac{3}{2}e^{-2x} $$</p>
-    <p>De este modo, la solución para $z$ es:</p>
-    <p>$$ z = \frac{I + C}{\mu} = \frac{\frac{3}{2}e^{-2x} + C}{e^{-3x}} = \frac{3}{2}e^x + C e^{3x} $$</p>
-    <p>Finalmente, al regresar a la variable original $y$, como $z = y^{-3} \implies y = z^{-1/3}$, la solución general es:</p>
-    <p>$$ y(x) = \left( \frac{3}{2}e^x + C e^{3x} \right)^{-1/3} = \frac{1}{\sqrt[3]{\frac{3}{2}e^x + C e^{3x}}} $$</p>
+    <p>Identificamos en este caso 
+    $$n = 4, \quad p= 1, \quad q = e^x </p>
+     Al dividir entre $y^4$, se tiene:
+     $$ y^{-4}y' + y^{-3} = e^x $$
+     Si consideramos el cambio $z = y^{1-4} = y^{-3}$ y derivamos respecto a $x$, resulta:
+    $$ z' = -3y^{-4}y' \implies y^{-4}y' = -\frac{1}{3}z' $$
+    Al sustituir, transformamos la ecuación a la forma lineal
+     $$ -\frac{1}{3}z' + z = e^x \implies z' - 3z = -3e^x $$
+    Ahora observemos que  $P= -3$ y $Q= -3e^x$. Calculando
+      el factor integrante $\mu$, resulta:
+    $$ \mu = \exp\left(\int (-3) dx\right) = e^{-3x} $$
+    Calculamos ahora la integral $I$, obtenemos:
+    $$ I = \int \mu Q(x) dx = \int {e^{-3x} (-3e^x) }dx = \int{( -3)e^{-2x} dx} = \frac{3}{2}e^{-2x} $$
+    De este modo, la solución para $z$ es:
+    $$ z = \frac{I + C}{\mu} = \frac{\frac{3}{2}e^{-2x} + C}{e^{-3x}} = \frac{3}{2}e^x + C e^{3x} $$
+    Finalmente, como $z = y^{-3} $ se tiene $y = z^{-1/3}$, entonces  la solución general es:</p>
+    $$ y(x) = \left( \frac{3}{2}e^x + C e^{3x} \right)^{-1/3} = \frac{1}{\sqrt[3]{\frac{3}{2}e^x + C e^{3x}}} $$</p>
 
     <hr class="separador">
 
@@ -342,72 +308,51 @@ plt.show()
 
     <h4>Aplicación A: La Ecuación Logística Revisitada como Bernoulli</h4>
     <p>En la Sesión 2 estudiamos el modelo poblacional logístico mediante separación de variables y fracciones parciales. Demostraremos cómo la técnica de Bernoulli resuelve el mismo problema siguiendo la misma estrategia.</p>
-    <p>La EDO logística es: $ \frac{dP}{dt} = r P \left(1 - \frac{P}{K}\right) \implies \frac{dP}{dt} - rP = -\frac{r}{K}P^2 $</p>
+    <p>La EDO logística es: 
+    $$ \frac{dP}{dt} = r P \left(1 - \frac{P}{K}\right) \implies \frac{dP}{dt} - rP = -\frac{r}{K}P^2 $$
     <p><span class="solucion">Solución mediante Bernoulli:</span></p>
     <p>Identificamos $n = 2$, $p(t) = -r$, y $q(t) = -\frac{r}{K}$. Al dividir entre $P^2$, se tiene:</p>
-    <p>$$ P^{-2}\frac{dP}{dt} - rP^{-1} = -\frac{r}{K} $$</p>
-    <p>Si consideramos la sustitución de Bernoulli $z = P^{1-2} = P^{-1} = \frac{1}{P}$ y derivamos respecto a $t$, resulta $z' = -P^{-2}\frac{dP}{dt}$, de donde $P^{-2}\frac{dP}{dt} = -z'$.</p>
-    <p>Al sustituir estos términos, se tiene $-z' - rz = -\frac{r}{K} \implies z' + rz = \frac{r}{K}$.</p>
-    <p>Al expresar en forma estándar $z' + P(t)z = Q(t)$, observamos la relación entre coeficientes:</p>
-    <p>$$ P(t) = (1-2)p(t) = r \quad \text{y} \quad Q(t) = (1-2)q(t) = \frac{r}{K} $$</p>
-    <p>Al calcular el factor integrante, resulta $\mu = \exp\left(\int r dt\right) = e^{rt}$.</p>
-    <p>Al evaluar la integral $I = \int \mu \cdot Q(t) dt$, se obtiene $I = \int e^{rt}\left(\frac{r}{K}\right) dt = \frac{1}{K}e^{rt}$.</p>
-    <p>De este modo, la solución en la variable $z$ es $z = \frac{I + C}{\mu} = \frac{\frac{1}{K}e^{rt} + C}{e^{rt}} = \frac{1}{K} + Ce^{-rt}$.</p>
-    <p>Finalmente, al regresar a la variable original $P(t) = \frac{1}{z(t)}$, obtenemos la solución sigmoidea:</p>
-    <p>$$ P(t) = \frac{1}{\frac{1}{K} + Ce^{-rt}} = \frac{K}{1 + C K e^{-rt}} $$</p>
+    $$ P^{-2}\frac{dP}{dt} - rP^{-1} = -\frac{r}{K} $$
+    Si consideramos la sustitución de Bernoulli $z = P^{1-2} = P^{-1} = \frac{1}{P}$ y derivamos respecto a $t$, resulta $z' = -P^{-2}\frac{dP}{dt}$, de donde    
+     $P^{-2}\frac{dP}{dt} = -z'$.
+     Al sustituir estos términos, se tiene $$-z' - rz = -\frac{r}{K} \implies z' + rz = \frac{r}{K}.$$
+   Considerando $$ P(t) = (1-2)p(t) = r \quad \text{y} \quad Q(t) = (1-2)q(t) = \frac{r}{K} $$ podemos calcular el factor integrante y la integral pra $I$, tenemos
+     $$\mu = \exp\left(\int r dt\right) = e^{rt}$$ y 
+     $$ I = \int \mu Q dt = \int e^{rt}\left(\frac{r}{K}\right) dt = \frac{1}{K}e^{rt}$$
+     De este modo, la solución en la variable $z$ es 
+     $$z = \frac{I + C}{\mu} = \frac{\frac{1}{K}e^{rt} + C}{e^{rt}} = \frac{1}{K} + Ce^{-rt}.$$
+    Finalmente, al regresar a la variable original $P(t) = \frac{1}{z(t)}$, obtenemos la solución:
+    $$ P(t) = \frac{1}{\frac{1}{K} + Ce^{-rt}} = \frac{K}{1 + C K e^{-rt}} $$</p>
 
-    <h4>Aplicación B: Circuito Eléctrico no Lineal (Varistor / Resistencia no Lineal)</h4>
-    <p>En un circuito RL, la resistencia del elemento varía linealmente con la corriente acumulada, $R(i) = R_0 + k \cdot i$. Según la ley de Kirchhoff de voltajes:</p>
-    <p>$$ L \frac{di}{dt} + (R_0 + k i)i = E_0 \implies \frac{di}{dt} + \frac{R_0}{L}i = \frac{E_0}{L} - \frac{k}{L}i^2 $$</p>
-    <p>Cuando la fuente es nula ($E_0 = 0$), la ecuación se reduce a la EDO de Bernoulli: $\frac{di}{dt} + \frac{R_0}{L}i = -\frac{k}{L}i^2$ con $n = 2$, $p(t) = \frac{R_0}{L}$ y $q(t) = -\frac{k}{L}$.</p>
+    <h4>Aplicación B: Circuito Eléctrico no Lineal</h4>
+    <p>En un circuito RL, la resistencia del elemento varía linealmente con la corriente acumulada, $R(i) = R_0 + k \cdot i$. Según la ley de Kirchhoff de voltajes:
+      $$ L \frac{di}{dt} + (R_0 + k i)i = E_0 \implies \frac{di}{dt} + \frac{R_0}{L}i = \frac{E_0}{L} - \frac{k}{L}i^2 $$
+     Cuando la fuente es nula ($E_0 = 0$), la ecuación se reduce a la EDO de Bernoulli: 
+     $$\frac{di}{dt} + \frac{R_0}{L}i = -\frac{k}{L}i^2$$ con $n = 2$, $p(t) = \frac{R_0}{L}$ y $q(t) = -\frac{k}{L}$.</p>
     <p><span class="solucion">Solución aplicando el método:</span></p>
-    <p>Al dividir entre $i^2$, se tiene: $i^{-2}\frac{di}{dt} + \frac{R_0}{L}i^{-1} = -\frac{k}{L}$.</p>
-    <p>Si consideramos el cambio $z = i^{1-2} = i^{-1}$ y derivamos respecto a $t$, resulta $z' = -i^{-2}\frac{di}{dt}$, por lo que $i^{-2}\frac{di}{dt} = -z'$.</p>
-    <p>Al sustituir y reescribir la ecuación en la forma lineal $z' + P(t)z = Q(t)$, obtenemos:</p>
-    <p>$$ -z' + \frac{R_0}{L}z = -\frac{k}{L} \implies z' - \frac{R_0}{L}z = \frac{k}{L} $$</p>
-    <p>donde las relaciones de coeficientes son $P(t) = (1-2)p(t) = -\frac{R_0}{L}$ y $Q(t) = (1-2)q(t) = \frac{k}{L}$.</p>
-    <p>Al calcular el factor integrante, se tiene $\mu = \exp\left(\int -\frac{R_0}{L} dt\right) = e^{-\frac{R_0}{L}t}$.</p>
-    <p>Al evaluar la integral $I$, resulta $I = \int e^{-\frac{R_0}{L}t}\left(\frac{k}{L}\right)dt = -\frac{k}{R_0}e^{-\frac{R_0}{L}t}$.</p>
-    <p>De este modo, la solución en la variable $z$ es $z = \frac{I + C}{\mu} = \frac{-\frac{k}{R_0}e^{-\frac{R_0}{L}t} + C}{e^{-\frac{R_0}{L}t}} = -\frac{k}{R_0} + Ce^{\frac{R_0}{L}t}$.</p>
-    <p>Finalmente, al regresar a la corriente original $i(t) = \frac{1}{z(t)}$, se obtiene:</p>
-    <p>$$ i(t) = \frac{1}{-\frac{k}{R_0} + Ce^{\frac{R_0}{L}t}} $$</p>
+    <p>Al dividir entre $i^2$, se tiene: $$i^{-2}\frac{di}{dt} + \frac{R_0}{L}i^{-1} = -\frac{k}{L}.$$
+     Si consideramos el cambio $z = i^{1-2} = i^{-1}$ y derivamos respecto a $t$, resulta 
+     $$z' = -i^{-2}\frac{di}{dt}$, por lo que $i^{-2}\frac{di}{dt} = -z'$$
+    Al sustituir y reescribir la ecuación en la forma lineal $z' + P(t)z = Q(t)$, obtenemos:
+    $$ -z' + \frac{R_0}{L}z = -\frac{k}{L} \implies z' - \frac{R_0}{L}z = \frac{k}{L} $$
+    donde las relaciones de coeficientes son $$P(t) = (1-2)p(t) = -\frac{R_0}{L}\quad\hbox{ y }\quad Q(t) = (1-2)q(t) = \frac{k}{L}.$$
+    Calculando el factor integrante tenemos 
+     $$\mu = \exp\left(\int {\left( -\frac{R_0}{L} \right) dt} \right) = e^{-\frac{R_0}{L}t}$$
+    Al evaluar la integral $I$, resulta 
+    $$I = \int e^{-\frac{R_0}{L}t}\left(\frac{k}{L}\right)dt = -\frac{k}{R_0}e^{-\frac{R_0}{L}t}$$
+    De este modo, la solución en la variable $z$ es 
+    $$z = \frac{I + C}{\mu} = \frac{-\frac{k}{R_0}e^{-\frac{R_0}{L}t} + C}{e^{-\frac{R_0}{L}t}} = -\frac{k}{R_0} + Ce^{\frac{R_0}{L}t}$$
+    Finalmente, al regresar a la corriente original $i(t) = \frac{1}{z(t)}$, se obtiene:
+    $$ i(t) = \frac{1}{-\frac{k}{R_0} + Ce^{\frac{R_0}{L}t}} $$</p>
 
     <hr class="separador">
 
-    <h3>4. Exploración Interactiva (Formativa)</h3>
-    <p>El comportamiento de las ecuaciones de Bernoulli varía drásticamente dependiendo del exponente $n$. Copia y ejecuta este script en <strong>Google Colab</strong> para visualizar cómo el campo de direcciones y las curvas solución cambian de forma según el parámetro $n$ en la ecuación $y' - y = -x y^n$.</p>
-    <pre>
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Definición de la malla (Grid)
-x, y = np.meshgrid(np.linspace(-2, 2, 20), np.linspace(0.1, 3, 20))
-
-fig, axes = plt.subplots(1, 2, figsize=(14, 6))
-
-# Caso 1: n = 2 (Bernoulli)
-U = np.ones_like(x)
-V1 = x + y**2
-N1 = np.sqrt(U**2 + V1**2)
-axes[0].quiver(x, y, U/N1, V1/N1, color='#1A237E', alpha=0.7)
-axes[0].set_title(r"Campo de Direcciones para $n=2$ ($y' - y = x y^2$)")
-axes[0].set_xlabel("x")
-axes[0].set_ylabel("y")
-axes[0].grid(True)
-
-# Caso 2: n = -1 (Bernoulli)
-V2 = x + y**(-1)
-N2 = np.sqrt(U**2 + V2**2)
-axes[1].quiver(x, y, U/N2, V2/N2, color='#00695C', alpha=0.7)
-axes[1].set_title(r"Campo de Direcciones para $n=-1$ ($y' - y = x y^{-1}$)")
-axes[1].set_xlabel("x")
-axes[1].set_ylabel("y")
-axes[1].grid(True)
-
-plt.tight_layout()
-plt.show()
-    </pre>
-
+    <h3>4. Exploración Interactiva </h3>
+    <p>  Entra a la liga siguiente, allí podrás explorar la solución de la ecuación de Bernoulli
+    mediante un archivo de Python en Google-Colab
+      <a href=" https://colab.research.google.com/drive/1wyQudy0_sMDniy9MCOcKB841Ip2cKk41?usp=sharing" target="_blank">Widget de la Ecuación de Bernoulli</a> 
+ 
+ 
     <hr class="separador">
 
     <h3>5. Práctica con Inteligencia Artificial</h3>
@@ -534,6 +479,3 @@ plt.show()
         }
     }
 </script>
-
-</body>
-</html>
