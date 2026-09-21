@@ -1,0 +1,30 @@
+<button onclick="abrirPantallaDividida()" style="padding: 15px 30px; background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px;">
+  🚀 Abrir Entorno Dividido (Mathematica + Gemini)
+</button>
+
+<script>
+function abrirPantallaDividida() {
+  // Ancho y alto de la pantalla del estudiante
+  const ancho = window.screen.availWidth / 2;
+  const alto = window.screen.availHeight;
+
+  // Enlace a tu plantilla maestra en Wolfram Cloud
+  const urlMathematica = "https://www.wolframcloud.com/env/TU_ARCHIVO_MAESTRO.nb";
+  // Enlace a Google Gemini
+  const urlGemini = "https://gemini.google.com/";
+
+  // Ventana Izquierda: Wolfram Cloud (50% ancho)
+  window.open(
+    urlMathematica, 
+    'MathematicaWin', 
+    `width=${ancho},height=${alto},left=0,top=0,resizable=yes,scrollbars=yes`
+  );
+
+  // Ventana Derecha: Gemini (50% ancho)
+  window.open(
+    urlGemini, 
+    'GeminiWin', 
+    `width=${ancho},height=${alto},left=${ancho},top=0,resizable=yes,scrollbars=yes`
+  );
+}
+</script>
